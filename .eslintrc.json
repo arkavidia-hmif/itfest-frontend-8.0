@@ -1,0 +1,12 @@
+{
+  "extends": ["eslint:recommended", "next", "prettier"],
+  "rules": {
+    "semi": "warn",
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ]
+  }
+}

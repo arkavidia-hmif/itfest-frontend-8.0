@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/** Fonts */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/font/Archivo-Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica';
+  src: url('/font/Helvetica.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Varela Round';
+  src: url('/font/VarelaRound-Regular.ttf') format('truetype');
+}
+
+/** Default styles */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    @apply font-archivo;
+    @apply text-white;
+    @apply uppercase;
+    text-shadow: -6px 6px black, -2px 0px black, 2px 0px black, 0px 2px black,
+      0px -2px black;
+  }
+
+  h4,
+  h5,
+  h6 {
+    @apply font-archivo;
+    @apply text-white;
+    @apply uppercase;
+    text-shadow: -4px 4px 0px black, -2px 0px black, 2px 0px black,
+      0px 2px black, 0px -2px black;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  h4 {
+    @apply text-h4;
+  }
+
+  h5 {
+    @apply text-h5;
+  }
+
+  h6 {
+    @apply text-h6;
+  }
+}
+
+/** Mobile Layout Container */
+main {
+  width: 100%;
+}
+
+@media (min-width: 425px) {
+  main {
+    width: 425px;
+  }
+}
