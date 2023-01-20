@@ -16,7 +16,7 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                     <div className='flex px-4'>
                         <div className='w-3/5'>
                             <div className='flex items-center'>
-                                <Image src="/img/business-center.png" alt="business-center" width="12" height="12" />
+                                <Image src="/icons/business-center.png" alt="business-center" width="12" height="12" />
                                 <p className='font-helvetica text-xs ml-1'>STARTUP</p>
                             </div>
                             <h1 className='font-archivo text-2xl text-white shadow-black'>SELAMAT</h1>
@@ -38,7 +38,7 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                         </div>
                         <Link href="/dashboard-startup" className='font-helvetica text-xs flex'>
                             Lihat Riwayat
-                            <Image src="/img/navigate-next.png" alt="navigate-next" width="16" height="16" />
+                            <Image src="/icons/navigate-next.png" alt="navigate-next" width="16" height="16" />
                         </Link>
                     </div>
                 </div>
