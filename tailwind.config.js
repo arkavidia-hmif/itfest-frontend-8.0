@@ -20,6 +20,9 @@ module.exports = {
         h5: ['36px', '39px'],
         h6: ['24px', '26px'],
       },
+      backgroundImage: {
+        'home_bg' : "url('../public/img/homepage-bg.svg')",
+      }
     },
   },
   plugins: [],
