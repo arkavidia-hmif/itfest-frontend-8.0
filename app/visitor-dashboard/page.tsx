@@ -1,15 +1,30 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import clsx from 'clsx';
+
+// Component imports
+import DashboardLink from '@/components/visitor-dashboard/DashboardLink';
+import MerchItem from '@/components/visitor-dashboard/MerchItem';
+import LogOutButton from '@/components/visitor-dashboard/LogOutButton';
+
+// Assets imports
 import ArkavLogo from '@/public/img/arkav-8.0-logo.png';
 import QuestionMark from '@/public/img/question-mark.svg';
 import UserIcon from '@/public/img/user-icon.svg';
 import HeaderImage from '@/public/img/visitor-dashboard-header.png';
 import GreenDiamond from '@/public/img/green-diamond.svg';
-import RightArrow from '@/public/img/right-arrow.svg';
 import ProfileImage from '@/public/img/visitor-dashboard-profile.png';
 import StartupClueImage from '@/public/img/visitor-dashboard-startup-clue.png';
+import MerchImage from '@/public/img/visitor-dashboard-merchandise.png';
 
+// TODO: Delete this later
+import TestMerchImage from '@/public/img/test-merch-image.png';
+
+// Page component
 export default function Dashboard(): JSX.Element {
+  const { username, userPIN, userPoints, isProfileComplete, merchandise } =
+    testData;
+
   return (
     <>
       {/* Header section */}
@@ -34,7 +49,7 @@ export default function Dashboard(): JSX.Element {
             <div className="flex">
               <Image src={UserIcon} width={12} height={12} alt="" />
               <p className="ml-1.5 mt-1.5 uppercase font-helvetica text-sm items-center">
-                Yandy {/* TODO: Page variable */}
+                {username}
               </p>
             </div>
             <h1
@@ -47,7 +62,7 @@ export default function Dashboard(): JSX.Element {
               Selamat Datang!
             </h1>
             <div className="bg-black text-white px-2 pb-1 pt-2 w-full mt-1 font-bold font-helvetica text-sm">
-              ID PIN: 2020 {/* TODO: Page variable */}
+              ID PIN: {userPIN}
             </div>
           </div>
 
@@ -76,21 +91,21 @@ export default function Dashboard(): JSX.Element {
                   </p>
                 </div>
               </div>
-              <Link href="#">
-                <div className="flex h-3.5">
-                  <p className="capitalize text-[#1F307C] text-xs font-helvetica mr-1.5">
-                    Lihat Riwayat
-                  </p>
-                  <Image src={RightArrow} width={5} height={8} alt="" />
-                </div>
-              </Link>
+              {/* TODO: Add history link */}
+              <DashboardLink linkText="Lihat Riwayat" linkURL="#" />
             </div>
-            {/* TODO: Page variable */}
-            <p className="font-varela text-3xl text-center mt-2">99999</p>
+            <p className="font-varela text-3xl text-center mt-2">
+              {userPoints}
+            </p>
           </div>
 
           {/* Profile card */}
-          <div className="flex bg-white w-full rounded-xl py-3 px-4 border border-[#EEEDF0] mt-2">
+          <div
+            className={clsx(
+              isProfileComplete ? 'hidden' : 'flex',
+              'bg-white w-full rounded-xl py-3 px-4 border border-[#EEEDF0] mt-2'
+            )}
+          >
             <Image
               src={ProfileImage}
               width={86}
@@ -104,6 +119,7 @@ export default function Dashboard(): JSX.Element {
               <p className="mt-1 font-helvetica text-xs">
                 Lengkapi profilmu dan raih hadiah X points!
               </p>
+              {/* TODO: Add profile link */}
               <Link href="#">
                 <button className="w-full bg-[#1F307C] rounded-md pt-2 pb-1.5 text-white font-helvetica font-bold text-xs text-center mt-2">
                   Lengkapi profil
@@ -139,12 +155,90 @@ export default function Dashboard(): JSX.Element {
           />
         </div>
 
+        {/* TODO: Add clue link */}
         <Link href="#">
           <button className="capitalize w-full bg-white rounded-md border border-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-[#1F307C] mt-4">
             Lihat Clue
           </button>
         </Link>
       </section>
+
+      {/* Merchandise section */}
+      <section className="pl-4 pt-4 flex bg-white justify-between overflow-hidden">
+        <div className="bg-white mr-2 pb-1 w-36 border border-[#110002] flex flex-col items-center flex-none">
+          <div className="bg-[#0B0A0A] pt-1 w-full">
+            <p className="uppercase font-helvetica font-bold text-white text-sm text-center">
+              Merchandise
+            </p>
+          </div>
+          <p className="font-helvetica text-xs text-justify mt-3 px-2.5 mb-3.5">
+            Banyak merchandise menarik yang dapat kamu tukarkan!
+          </p>
+          <Image
+            src={MerchImage}
+            width={134}
+            height={174}
+            alt="Merchandise section image"
+          />
+        </div>
+
+        <div>
+          <div className="flex justify-end mr-6">
+            {/* TODO: Add merch link */}
+            <DashboardLink linkText="Lihat Selengkapnya" linkURL="#" />
+          </div>
+          <div className="flex gap-1 mt-1 overflow-scroll w-[56vw]">
+            {merchandise.map((merch, idx) => (
+              <MerchItem key={idx} {...merch} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Log out button */}
+      <div className="bg-white w-full px-4 pt-8 pb-4">
+        <LogOutButton />
+      </div>
     </>
   );
 }
+
+// Dummy data for merchandise section
+const testMerchData = [
+  {
+    merchImage: TestMerchImage,
+    merchTitle: 'Kaos Mentor Sandbox',
+    merchPoints: 100000,
+    startupName: 'Startup Startip',
+    startupImage: TestMerchImage,
+    totalStock: 59,
+    totalSold: 10,
+  },
+  {
+    merchImage: TestMerchImage,
+    merchTitle: 'Kaos Mentor Sandbox',
+    merchPoints: 100000,
+    startupName: 'Startup Startip',
+    startupImage: TestMerchImage,
+    totalStock: 59,
+    totalSold: 10,
+  },
+  {
+    merchImage: TestMerchImage,
+    merchTitle: 'Kaos Mentor Sandbox',
+    merchPoints: 100000,
+    startupName: 'Startup Startip',
+    startupImage: TestMerchImage,
+    totalStock: 59,
+    totalSold: 10,
+  },
+];
+
+// Dummy page data
+const testData = {
+  username: 'Yandy',
+  userPIN: 2020,
+  userPoints: 99999,
+  isProfileComplete: false,
+  merchandise: testMerchData,
+};

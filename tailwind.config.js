@@ -11,6 +11,7 @@ module.exports = {
         archivo: ['Archivo', 'sans-serif'],
         helvetica: ['Helvetica', 'sans-serif'],
         varela: ['Varela Round', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
       fontSize: {
         h1: ['96px', '104px'],
