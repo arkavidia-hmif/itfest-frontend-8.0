@@ -2,8 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import Admin from "@/app/dashboard-admin/icons/admin.svg";
-import Stock from "@/app/dashboard-admin/icons/stock.svg";
 // import Link from "next/link";
 
 const Merch = () => {
@@ -24,12 +22,12 @@ const Merch = () => {
       <div className="flex items-center">
         <div className="w-3/5">
           <div className="flex items-center">
-            <Image src={Admin} alt="Administrator Login" />
+            <Image src="/icons/dashboard-admin.svg" width={22} height={32} alt="Administrator Login" />
             <p className="font-helvetica text-xs font-semibold ml-1">
               ADMINISTRATOR
             </p>
           </div>
-          <h6 className="font-archivo text-3xl tracking-wide leading-7">
+          <h6>
             SELAMAT <br /> DATANG!
           </h6>
         </div>
@@ -45,12 +43,17 @@ const Merch = () => {
 
       <div className="bg-white flex items-center mt-8 mb-4 p-4 justify-between rounded-xl ">
         <div className="flex items-center">
-          <Image src={Stock} alt="level" width="22" height="32" />
+          <Image
+            src="/icons/dashboard-stock.svg"
+            alt="level"
+            width="22"
+            height="32"
+          />
           <p className="font-helvetica text-sm font-bold ml-2">Merchandise</p>
         </div>
         <Link
           href="/dashboard-startup"
-          className="font-helvetica text-xs flex text-[#1f30c7]"
+          className="font-helvetica font-semibold text-xs flex text-[#1f30c7]"
         >
           Lihat Stock
           <Image

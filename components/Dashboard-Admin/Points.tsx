@@ -12,7 +12,7 @@ const Points = () => {
         </div>
         <Link
           href="/dashboard-startup"
-          className="font-helvetica text-xs flex text-[#1f30c7]"
+          className="font-helvetica font-semibold text-xs flex text-[#1f30c7]"
         >
           Lihat Riwayat
           <Image
@@ -27,9 +27,7 @@ const Points = () => {
       <div className="flex flex-col">
         <div className="flex px-4">
           <div className="w-3/5 space-y-2">
-            <h6 className="font-archivo text-3xl text-white shadow-black tracking-wide">
-              REDEEM POINTS
-            </h6>
+            <h6>REDEEM POINTS</h6>
             <p className="text-white font-helvetica text-[12px] tracking-wide">
               Yuk berikan poin kepada visitor yang memainkan challenge!
             </p>
@@ -43,7 +41,7 @@ const Points = () => {
             />
           </div>
         </div>
-        
+
         <div className="p-4">
           <button
             className="bg-white border border-[#1F307C] text-[#1F307C] 
