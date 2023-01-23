@@ -11,7 +11,7 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                 <div className="bg-[#FEB20E] h-1/2 flex flex-col justify-center">
                     <div className='pt-4 flex items-center justify-between px-4 pb-9'>
                         <Image src="/img/arkav-8.0-logo.png" alt="arkav-logo" width="40" height="40" />
-                        <h1 className='font-archivo text-2xl text-white shadow-black'>ARKAVIDIA</h1>
+                        <h6>ARKAVIDIA</h6>
                     </div>
                     <div className='flex px-4'>
                         <div className='w-3/5'>
@@ -19,8 +19,8 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                                 <Image src="/icons/business-center.png" alt="business-center" width="12" height="12" />
                                 <p className='font-helvetica text-xs ml-1'>STARTUP</p>
                             </div>
-                            <h1 className='font-archivo text-2xl text-white shadow-black'>SELAMAT</h1>
-                            <h1 className='font-archivo text-2xl text-white shadow-black'>DATANG!</h1>
+                            <h6>SELAMAT</h6>
+                            <h6>DATANG!</h6>
                             <div className='bg-black w-full text-white font-helvetica text-sm px-1'>
                                 USERNAME
                             </div>
@@ -45,8 +45,8 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                 <div className='bg-[#069154] h-1/2 flex flex-col justify-center'>
                     <div className='flex px-4'>
                         <div className='w-3/5'>
-                            <h1 className='font-archivo text-2xl text-white shadow-black'>GRANT</h1>
-                            <h1 className='font-archivo text-2xl text-white shadow-black mb-2'>POINTS</h1>
+                            <h6>GRANT</h6>
+                            <h6>POINTS</h6>
                             <div className='w-full text-white font-helvetica text-sm'>
                                 Yuk berikan poin kepada visitor yang memainkan challenge!
                             </div>

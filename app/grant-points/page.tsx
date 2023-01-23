@@ -14,8 +14,8 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                             <Image src="/icons/navigate-previous.png" alt="navigate-previous" width="24" height="24" />
                         </Link>
                         <div>
-                            <h1 className='font-archivo text-2xl text-white shadow-black'>GRANT</h1>
-                            <h1 className='font-archivo text-2xl text-white shadow-black'>POINTS</h1>
+                            <h6>GRANT</h6>
+                            <h6>POINTS</h6>
                         </div>
                     </div>
 
