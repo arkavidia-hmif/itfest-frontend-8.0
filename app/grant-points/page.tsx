@@ -40,7 +40,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                     </div>
                     <div className='m-4 flex flex-col items-center'>
                         <Image src="/img/grant-points-fox.png" alt="fox" width="600" height="300" className='mb-2' />
-                        <h2 className='font-archivo text-2xl text-white shadow-black mb-2'>GRANT</h2>
+                        <h6>GRANT</h6>
                         <div className='flex items-center'>
                             <Image src="/img/level.png" alt="level" width="22" height="32" />
                             <p className='font-archivo text-2xl font-bold'>0</p>
