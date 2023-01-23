@@ -15,7 +15,7 @@ export default function RootLayout({
       <head />
       <body>
         <div className="w-full bg-slate-100 flex items-center justify-center">
-          <main className="bg-[#FEB20E] min-h-screen">{children}</main>
+          <main className="bg-white min-h-screen">{children}</main>
         </div>
       </body>
     </html>

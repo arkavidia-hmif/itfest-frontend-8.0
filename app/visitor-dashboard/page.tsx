@@ -28,7 +28,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <>
       {/* Header section */}
-      <header className="bg-[#FEB20E] mt-16 pb-20">
+      <header className="bg-[#FEB20E] pt-16 pb-20">
         {/* Logo and tutorial button */}
         <div className="flex justify-between pl-8 pr-4">
           <Image src={ArkavLogo} width={22} height={32} alt="Arkavidia Logo" />
@@ -52,7 +52,7 @@ export default function Dashboard(): JSX.Element {
                 {username}
               </p>
             </div>
-            <h1
+            <h6
               style={{
                 textShadow:
                   '-2px 2px 0px #000, 1px -1px 0px #000, -1px -1px 0px #000, 1px 1px 0px #000',
@@ -60,7 +60,7 @@ export default function Dashboard(): JSX.Element {
               className="text-2xl leading-[26px]"
             >
               Selamat Datang!
-            </h1>
+            </h6>
             <div className="bg-black text-white px-2 pb-1 pt-2 w-full mt-1 font-bold font-helvetica text-sm">
               ID PIN: {userPIN}
             </div>
@@ -134,7 +134,7 @@ export default function Dashboard(): JSX.Element {
       <section className="w-full bg-[#069154] -mt-10 py-4 px-8">
         <div className="flex">
           <div>
-            <h3
+            <h6
               style={{
                 textShadow:
                   '-2px 2px 0px #000, 1px -1px 0px #000, -1px -1px 0px #000, 1px 1px 0px #000',
@@ -142,7 +142,7 @@ export default function Dashboard(): JSX.Element {
               className="font-archivo font-black uppercase text-2xl w-40 leading-[26px]"
             >
               Startup Clue
-            </h3>
+            </h6>
             <p className="mt-3 text-white font-helvetica text-xs">
               Tebak kode dari tiap startup dan menangkan hadiahnya!
             </p>
