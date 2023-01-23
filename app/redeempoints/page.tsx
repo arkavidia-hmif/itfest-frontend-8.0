@@ -23,7 +23,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                 <a href="" className="font-bold my-1 border-2 rounded-lg w-full text-center py-[4px] text-[#3b4a8c] border-[#3b4a8c] ">Tambah Merchandise</a>
             </div>
             <Image className="mx-auto mt-2" src="img/FoxWithPoints.svg" alt="FoxWithPoints" width="390" height="80" />
-            <h6 className="text-3xl text-center my-2">REDEEMING</h6>
+            <h6 className="text-center my-2">REDEEMING</h6>
             <div className="flex justify-center h-12">
                 <Image className="mr-1 -mt-2" src="img/RectangleRounded.svg" alt="RectangleRounded" width="28" height="24" />
                 <span className="text-3xl font-bold">0</span>
