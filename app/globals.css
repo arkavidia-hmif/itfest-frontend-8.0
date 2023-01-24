@@ -74,3 +74,16 @@ main {
     width: 425px;
   }
 }
+
+/** Remove arrow from input number */
+/* Chrome, Safari, Edge, Opera */
+input.no-arrow::-webkit-outer-spin-button,
+input.no-arrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input.no-arrow[type='number'] {
+  -moz-appearance: textfield;
+}
