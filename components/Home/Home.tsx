@@ -63,7 +63,7 @@ const Home: React.FC<HomeProps> = ({ dummyProp }) => {
               <div className="bg-white w-full rounded-xl px-4 py-3 border border-[#EEEDF0]">
                 <div className="flex justify-between">
                   <div className="flex">
-                    <Image src={QuestionMark} alt={''} />
+                    <Image width={36} src={QuestionMark} alt={''} />
                     <div className="ml-2">
                       <p className="font-helvetica font-bold text-sm">Tutorial</p>
                       <p className="font-helvetica font-normal text-xs">
