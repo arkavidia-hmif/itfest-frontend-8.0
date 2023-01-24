@@ -15,7 +15,7 @@ export default function RootLayout({
       <head />
       <body>
         <div className="h-screen w-full bg-slate-100 flex items-center justify-center">
-          <main className="bg-yellow-400 p-2 min-h-screen">{children}</main>
+          <main className="bg-white min-h-screen">{children}</main>
         </div>
       </body>
     </html>
