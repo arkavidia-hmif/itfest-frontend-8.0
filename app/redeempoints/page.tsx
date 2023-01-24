@@ -6,7 +6,7 @@ interface RedeemPointsPageProps { }
 
 const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
     return (
-        <div className="bg-white -m-2">
+        <div className="bg-white">
             <div className="flex h-38 bg-[#069154] mb-6">
                 <Image className="ml-6" src="img/ArrowBack.svg" alt="ArrowBack" width="8" height="8" />
                 <div className="flex flex-col ml-8 mt-12 pt-1">
