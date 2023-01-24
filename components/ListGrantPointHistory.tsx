@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 import GreenArrow from '@/public/icons/green-arrow-icon.svg';
 import RedArrow from '@/public/icons/red-arrow-icon.svg';
 import GreenDiamond from '@/public/icons/green-diamond-icon.svg';
 import RedDiamond from '@/public/icons/red-diamond-icon.svg';
-import { stat } from 'fs';
 
 interface ListGrantPointHistoryProps {
   status?: string;

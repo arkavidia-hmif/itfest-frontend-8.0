@@ -2,10 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 
 //assets imports
-import GreenArrow from '@/public/icons/green-arrow-icon.svg';
-import RedArrow from '@/public/icons/red-arrow-icon.svg';
-import GreenDiamond from '@/public/icons/green-diamond-icon.svg';
-import RedDiamond from '@/public/icons/red-diamond-icon.svg';
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
 import ListHistoryPoint from '@/components/ListHistoryPoint';
 

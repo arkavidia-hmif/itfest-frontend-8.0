@@ -2,18 +2,15 @@ import React from 'react';
 import Image from 'next/image';
 
 //assets imports
-import GreenArrow from '@/public/icons/green-arrow-icon.svg';
-import RedArrow from '@/public/icons/red-arrow-icon.svg';
-import GreenDiamond from '@/public/icons/green-diamond-icon.svg';
-import RedDiamond from '@/public/icons/red-diamond-icon.svg';
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
 import ListRedemptionHistory from '@/components/ListRedemptionHistory';
+import ModalSuccess from '@/components/Modal';
 
 interface GrantPointHistoryProps {}
 
 const GrantPointHistory: React.FC<GrantPointHistoryProps> = () => {
   const data = {
-    status: 'received',
+    status: 'sent',
     point: 100,
     date: 'tanggal',
     name: 'fikron',
@@ -28,7 +25,7 @@ const GrantPointHistory: React.FC<GrantPointHistoryProps> = () => {
             <Image src={LeftArrow} alt="Left Arrow" />
           </div>
           <div className="ml-3 mt-5">
-            <h6>GRANT POINT</h6>
+            <h6>REDEMPTION</h6>
             <h6>HISTORY</h6>
           </div>{' '}
         </div>
@@ -41,6 +38,7 @@ const GrantPointHistory: React.FC<GrantPointHistoryProps> = () => {
           total={data.total}
           startup={data.startup}
         />
+        <ModalSuccess point={300} name="fikron" status="warning" />
       </div>
     </>
   );

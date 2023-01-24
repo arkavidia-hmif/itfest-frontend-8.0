@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 import GreenArrow from '@/public/icons/green-arrow-icon.svg';
 import RedArrow from '@/public/icons/red-arrow-icon.svg';
 import GreenDiamond from '@/public/icons/green-diamond-icon.svg';
 import RedDiamond from '@/public/icons/red-diamond-icon.svg';
-import { stat } from 'fs';
 
 interface ListRedemptionHistoryProps {
   status?: string;
@@ -60,9 +59,11 @@ const ListGrantPointHistory: React.FC<ListRedemptionHistoryProps> = ({
                 </div>
               )}
 
-              <div className="font-helvetica font-[100] text-[12px] text-[#9B9B9B] -translate-y-1">
-                {startup}
-              </div>
+              {status === 'received' && (
+                <div className="font-helvetica font-[100] text-[12px] text-[#9B9B9B] -translate-y-1">
+                  {startup}
+                </div>
+              )}
             </div>
             <div className="flex flex-col">
               <div className="font-helvetica font-[400] text-[12px] text-[#9B9B9B]">
