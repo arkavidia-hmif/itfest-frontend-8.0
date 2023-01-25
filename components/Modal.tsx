@@ -19,12 +19,12 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
   return (
     <>
       {status === 'success' && (
-        <div className="relative w-80 flex flex-col gap-[20px] items-center ">
+        <div className="relative w-[90%] h-[50%] flex flex-col gap-[20px] items-center justify-center">
           <div>
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="fixed top-0 right-0 w-[18px] h-[18px] "
+              className="absolute top-8 right-8 w-[18px] h-[18px] "
             />
             <Image
               src={GreenDiamond}
@@ -32,9 +32,12 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
               className="w-[65px] h-[94px]"
             />
           </div>
-          <div className="flex flex-col items-center font-helvetica text-[#0B1A5C] ">
-            <div>{point} Poin Berhasil Diklaim!</div>
-            <div className="text-[70%]">
+          <div
+            className="flex flex-col items-center font-helvetica text-[#0B1A5C] border-b-[1px] border-[#DBDDE0
+] pb-3"
+          >
+            <div className="text-[24px]">{point} Poin Berhasil Diklaim!</div>
+            <div className="text-[12px]">
               Selamat! poin berhasil diklaim dari {name}{' '}
             </div>
           </div>
@@ -42,29 +45,32 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
         </div>
       )}
       {status === 'fail' && (
-        <div className="relative w-80 flex flex-col gap-[20px] items-center ">
+        <div className="relative w-[90%] h-[50%] flex flex-col gap-[20px] items-center justify-center ">
           <div>
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="fixed top-0 right-0 w-[18px] h-[18px] "
+              className="absolute top-8 right-8 w-[18px] h-[18px] "
             />
             <Image src={SadFace} alt="Sad Face" className="w-[96px] h-[96px]" />
           </div>
-          <div className="flex flex-col items-center font-helvetica text-[#0B1A5C] ">
-            <div>Yah, Poin Gagal Diklaim</div>
-            <div className="text-[70%]">Silahkan coba lagi</div>
+          <div
+            className="flex flex-col items-center font-helvetica text-[#0B1A5C] border-b-[1px] border-[#DBDDE0
+] pb-3"
+          >
+            <div className="text-[24px]">Yah, Poin Gagal Diklaim</div>
+            <div className="text-[12px]">Silahkan coba lagi</div>
           </div>
           <ButtonText bgColor="secondary"></ButtonText>
         </div>
       )}
       {status === 'warning' && (
-        <div className="relative w-80 flex flex-col gap-[20px] items-center ">
+        <div className="relative w-[90%] h-[50%] flex flex-col gap-[20px] items-center justify-center ">
           <div>
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="fixed top-0 right-0 w-[18px] h-[18px] "
+              className="absolute top-8 right-8 w-[18px] h-[18px] "
             />
             <Image
               src={YellowWarning}
@@ -72,10 +78,21 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
               className="w-[96px] h-[96px]"
             />
           </div>
-          <div className="flex flex-col items-center font-helvetica text-[#0B1A5C] ">
-            <div>Merchandise Akan Ditukar Dengan {point} Poin</div>
-            <div className="text-[70%]">
+          <div
+            className="flex flex-col items-center font-helvetica text-[#0B1A5C] border-b-[1px] border-[#DBDDE0
+] pb-3"
+          >
+            <div className="text-[24px] text-center mx-4">
+              Merchandise Akan Ditukar Dengan {point} Poin
+            </div>
+            <div className="text-[12px]">
               Apakah kamu yakin ingin menukar poin dari {name}?{' '}
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <input type="checkbox" className="default:ring-2" />
+            <div className="font-helvetica font-[400] text-[12px] text-[#F43518]">
+              Jangan tampilkan pesan ini lagi
             </div>
           </div>
           <div className="flex flex-col items-center gap-3">
