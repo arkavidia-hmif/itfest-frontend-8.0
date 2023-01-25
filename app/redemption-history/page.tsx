@@ -38,7 +38,6 @@ const GrantPointHistory: React.FC<GrantPointHistoryProps> = () => {
           total={data.total}
           startup={data.startup}
         />
-        <ModalSuccess point={300} name="fikron" status="warning" />
       </div>
     </>
   );

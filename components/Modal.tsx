@@ -24,7 +24,7 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-0 right-0 w-[18px] h-[18px] "
+              className="fixed top-0 right-0 w-[18px] h-[18px] "
             />
             <Image
               src={GreenDiamond}
@@ -47,7 +47,7 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-0 right-0 w-[18px] h-[18px] "
+              className="fixed top-0 right-0 w-[18px] h-[18px] "
             />
             <Image src={SadFace} alt="Sad Face" className="w-[96px] h-[96px]" />
           </div>
@@ -64,7 +64,7 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-0 right-0 w-[18px] h-[18px] "
+              className="fixed top-0 right-0 w-[18px] h-[18px] "
             />
             <Image
               src={YellowWarning}
