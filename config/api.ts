@@ -3,6 +3,7 @@ const API = {
     register: '/register',
     login: '/login',
     home: '/home',
+    profile: '/profile',
   },
 };
 
