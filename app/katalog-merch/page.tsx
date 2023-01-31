@@ -1,4 +1,4 @@
-import Header from "@/components/Katalog-Merch/header";
+import Header from "@/components/Katalog-Merch/Header";
 import React from "react";
 
 interface KatalogMerchPageProps {}
