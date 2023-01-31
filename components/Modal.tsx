@@ -10,7 +10,7 @@ import RedCross from '@/public/icons/red-cross-icon.svg';
 import ButtonText from './ButtonText';
 
 interface ModalProps {
-  status?: string;
+  status?: 'success' | 'fail' | 'warning';
   point?: number;
   name?: string;
 }
@@ -19,12 +19,12 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
   return (
     <>
       {status === 'success' && (
-        <div className="relative w-[90%] h-[50%] flex flex-col gap-[20px] items-center justify-center">
+        <div className={"bg-white relative w-[70%] h-[349px] rounded rounded-b-xl flex flex-col gap-[20px]  items-center justify-center pb-4"}>
           <div>
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-8 right-8 w-[18px] h-[18px] "
+              className="absolute top-2 right-2 w-[18px] h-[18px] "
             />
             <Image
               src={GreenDiamond}
@@ -45,12 +45,12 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
         </div>
       )}
       {status === 'fail' && (
-        <div className="relative w-[90%] h-[50%] flex flex-col gap-[20px] items-center justify-center ">
+        <div className="bg-white relative w-[70%] h-[349px] rounded rounded-b-xl flex flex-col gap-[20px] items-center justify-center ">
           <div>
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-8 right-8 w-[18px] h-[18px] "
+              className="absolute top-2 right-2 w-[18px] h-[18px] "
             />
             <Image src={SadFace} alt="Sad Face" className="w-[96px] h-[96px]" />
           </div>
@@ -65,12 +65,12 @@ const ModalSuccess: React.FC<ModalProps> = ({ name, point, status }) => {
         </div>
       )}
       {status === 'warning' && (
-        <div className="relative w-[90%] h-[50%] flex flex-col gap-[20px] items-center justify-center ">
+        <div className="bg-white relative w-[70%] h-[476px] rounded rounded-b-xl flex flex-col gap-[20px] items-center justify-center ">
           <div>
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-8 right-8 w-[18px] h-[18px] "
+              className="absolute top-2 right-2 w-[18px] h-[18px] "
             />
             <Image
               src={YellowWarning}
