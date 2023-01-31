@@ -12,3 +12,9 @@ export const login = async () => {
 
   return res.data;
 };
+
+export const home = async () => {
+  const res = await services.get(API.user.home);
+
+  return res.data;
+};

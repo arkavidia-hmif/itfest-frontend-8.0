@@ -8,5 +8,8 @@
         "code": 120
       }
     ]
+  },
+  "globals": {
+     "JSX": "readonly"
   }
 }
