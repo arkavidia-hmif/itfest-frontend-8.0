@@ -17,9 +17,10 @@ interface ModalProps {
   icon?: 'green-diamond' | 'sad-face' | 'yellow-warning' | 'green-bag';
   scope?: 'submit-profile' | 'submit-clue' | 'grant-points' | 'redeem-points' | 'add-merchant';
   id?: number;
+  onClick?: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id }) => {
+const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onClick }) => {
   return (
     <>
       {status === 'success' && icon === 'green-diamond' && (
@@ -58,7 +59,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id }) =
             </div>)}
 
           </div>
-          <ButtonText bgColor='primary'></ButtonText>
+          <ButtonText bgColor='primary' onClick={onClick}></ButtonText>
         </div>
       )}
       {status === 'fail' && icon === 'sad-face' && (
@@ -91,7 +92,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id }) =
             {scope === 'add-merchant' && <div className='text-[24px] text-center'>Yah, Item Gagal Ditambahkan</div>}
             {scope === 'add-merchant' && <div className='text-[12px] text-center'>Silahkan coba lagi</div>}
           </div>
-          <ButtonText bgColor='secondary'></ButtonText>
+          <ButtonText bgColor='secondary' onClick={onClick}></ButtonText>
         </div>
       )}
       {status === 'warning' && icon === 'yellow-warning' && (
@@ -136,8 +137,8 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id }) =
             </div>
           </div>
           <div className='flex flex-col items-center gap-3'>
-            <ButtonText bgColor='primary'></ButtonText>
-            <ButtonText bgColor='secondary'></ButtonText>
+            <ButtonText bgColor='primary' onClick={onClick}></ButtonText>
+            <ButtonText bgColor='secondary' onClick={onClick}></ButtonText>
           </div>
         </div>
       )}
@@ -165,7 +166,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id }) =
               Selamat! poin berhasil diklaim dari {name}{' '}
             </div>
           </div>
-          <ButtonText bgColor='primary'></ButtonText>
+          <ButtonText bgColor='primary' onClick={onClick}></ButtonText>
         </div>
       )}
     </>
