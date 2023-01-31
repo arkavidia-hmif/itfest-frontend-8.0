@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { profile } from '@/services/user';
 import Header from './Header';
 import Link from 'next/link';
@@ -22,12 +22,6 @@ const Profile: React.FC<ProfileProps> = ({ dummyProp }) => {
     dummyProfile();
   }, []);
 
-  const [height, setHeight] = useState(0);
-  const ref = useRef(null);
-  useEffect(() => {
-    setHeight(ref.current.clientHeight + 206);
-  }, []);
-
   const [submitAvailable, setSubmitAvailable] = useState(false);
   const handleSubmitBtn = () => {
     setSubmitAvailable(!submitAvailable);
@@ -40,9 +34,9 @@ const Profile: React.FC<ProfileProps> = ({ dummyProp }) => {
           <div>
             <Header title="Complete Profile" />
             <div className='w-full bg-white'>
-              <div className="mx-6">
-                <p ref={ref} className='text-xs font-helvetica text-[#535252] mb-2'>Lengkapi profilmu dulu yuk sebelum melakukan eksplorasi!</p>
-                <div className={`flex flex-col h-[calc(100vh-${height}px)] font-helvetica bg-[#F9F9F9] rounded-md p-4`}>
+              <div className="mx-5">
+                <p className='text-xs font-helvetica text-[#535252] mb-2'>Lengkapi profilmu dulu yuk sebelum melakukan eksplorasi!</p>
+                <div className='flex flex-col h-[calc(100vh-222px)] font-helvetica bg-[#F9F9F9] rounded-md p-4'>
                   <div className="overflow-y-auto">
                     <label className="font-bold text-xs mb-1">
                       Email
@@ -144,7 +138,7 @@ const Profile: React.FC<ProfileProps> = ({ dummyProp }) => {
             </div>
             
           </div>
-          <div className="bg-white sticky bottom-0 left-0 right-0 py-4 px-6 border-t-[1px] border-[#F9F9F9]">
+          <div className="bg-white sticky bottom-0 left-0 right-0 py-4 px-5 border-t-[1px] border-[#F9F9F9]">
             {(submitAvailable) ? (
               <Link href="#">
                 <button className="w-full rounded-md bg-[#1F307C] font-helvetica font-bold text-xs text-center text-white h-10 tracking-wide">
