@@ -168,8 +168,10 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
         {/* Katalog Merch Page */}
         <div
-          className={`absolute z-10 min-h-screen w-full flex flex-col bg-white transition ease-in-out duration-500 ${
-            toggleCatalogue ? '' : '-translate-x-[128rem]'
+          className={`absolute z-10 min-h-screen flex flex-col bg-white transition ease-in-out duration-500 ${
+            toggleCatalogue
+              ? 'translate-x-0 visible'
+              : '-translate-x-[320rem] invisible'
           }`}
         >
           {/* Header */}
@@ -249,7 +251,9 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                   poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
                 }`}
               >
-                {poinAcc > 20000 ? 'Poin cukup untuk ditukarkan' : 'Poin tidak mencukupi!'}
+                {poinAcc > 20000
+                  ? 'Poin cukup untuk ditukarkan'
+                  : 'Poin tidak mencukupi!'}
               </p>
             </div>
 
