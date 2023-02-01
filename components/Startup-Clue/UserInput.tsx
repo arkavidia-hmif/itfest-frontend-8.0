@@ -75,7 +75,7 @@ export default function InputCode({ answer }: AppProps): JSX.Element {
           selanjutnya!
         </p>
         <button
-          className="w-full mb-4 mt-28 py-3 bg-arkav-blue rounded-md text-center text-white font-helvetica font-bold text-xs"
+          className="w-full mb-4 mt-28 pt-3 pb-2 bg-arkav-blue rounded-md text-center text-white font-helvetica font-bold text-xs"
           onClick={isClueDone ? continueHandler : checkHandler}
         >
           {isClueDone ? 'Lanjutkan' : 'Check'}

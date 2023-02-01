@@ -11,7 +11,7 @@ import LeftArrow from '@/public/icons/navigate-previous.png';
 export default function StartupClueHeader(): JSX.Element {
   return (
     <header className="bg-arkav-green relative">
-      <div className="flex w-36 pt-14 pb-6 items-start pl-6 z-40 relative">
+      <div className="flex w-36 pt-14 pb-6 items-start pl-6 z-20 relative">
         <Link href="/visitor-dashboard">
           <div className="w-6 h-6">
             <Image src={LeftArrow} width={24} height={24} alt="Back arrow" />
