@@ -17,10 +17,12 @@ interface ModalProps {
   icon?: 'green-diamond' | 'sad-face' | 'yellow-warning' | 'green-bag';
   scope?: 'submit-profile' | 'submit-clue' | 'grant-points' | 'redeem-points' | 'add-merchant';
   id?: number;
-  onClick?: () => void;
+  onClickLanjutkan?: () => void;
+  onClickKembali?: () => void;
+  onClickTutup?: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onClick }) => {
+const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onClickLanjutkan, onClickTutup, onClickKembali }) => {
   return (
     <>
       {status === 'success' && icon === 'green-diamond' && (
@@ -31,6 +33,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
               src={RedCross}
               alt='Red Cross'
               className='absolute top-2 right-2 w-[18px] h-[18px] '
+              onClick={onClickTutup}
             />
             <Image
               src={GreenDiamond}
@@ -59,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
             </div>)}
 
           </div>
-          <ButtonText bgColor='primary' onClick={onClick}></ButtonText>
+          <ButtonText bgColor='primary' onClick={onClickLanjutkan}></ButtonText>
         </div>
       )}
       {status === 'fail' && icon === 'sad-face' && (
@@ -70,6 +73,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
               src={RedCross}
               alt='Red Cross'
               className='absolute top-2 right-2 w-[18px] h-[18px] '
+              onClick={onClickTutup}
             />
             <Image src={SadFace} alt='Sad Face' className='w-[96px] h-[96px]' />
           </div>
@@ -92,7 +96,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
             {scope === 'add-merchant' && <div className='text-[24px] text-center'>Yah, Item Gagal Ditambahkan</div>}
             {scope === 'add-merchant' && <div className='text-[12px] text-center'>Silahkan coba lagi</div>}
           </div>
-          <ButtonText bgColor='secondary' onClick={onClick}></ButtonText>
+          <ButtonText bgColor='secondary' onClick={onClickKembali}></ButtonText>
         </div>
       )}
       {status === 'warning' && icon === 'yellow-warning' && (
@@ -103,6 +107,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
               src={RedCross}
               alt='Red Cross'
               className='absolute top-2 right-2 w-[18px] h-[18px] '
+              onClick={onClickTutup}
             />
             <Image
               src={YellowWarning}
@@ -137,8 +142,8 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
             </div>
           </div>
           <div className='flex flex-col items-center gap-3'>
-            <ButtonText bgColor='primary' onClick={onClick}></ButtonText>
-            <ButtonText bgColor='secondary' onClick={onClick}></ButtonText>
+            <ButtonText bgColor='primary' onClick={onClickLanjutkan}></ButtonText>
+            <ButtonText bgColor='secondary' onClick={onClickKembali}></ButtonText>
           </div>
         </div>
       )}
@@ -150,6 +155,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
               src={RedCross}
               alt='Red Cross'
               className='absolute top-2 right-2 w-[18px] h-[18px] '
+              onClick={onClickTutup}
             />
             <Image
               src={GreenBag}
@@ -166,7 +172,7 @@ const Modal: React.FC<ModalProps> = ({ name, point, status, icon, scope, id, onC
               Selamat! poin berhasil diklaim dari {name}{' '}
             </div>
           </div>
-          <ButtonText bgColor='primary' onClick={onClick}></ButtonText>
+          <ButtonText bgColor='primary' onClick={onClickLanjutkan}></ButtonText>
         </div>
       )}
     </>
