@@ -1,10 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Checkbox from '@/components/Checkbox/Checkbox';
 
 interface GrantPointsPageProps { }
 
 const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
+
     return (
         <div className='h-[calc(100vh)] flex flex-col justify-between'>
             <div className="flex flex-col justify-between h-full bg-white">
@@ -25,25 +27,16 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                             yandysehat(135182)
                         </div>
                         <p className='my-2 font-helvetica text-xs'>Pilih kesulitan challenge</p>
-                        <div className='flex font-helvetica text-xs items-center mb-2'>
-                            <input type="checkbox" id="easy" className='mr-1' />
-                            <label htmlFor="easy">Easy</label>
-                        </div>
-                        <div className='flex font-helvetica text-xs items-center mb-2'>
-                            <input type="checkbox" id="medium" className='mr-1' />
-                            <label htmlFor="easy">Medium</label>
-                        </div>
-                        <div className='flex font-helvetica text-xs items-center mb-2'>
-                            <input type="checkbox" id="hard" className='mr-1' />
-                            <label htmlFor="easy">Hard</label>
-                        </div>
+                        <Checkbox value="Easy" />
+                        <Checkbox value="Medium" />
+                        <Checkbox value="Hard" />
                     </div>
                     <div className='m-4 flex flex-col items-center'>
-                        <Image src="/img/grant-points-fox.png" alt="fox" width="600" height="300" className='mb-2' />
-                        <h6>GRANT</h6>
+                        <Image src="/img/grant-points-fox.png" alt="fox" width="600" height="300" className='mb-3' />
+                        <h6 className='pb-3'>GRANT</h6>
                         <div className='flex items-center'>
                             <Image src="/img/level.png" alt="level" width="22" height="32" />
-                            <p className='font-archivo text-2xl font-bold'>0</p>
+                            <p className='pl-1 font-archivo text-2xl font-bold'>0</p>
                         </div>
                     </div>
 
