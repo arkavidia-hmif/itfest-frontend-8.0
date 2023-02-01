@@ -18,3 +18,9 @@ export const home = async () => {
 
   return res.data;
 };
+
+export const profile = async () => {
+  const res = await services.get(API.user.profile);
+
+  return res.data;
+};
