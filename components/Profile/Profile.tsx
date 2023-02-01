@@ -56,6 +56,7 @@ const Profile: React.FC<ProfileProps> = ({ dummyProp }) => {
                         Jenis Kelamin
                       </label>
                       <Dropdown 
+                        placeholder='Pilih jenis kelamin'
                         data={["Laki-laki", "Perempuan", "Lainnya"]}
                       />
                     </div>
