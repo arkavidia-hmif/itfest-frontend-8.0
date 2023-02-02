@@ -1,8 +1,8 @@
-import CatalogueItem from '@/components/Katalog/CatalogueItem';
-import Header from '@/components/Katalog/Header';
-import InfoCard from '@/components/Katalog/InfoCard';
-import Searchbar from '@/components/Katalog/Searchbar';
-import UserPointsHighlight from '@/components/Katalog/UserPointsHighlight';
+import CatalogueItem from '@/components/Catalogue/CatalogueItem';
+import Header from '@/components/Catalogue/Header';
+import InfoCard from '@/components/Catalogue/InfoCard';
+import Searchbar from '@/components/Catalogue/Searchbar';
+import UserPointsHighlight from '@/components/Catalogue/UserPointsHighlight';
 import React from 'react';
 
 const KatalogPage: React.FC = () => {
