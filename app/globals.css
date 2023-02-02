@@ -75,6 +75,17 @@ main {
   }
 }
 
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.overflow-x-auto {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /** Remove arrow from input number */
 /* Chrome, Safari, Edge, Opera */
 input.no-arrow::-webkit-outer-spin-button,
