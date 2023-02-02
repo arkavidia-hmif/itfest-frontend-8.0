@@ -3,7 +3,6 @@ export default function Home() {
     <div className="bg-yellow-400 h-screen">
       <h4>IT Fest</h4>
       <h5>IT Fest</h5>
-      <h6>IT Fest</h6>
     </div>
   );
 }
