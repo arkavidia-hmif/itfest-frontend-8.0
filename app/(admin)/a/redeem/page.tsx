@@ -3,9 +3,9 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import InfoCard from '@/components/Katalog/InfoCard';
-import Searchbar from '@/components/Katalog/Searchbar';
-import CatalogueItem from '@/components/Katalog/CatalogueItem';
+import InfoCard from '@/components/Catalogue/InfoCard';
+import Searchbar from '@/components/Catalogue/Searchbar';
+import CatalogueItem from '@/components/Catalogue/CatalogueItem';
 
 interface RedeemPointsPageProps {}
 
