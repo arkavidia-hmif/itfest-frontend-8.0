@@ -1,4 +1,4 @@
-import Login from '@/components/Login';
+import Login from '@/components/Login/Login';
 import React from 'react';
 
 interface LoginPageProps {}
@@ -6,7 +6,6 @@ interface LoginPageProps {}
 const LoginPage: React.FC<LoginPageProps> = () => {
   return (
     <>
-      <p>Login</p>
       <Login />
     </>
   );
