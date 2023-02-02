@@ -82,19 +82,19 @@ main {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .overflow-x-auto {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /** Remove arrow from input number */
 /* Chrome, Safari, Edge, Opera */
-input.no-arrow::-webkit-outer-spin-button,
-input.no-arrow::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input.no-arrow[type='number'] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

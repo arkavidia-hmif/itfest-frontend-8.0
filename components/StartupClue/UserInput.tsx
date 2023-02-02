@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use client';
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
