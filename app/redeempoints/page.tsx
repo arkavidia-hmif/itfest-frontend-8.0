@@ -241,11 +241,9 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
           {/* Label poin */}
           <div
             className={`flex justify-center border-2 ${
-              poinAcc > 20000
-                ? 'border-arkav-green bg-arkav-green-light'
-                : 'border-arkav-red bg-arkav-pink-light'
+              poinAcc > 20000 ? 'border-arkav-green' : 'border-arkav-red'
             } 
-              rounded-xl my-4`}
+            bg-arkav-green-light rounded-xl my-4`}
           >
             <p
               className={`font-bold ${
