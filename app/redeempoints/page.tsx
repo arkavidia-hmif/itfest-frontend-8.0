@@ -43,7 +43,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
     <div className="bg-white flex flex-row min-w-screen">
       <div
         className={`absolute z-0 transition duration-500 ${
-          toggleCatalogue ? 'invisible' : 'visible'
+          toggleCatalogue ? 'hidden' : 'block'
         }`}
       >
         <div className="flex h-38 bg-[#069154] mb-6">
@@ -166,134 +166,135 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
       </div>
 
       {/* Katalog Merch Page */}
-      <div
-        className={`absolute z-10 min-h-screen flex flex-col bg-white transition ease-in-out duration-500 ${
-          toggleCatalogue
-            ? 'translate-x-0 visible'
-            : '-translate-x-[320rem] invisible'
-        }`}
-      >
-        {/* Header */}
-        <div className="pt-[44px] pb-7 flex flex-row bg-[#1F307C] px-4 relative">
-          <div className="flex flex-row gap-3 items-center z-10">
-            <Image
-              src="/icons/left-arrow.svg"
-              width={24}
-              height={24}
-              alt="Left Arrow"
-              onClick={() => setToggleCatalogue(!toggleCatalogue)}
-            />
-            <h6>MERCHANDISE</h6>
-          </div>
-          <Image
-            src="/icons/merch-mask.svg"
-            width={200}
-            height={200}
-            alt="Left Arrow"
-            className="absolute inset-y-3 inset-x-44 z-0"
-          />
-        </div>
-
-        {/* Catalogue */}
-        <div className="px-4 pt-4">
-          <InfoCard>
-            Lihat perhitungan poin untuk penukaran merchandise pilihanmu!
-          </InfoCard>
-          <div className="flex items-center gap-5 mt-2">
-            <Searchbar placeholder="Masukkan merchandise" />
-          </div>
-
-          {dummyCatalogueData.map((data, idx) => (
-            <CatalogueItem
-              key={idx}
-              name={data.name}
-              price={data.price}
-              startup={data.startup}
-              stock={data.stock}
-              enableQuantityInput={data.enableQuantityInput}
-            />
-          ))}
-        </div>
-
-        {/* Footer */}
-        <div className="fixed bg-white shadow-sm bottom-0 p-4 flex flex-col w-full">
-          {/* Jumlah Poin */}
-          <div className="flex flex-row justify-between items-center">
-            <p className="flex font-helvetica text-body-3">Jumlah Poinmu</p>
-            <div className="flex flex-row">
+      {toggleCatalogue && (
+        <div
+          className={`absolute z-10 min-h-screen max-h-screen flex flex-col bg-white`}
+        >
+          {/* Header */}
+          <div className="pt-[44px] pb-7 flex flex-row bg-[#1F307C] px-4 relative">
+            <div className="flex flex-row gap-3 items-center z-10">
               <Image
-                className="mr-1"
-                src="/icons/point-highlight.svg"
-                alt="Points"
-                height={12}
-                width={12}
+                src="/icons/left-arrow.svg"
+                width={24}
+                height={24}
+                alt="Left Arrow"
+                onClick={() => setToggleCatalogue(!toggleCatalogue)}
               />
+              <h6>MERCHANDISE</h6>
+            </div>
+            <Image
+              src="/icons/merch-mask.svg"
+              width={200}
+              height={200}
+              alt="Left Arrow"
+              className="absolute inset-y-3 inset-x-44 z-0"
+            />
+          </div>
+
+          {/* Catalogue */}
+          <div className="px-4 pt-4">
+            <InfoCard>
+              Lihat perhitungan poin untuk penukaran merchandise pilihanmu!
+            </InfoCard>
+            <div className="flex items-center gap-5 mt-2">
+              <Searchbar placeholder="Masukkan merchandise" />
+            </div>
+          </div>
+          <div className="px-4 flex-grow overflow-y-auto">
+            {dummyCatalogueData.map((data, idx) => (
+              <CatalogueItem
+                key={idx}
+                name={data.name}
+                price={data.price}
+                startup={data.startup}
+                stock={data.stock}
+                enableQuantityInput={data.enableQuantityInput}
+              />
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="bg-white shadow-sm bottom-0 p-4 flex flex-col w-full mt-auto">
+            {/* Jumlah Poin */}
+            <div className="flex flex-row justify-between items-center">
+              <p className="flex font-helvetica text-body-3">Jumlah Poinmu</p>
+              <div className="flex flex-row">
+                <Image
+                  className="mr-1"
+                  src="/icons/point-highlight.svg"
+                  alt="Points"
+                  height={12}
+                  width={12}
+                />
+                <p
+                  className={`font-bold text-body-3 ${
+                    poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
+                  }`}
+                >
+                  20000
+                </p>
+              </div>
+            </div>
+
+            {/* Label poin */}
+            <div
+              className={`flex justify-center border-2 ${
+                poinAcc > 20000 ? 'border-arkav-green' : 'border-arkav-red'
+              } 
+            bg-arkav-green-light rounded-xl my-4`}
+            >
               <p
-                className={`font-bold text-body-3 ${
+                className={`font-bold ${
                   poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
                 }`}
               >
-                20000
+                {poinAcc > 20000
+                  ? 'Poin cukup untuk ditukarkan'
+                  : 'Poin tidak mencukupi!'}
               </p>
             </div>
-          </div>
 
-          {/* Label poin */}
-          <div
-            className={`flex justify-center border-2 ${
-              poinAcc > 20000 ? 'border-arkav-green' : 'border-arkav-red'
-            } 
-            bg-arkav-green-light rounded-xl my-4`}
-          >
-            <p
-              className={`font-bold ${
-                poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
+            {/* Challenge */}
+            <p className="text-body-3 text-arkav-grey-400">
+              Silahkan lakukan challenge di booth Startup untuk <br />
+              mendapatkan poin!
+            </p>
+
+            {/* Items */}
+            <div className="flex flex-row justify-between items-center py-3">
+              <p className="flex font-bold font-helvetica text-body-1">
+                4 Item
+              </p>
+              <div className="flex flex-row">
+                <Image
+                  className="mr-1"
+                  src="/icons/point-highlight.svg"
+                  alt="Points"
+                  height={24}
+                  width={16}
+                />
+                <p
+                  className={`font-bold text-body-1 ${
+                    poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
+                  }`}
+                >
+                  {poinAcc}
+                </p>
+              </div>
+            </div>
+
+            {/* Button */}
+            <button
+              type="button"
+              className={`py-3 w-full flex items-center justify-center rounded-md ${
+                poinAcc > 20000 ? 'bg-arkav-blue' : 'bg-arkav-grey-300'
               }`}
             >
-              {poinAcc > 20000
-                ? 'Poin cukup untuk ditukarkan'
-                : 'Poin tidak mencukupi!'}
-            </p>
+              <p className="text-body-3 text-white">Tambahkan</p>
+            </button>
           </div>
-
-          {/* Challenge */}
-          <p className="text-body-3 text-arkav-grey-400">
-            Silahkan lakukan challenge di booth Startup untuk <br />
-            mendapatkan poin!
-          </p>
-
-          {/* Items */}
-          <div className="flex flex-row justify-between items-center py-3">
-            <p className="flex font-bold font-helvetica text-body-1">4 Item</p>
-            <div className="flex flex-row">
-              <Image
-                className="mr-1"
-                src="/icons/point-highlight.svg"
-                alt="Points"
-                height={24}
-                width={16}
-              />
-              <p
-                className={`font-bold text-body-1 ${
-                  poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
-                }`}
-              >
-                {poinAcc}
-              </p>
-            </div>
-          </div>
-
-          {/* Button */}
-          <button
-            type="button"
-            className={`py-3 w-full flex items-center justify-center rounded-md ${
-              poinAcc > 20000 ? 'bg-arkav-blue' : 'bg-arkav-grey-300'
-            }`}
-          >
-            <p className="text-body-3 text-white">Tambahkan</p>
-          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };
