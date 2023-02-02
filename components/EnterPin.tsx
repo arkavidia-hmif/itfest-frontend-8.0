@@ -11,7 +11,7 @@ interface EnterPinFieldProps {
 const EnterPinField: React.FC<EnterPinFieldProps> = ({ dummyProp }) => {
   const [values, setValues] = React.useState(['', '', '', '', '', '']);
   const [error, setError] = React.useState(false);
-  const actionRef = React.useRef<PinInputActions>(null);
+  const actionRef = React.useRef(null);
   const { fields } = usePinInput({
     values,
     onChange: setValues,
@@ -27,13 +27,13 @@ const EnterPinField: React.FC<EnterPinFieldProps> = ({ dummyProp }) => {
       setError(true);
       // We set the focus on the first empty field if `error: true`
       // was passed as a parameter in `options`.
-      actionRef.current?.focus();
+      actionRef.current && (actionRef.current as HTMLElement).focus();
     }
   };
 
   const numOfFields = 6;
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { maxLength, value, name } = e.target;
     const [fieldName, fieldIndex] = name.split('-');
 
@@ -48,7 +48,7 @@ const EnterPinField: React.FC<EnterPinFieldProps> = ({ dummyProp }) => {
 
         // If found, focus the next field
         if (nextSibling !== null) {
-          nextSibling.focus();
+          (nextSibling as HTMLElement).focus();
         }
       }
     }
