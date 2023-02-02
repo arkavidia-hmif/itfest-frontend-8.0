@@ -4,7 +4,6 @@ import Image from 'next/image';
 //assets imports
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
 import ListRedemptionHistory from '@/components/ListRedemptionHistory';
-import ModalSuccess from '@/components/Modal';
 
 interface GrantPointHistoryProps {}
 

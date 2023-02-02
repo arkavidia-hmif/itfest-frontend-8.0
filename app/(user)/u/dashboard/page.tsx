@@ -3,9 +3,9 @@ import Link from 'next/link';
 import clsx from 'clsx';
 
 // Component imports
-import DashboardLink from '@/components/visitor-dashboard/DashboardLink';
-import MerchItem from '@/components/visitor-dashboard/MerchItem';
-import LogOutButton from '@/components/visitor-dashboard/LogOutButton';
+import DashboardLink from '@/components/DashboardVisitor/DashboardLink';
+import MerchItem from '@/components/DashboardVisitor/MerchItem';
+import LogOutButton from '@/components/DashboardVisitor/LogOutButton';
 
 // Assets imports
 import ArkavLogo from '@/public/img/arkav-8.0-logo.png';
@@ -34,7 +34,10 @@ export default function Dashboard(): JSX.Element {
           <Image src={ArkavLogo} width={22} height={32} alt="Arkavidia Logo" />
           {/* TODO: Add tutorial link */}
           <Link href="#">
-            <button className="flex justify-between items-center bg-white w-20 h-8 rounded-md border border-[#1F307C] p-2.5">
+            <button
+              className="flex 
+            justify-between items-center bg-white w-20 h-8 rounded-md border border-[#1F307C] p-2.5"
+            >
               <Image src={QuestionMark} width={12} height={12} alt="" />
               <p className="font-helvetica text-xs text-[#1F307C] mt-1 font-bold">
                 Tutorial
@@ -121,7 +124,10 @@ export default function Dashboard(): JSX.Element {
               </p>
               {/* TODO: Add profile link */}
               <Link href="#">
-                <button className="w-full bg-[#1F307C] rounded-md pt-2 pb-1.5 text-white font-helvetica font-bold text-xs text-center mt-2">
+                <button
+                  className="w-full bg-[#1F307C] rounded-md pt-2 pb-1.5 
+                text-white font-helvetica font-bold text-xs text-center mt-2"
+                >
                   Lengkapi profil
                 </button>
               </Link>
@@ -157,7 +163,10 @@ export default function Dashboard(): JSX.Element {
 
         {/* TODO: Add clue link */}
         <Link href="#">
-          <button className="capitalize w-full bg-white rounded-md border border-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-[#1F307C] mt-4">
+          <button
+            className="capitalize w-full bg-white rounded-md 
+          border border-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-[#1F307C] mt-4"
+          >
             Lihat Clue
           </button>
         </Link>

@@ -3,9 +3,9 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import InfoCard from '@/components/katalog/InfoCard';
-import Searchbar from '@/components/katalog/Searchbar';
-import CatalogueItem from '@/components/katalog/CatalogueItem';
+import InfoCard from '@/components/Katalog/InfoCard';
+import Searchbar from '@/components/Katalog/Searchbar';
+import CatalogueItem from '@/components/Katalog/CatalogueItem';
 
 interface RedeemPointsPageProps {}
 
@@ -45,7 +45,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         <div className="flex h-38 bg-[#069154] mb-6">
           <Image
             className="ml-6"
-            src="img/ArrowBack.svg"
+            src="/img/ArrowBack.svg"
             alt="ArrowBack"
             width="8"
             height="8"
@@ -57,14 +57,14 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
           </div>
           <Image
             className="ml-20"
-            src="img/Rectangle.svg"
+            src="/img/Rectangle.svg"
             alt="Rectangle"
             width="50"
             height="50"
           />
           <Image
             className="-ml-4 mt-20"
-            src="img/Rectangle.svg"
+            src="/img/Rectangle.svg"
             alt="Rectangle"
             width="100"
             height="100"
@@ -87,7 +87,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         </div>
         <Image
           className="mx-auto mt-2"
-          src="img/FoxWithPoints.svg"
+          src="/img/FoxWithPoints.svg"
           alt="FoxWithPoints"
           width="390"
           height="80"
@@ -96,7 +96,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         <div className="flex justify-center h-12">
           <Image
             className="mr-1 -mt-2"
-            src="img/RectangleRounded.svg"
+            src="/img/RectangleRounded.svg"
             alt="RectangleRounded"
             width="28"
             height="24"
@@ -109,7 +109,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
             <div className="flex">
               <Image
                 className="mr-1"
-                src="img/RectangleRounded.svg"
+                src="/img/RectangleRounded.svg"
                 alt="RectangleRounded"
                 width="16"
                 height="24"
@@ -122,7 +122,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
             <div className="flex">
               <Image
                 className="mr-1"
-                src="img/RectangleRounded.svg"
+                src="/img/RectangleRounded.svg"
                 alt="RectangleRounded"
                 width="16"
                 height="24"
@@ -133,7 +133,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         </div>
         <div className="flex text-sm items-center h-16 bg-[#F9F9F9] mt-36 mx-6 px-3 border-[#3FB160] border rounded-xl">
           <Image
-            src="img/Checklist.svg"
+            src="/img/Checklist.svg"
             alt="Checklist"
             width="32"
             height="32"
@@ -144,7 +144,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
           <a href="">
             <Image
               className="m-1"
-              src="img/Close.svg"
+              src="/img/Close.svg"
               alt="Close"
               width="16"
               height="16"
