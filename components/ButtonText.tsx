@@ -2,14 +2,15 @@
 
 import React from 'react';
 import clsx from 'clsx';
-interface ButtonTextProps {
-  bgColor?: string;
-  onClick?: () => void;
-}
 
 type colors = 'primary' | 'secondary';
 
-const variantColors: { [key in colors]: string } = {
+interface ButtonTextProps {
+  bgColor?: colors;
+  onClick?: () => void;
+}
+
+const variantColors = {
   primary: 'bg-[#1F307C] text-[#FFFFFF]',
   secondary: 'bg-[#FFFFFF] text-[#1F307C] border-[2px] border-[#1F307C]',
 };
@@ -22,7 +23,7 @@ const ButtonText: React.FC<ButtonTextProps> = ({ bgColor, onClick }) => {
           onClick={onClick}
           className={clsx(
             'rounded-xl bg-[#1F307C] text-[#FFFFFF] w-[185px] h-[48px]',
-            variantColors[bgColor]
+            bgColor && variantColors[bgColor]
           )}
         >
           {bgColor === 'secondary' && (
