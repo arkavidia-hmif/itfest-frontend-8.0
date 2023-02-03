@@ -3,9 +3,11 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import InfoCard from '@/components/Catalogue/InfoCard';
 import Searchbar from '@/components/Catalogue/Searchbar';
 import CatalogueItem from '@/components/Catalogue/CatalogueItem';
+import Merchandise from '@/components/Redeem/MerchItem';
 
 interface RedeemPointsPageProps {}
 
@@ -35,129 +37,180 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   ];
 
   const [toggleCatalogue, setToggleCatalogue] = useState<boolean>(false);
+  const addMerchHandler = () => {
+    setToggleCatalogue(!toggleCatalogue);
+  };
 
   // State Poin Sementara
   const poinAcc = 30000;
 
+  // Ubah Struktur Catalogue Data
+  let startups: string[] = [];
+  dummyCatalogueData.forEach(element => {
+    if (startups.indexOf(element.startup) === -1) {
+      startups.push(element.startup);
+    }
+  });
+  const filteredCatalogueData: any[] = [];
+  startups.forEach(startup => {
+    let items: any[] = [];
+    dummyCatalogueData.forEach(element => {
+      let isDuplicate = false;
+      items.forEach(el => {
+        if (el.name == element.name && el.price == element.price && el.stock == element.stock && startup == element.startup) {
+          isDuplicate = true;
+        }
+      });
+      if (isDuplicate) {
+        items[items.findIndex(i => i.name == element.name && i.price == element.price && i.stock == element.stock && startup == element.startup)].count += 1;
+      } else {
+        if (startup == element.startup) {
+          items.push({
+            name: element.name,
+            price: element.price,
+            stock: element.stock,
+            count: 1,
+          });
+        }
+      }
+    });
+    filteredCatalogueData.push(
+      {
+        startup: startup,
+        items: items,
+      }
+    );
+  });
+
   return (
-    <div className="bg-white flex flex-row min-w-screen">
-      <div className={`${toggleCatalogue ? 'hidden' : 'block'}`}>
-        <div className="flex h-38 bg-[#069154] mb-6">
-          <Image
-            className="ml-6"
-            src="/img/ArrowBack.svg"
-            alt="ArrowBack"
-            width="8"
-            height="8"
-          />
-          <div className="flex flex-col ml-8 mt-12 pt-1">
-            <h6 className="leading-8 mt-2">
-              Redeem<br></br>Points
-            </h6>
-          </div>
-          <Image
-            className="ml-20"
-            src="/img/Rectangle.svg"
-            alt="Rectangle"
-            width="50"
-            height="50"
-          />
-          <Image
-            className="-ml-4 mt-20"
-            src="/img/Rectangle.svg"
-            alt="Rectangle"
-            width="100"
-            height="100"
-          />
-        </div>
-        <div className="flex flex-col border rounded-xl px-6 mx-5 py-3">
-          <span>Redeeming points to:</span>
-          <span className="mt-1 mb-4 w-full text-center font-semibold bg-black text-white">
-            yandysehat (135182)
-          </span>
-          <span>Pilihan merchandise:</span>
-          {/* Show merchandises added */}
-          <button
-            type="button"
-            onClick={() => setToggleCatalogue(!toggleCatalogue)}
-            className="font-bold my-1 border-2 rounded-lg w-full text-center py-[4px] text-[#3b4a8c] border-[#3b4a8c] "
-          >
-            Tambah Merchandise
-          </button>
-        </div>
-        <Image
-          className="mx-auto mt-2"
-          src="/img/FoxWithPoints.svg"
-          alt="FoxWithPoints"
-          width="390"
-          height="80"
-        />
-        <h6 className="text-center my-2">REDEEMING</h6>
-        <div className="flex justify-center h-12">
-          <Image
-            className="mr-1 -mt-2"
-            src="/img/RectangleRounded.svg"
-            alt="RectangleRounded"
-            width="28"
-            height="24"
-          />
-          <span className="text-3xl font-bold">0</span>
-        </div>
-        <div className="flex justify-between bg-[#ffd271] mx-5 rounded-2xl text-sm">
-          <div className="flex flex-col my-2 ml-5">
-            <span>Points before redemption</span>
-            <div className="flex">
+    <div className="h-[calc(100vh)] flex flex-col justify-between">
+      <div className={`${
+        toggleCatalogue ? 'hidden' : 'block'
+      } flex flex-col justify-between h-full`}>
+        <div>
+          <div className="flex pt-11 pb-4 px-4 bg-[#069154]">
+            <Link href='/addmerch' className='mr-2'>
               <Image
-                className="mr-1"
-                src="/img/RectangleRounded.svg"
-                alt="RectangleRounded"
-                width="16"
-                height="24"
+                src='/icons/navigate-previous.png'
+                alt='navigate-previous'
+                width='24'
+                height='24'
               />
-              <span className="text-xl font-bold">300000</span>
+            </Link>
+            <div>
+              <h6>REDEEM</h6>
+              <h6>POINTS</h6>
             </div>
-          </div>
-          <div className="flex flex-col my-2 mr-5">
-            <span>Points after redemption</span>
-            <div className="flex">
-              <Image
-                className="mr-1"
-                src="/img/RectangleRounded.svg"
-                alt="RectangleRounded"
-                width="16"
-                height="24"
-              />
-              <span className="text-xl font-bold">300000</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex text-sm items-center h-16 bg-[#F9F9F9] mt-36 mx-6 px-3 border-[#3FB160] border rounded-xl">
-          <Image
-            src="/img/Checklist.svg"
-            alt="Checklist"
-            width="32"
-            height="32"
-          />
-          <span className="ml-3 mr-4">
-            User ditemukan. Silakan lakukan transaksi poin!
-          </span>
-          <a href="">
             <Image
-              className="m-1"
-              src="/img/Close.svg"
-              alt="Close"
-              width="16"
-              height="16"
+              className="ml-16 -mt-16"
+              src="/img/Rectangle.svg"
+              alt="Rectangle"
+              width="46"
+              height="46"
             />
-          </a>
+            <Image
+              className="-ml-5 -mb-4"
+              src="/img/Rectangle.svg"
+              alt="Rectangle"
+              width="100"
+              height="100"
+            />
+          </div>
+          <div className='flex flex-col border rounded-xl px-4 mx-4 py-3 my-4'>
+            <span>Redeeming points to:</span>
+            <span className='mt-1 mb-4 w-full text-center font-semibold bg-black text-white'>
+              yandysehat (135182)
+            </span>
+            <span>Pilihan merchandise:</span>
+            <div className='bg-[#F9F9F9] rounded-md mb-1'>
+              {filteredCatalogueData.map((el, idx) =>
+                <Merchandise
+                  key={idx}
+                  startup={el.startup}
+                  items={el.items} />
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => setToggleCatalogue(!toggleCatalogue)}
+              className="font-bold my-1 border-2 rounded-lg w-full text-center py-[4px] text-[#3b4a8c] border-[#3b4a8c] "
+            >
+              Tambah Merchandise
+            </button>
+          </div>
+          <Image
+            className="mx-auto mt-2"
+            src="/img/FoxWithPoints.svg"
+            alt="FoxWithPoints"
+            width="390"
+            height="80"
+          />
+          <h6 className="text-center my-2">REDEEMING</h6>
+          <div className="flex justify-center h-12">
+            <Image
+              className="mr-1 -mt-2"
+              src="/img/RectangleRounded.svg"
+              alt="RectangleRounded"
+              width="28"
+              height="24"
+            />
+            <span className="text-3xl font-bold">0</span>
+          </div>
+          <div className="flex justify-between bg-[#ffd271] mx-5 rounded-2xl text-sm">
+            <div className="flex flex-col my-2 ml-5">
+              <span>Points before redemption</span>
+              <div className="flex">
+                <Image
+                  className="mr-1"
+                  src="/img/RectangleRounded.svg"
+                  alt="RectangleRounded"
+                  width="16"
+                  height="24"
+                />
+                <span className="text-xl font-bold">300000</span>
+              </div>
+            </div>
+            <div className="flex flex-col my-2 mr-5">
+              <span>Points after redemption</span>
+              <div className="flex">
+                <Image
+                  className="mr-1"
+                  src="/img/RectangleRounded.svg"
+                  alt="RectangleRounded"
+                  width="16"
+                  height="24"
+                />
+                <span className="text-xl font-bold">300000</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="border border-[#F9F9F9] mt-4">
-          <a
-            href=""
-            className="bg-[#BFBFBF] h-14 m-4 text-white flex items-center justify-center rounded-xl font-semibold"
-          >
-            <span className="opacity-80">Redeem</span>
-          </a>
+        <div>
+          <div className='flex text-sm items-center py-2 bg-[#F9F9F9] mx-6 px-3 border-[#3FB160] border rounded-xl'>
+            <Image
+              src='/img/Checklist.svg'
+              alt='Checklist'
+              width='32'
+              height='32' />
+            <span className='ml-3 mr-4'>User ditemukan. Silakan lakukan transaksi poin!</span>
+            <a href=''>
+              <Image
+                className='m-1'
+                src='/img/Close.svg'
+                alt='Close'
+                width='16'
+                height='16' />
+            </a>
+          </div>
+          <div className='p-4'>
+            <Link
+              href=''>
+              <button
+                className='bg-[#1F307C] text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4'>
+                Redeem
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -171,6 +224,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         <div className="pt-[44px] pb-7 flex flex-row bg-[#1F307C] px-4 relative">
           <div className="flex flex-row gap-3 items-center z-10">
             <Image
+              className='cursor-pointer'
               src="/icons/left-arrow.svg"
               width={24}
               height={24}
@@ -280,12 +334,12 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
           {/* Button */}
           <button
-            type="button"
-            className={`py-3 w-full flex items-center justify-center rounded-md ${
+            className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${
               poinAcc > 20000 ? 'bg-arkav-blue' : 'bg-arkav-grey-300'
             }`}
+            onClick={addMerchHandler}
           >
-            <p className="text-body-3 text-white">Tambahkan</p>
+            Tambahkan
           </button>
         </div>
       </div>
