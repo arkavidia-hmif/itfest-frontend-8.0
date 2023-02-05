@@ -2,8 +2,7 @@
 /* eslint-disable max-len */
 'use client';
 
-import React, { useEffect } from 'react';
-import { home } from '@/services/user';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -18,15 +17,6 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = () => {
-  useEffect(() => {
-    const dummyLogin = async () => {
-      const data = await home();
-      console.log(data);
-    };
-
-    dummyLogin();
-  }, []);
-
   return (
     <>
       <div className="w-full">
