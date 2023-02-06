@@ -13,7 +13,7 @@ interface ListGrantPointHistoryProps {
   point?: number;
   date?: string;
   name?: string;
-  diffculty?: string;
+  difficulty?: string;
 }
 
 const ListGrantPointHistory: React.FC<ListGrantPointHistoryProps> = ({
@@ -21,7 +21,7 @@ const ListGrantPointHistory: React.FC<ListGrantPointHistoryProps> = ({
   point,
   status,
   date,
-  diffculty,
+  difficulty,
 }) => {
   return (
     <>
@@ -42,7 +42,7 @@ const ListGrantPointHistory: React.FC<ListGrantPointHistoryProps> = ({
                 {name}
               </div>
               <div className="font-helvetica font-[100] text-[12px] text-[#9B9B9B] -translate-y-1">
-                {diffculty}
+                {difficulty}
               </div>
             </div>
             <div className="flex flex-col">
