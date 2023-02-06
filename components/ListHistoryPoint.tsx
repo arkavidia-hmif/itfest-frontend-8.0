@@ -23,7 +23,7 @@ const ListHistoryPoint: React.FC<ListHistoryPointProps> = ({
 }) => {
   return (
     <>
-      <div className="p-[16px]">
+      <div className="px-[16px] py-[16px]">
         <div className="flex gap-[12px]">
           <div className="translate-y-1">
             {status === 'received' && (
