@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+
 // Component imports
 import HeaderSection from '@/components/StartupClue/Header';
 import ClueSection from '@/components/StartupClue/Clue';
@@ -52,7 +53,10 @@ export default function StartupClue() {
       ) : (
         <>
           {showSuccessModal ? (
-            <div className="bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0">
+            <div
+              onClick={() => setSuccessModal(false)}
+              className="bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0"
+            >
               <div className="z-40 w-full flex justify-center">
                 <Modal
                   status="success"
@@ -68,7 +72,10 @@ export default function StartupClue() {
             </div>
           ) : null}
           {showFailedModal ? (
-            <div className="bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0">
+            <div
+              onClick={() => setFailedModal(false)}
+              className="bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0"
+            >
               <div className="z-40 w-full flex justify-center">
                 <Modal
                   status="fail"
@@ -79,13 +86,15 @@ export default function StartupClue() {
               </div>
             </div>
           ) : null}
-          <HeaderSection />
-          <ClueSection clue={clueData.text} />
-          <InputSection
-            showSuccessModal={() => setSuccessModal(true)}
-            showFailedModal={() => setFailedModal(true)}
-            getNextClue={() => fetchClue()}
-          />
+          <div className="flex flex-col justify-start min-h-screen">
+            <HeaderSection />
+            <ClueSection clue={clueData.text} />
+            <InputSection
+              showSuccessModal={() => setSuccessModal(true)}
+              showFailedModal={() => setFailedModal(true)}
+              getNextClue={() => fetchClue()}
+            />
+          </div>
         </>
       )}
     </>

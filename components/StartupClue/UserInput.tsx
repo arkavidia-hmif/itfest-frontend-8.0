@@ -2,10 +2,10 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 // Assets imports
 import SectionImage from '@/public/img/visitor-dashboard-startup-clue.png';
-import Image from 'next/image';
 
 // Service imports
 import { submitClue, getTries } from '@/services/clue';
@@ -50,6 +50,7 @@ export default function InputCode({
 
     if (message === 'SUCCESS: ANSWER IS CORRECT') {
       showSuccessModal();
+      setRemainingTries(0);
     } else if (
       message === 'SUCCESS: ANSWER IS WRONG' ||
       message === 'SUCCESS: TRIED 3 TIMES'
@@ -58,26 +59,20 @@ export default function InputCode({
     } else {
       console.log(message);
     }
-    // if (guess === answer) {
-    //   // TODO: Display modal
-    //   setClueDone(true);
-    // } else {
-    //   // TODO: Display modal
-    //   if (tries === 1) {
-    //     setClueDone(true);
-    //   }
 
-    //   setTries(tries - 1);
-    // }
+    inputRef.current.value = '';
   };
 
-  // const continueHandler = () => {
-  //   // TODO: Fetch new clue
-  //   console.log('Lanjutkan');
-  // };
+  const continueHandler = () => {
+    getNextClue();
+    setRemainingTries(3);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
 
   return (
-    <section>
+    <section className="grow relative">
       <div className="bg-arkav-yellow mt-5 pt-5 pb-7 px-9 flex justify-between items-center">
         <div>
           <h6 className="rounded-xl w-28">Input Code</h6>
@@ -112,12 +107,14 @@ export default function InputCode({
           Kesempatan menjawab sudah habis, silahkan coba lagi di clue
           selanjutnya!
         </p>
-        <button
-          className="w-full mb-4 mt-28 pt-3 pb-2 bg-arkav-blue rounded-md text-center text-white font-helvetica font-bold text-xs"
-          onClick={remainingTries === 0 ? getNextClue : checkHandler}
-        >
-          {remainingTries === 0 ? 'Lanjutkan' : 'Check'}
-        </button>
+        <div className="absolute bottom-4 left-0 px-4 w-full">
+          <button
+            className="w-full pt-3 pb-2 bg-arkav-blue rounded-md text-center text-white font-helvetica font-bold text-xs"
+            onClick={remainingTries === 0 ? continueHandler : checkHandler}
+          >
+            {remainingTries === 0 ? 'Lanjutkan' : 'Check'}
+          </button>
+        </div>
       </div>
     </section>
   );
