@@ -9,8 +9,9 @@ import Searchbar from '@/components/Catalogue/Searchbar';
 import CatalogueItem from '@/components/Catalogue/CatalogueItem';
 import Merchandise from '@/components/Redeem/MerchItem';
 import EnterPinField from '@/components/EnterPin';
+import Modal from '@/components/Modal';
 
-interface RedeemPointsPageProps {}
+interface RedeemPointsPageProps { }
 
 const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   const dummyCatalogueData = [
@@ -41,11 +42,25 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   const addMerchHandler = () => {
     setToggleCatalogue(!toggleCatalogue);
   };
+  const handleWarningRedeem = () => {
+    setShowWarningModal(false);
+
+    setShowSucceedModal(true);
+    // setShowFailedModal(true);
+  };
+  const handleSucceedRedeem = () => {
+    setShowSucceedModal(false);
+  };
 
   // State Poin Sementara
   const poinAcc = 30000;
+  const name = 'yandysehat';
+  const id = 135182;
 
   const [pin, setPin] = useState('');
+  const [showWarningModal, setShowWarningModal] = useState<boolean>(false);
+  const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
+  const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
 
   // Ubah Struktur Catalogue Data
   let startups: string[] = [];
@@ -88,16 +103,54 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   return (
     <div>
       <div>
-        <EnterPinField onClick={setPin}/>
+        {/* <EnterPinField onClick={setPin} /> */}
+      </div>
+      <div className={`${!showWarningModal && !showSucceedModal && !showFailedModal && 'hidden'} bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}>
+        <div className={`${!showWarningModal && 'hidden'} z-40 mx-auto flex justify-center`}>
+          <Modal
+            name={name}
+            id={id}
+            point={300}
+            status='warning'
+            icon='yellow-warning'
+            scope='redeem-points'
+            onClickLanjutkan={handleWarningRedeem}
+            onClickTutup={() => setShowWarningModal(false)}
+            onClickKembali={() => setShowWarningModal(false)}
+          />
+        </div>
+        <div className={`${!showSucceedModal && 'hidden'} z-40 mx-auto flex justify-center`}>
+          <Modal
+            name={name}
+            id={id}
+            point={300}
+            status='success'
+            icon='green-bag'
+            scope='add-merchant'
+            onClickLanjutkan={handleSucceedRedeem}
+            onClickTutup={() => setShowSucceedModal(false)}
+          />
+        </div>
+        <div className={`${!showFailedModal && 'hidden'} z-40 mx-auto flex justify-center`}>
+          <Modal
+            name={name}
+            id={id}
+            point={300}
+            status='fail'
+            icon='sad-face'
+            scope='redeem-points'
+            onClickTutup={() => setShowFailedModal(false)}
+            onClickKembali={() => setShowFailedModal(false)}
+          />
+        </div>
       </div>
       <div>
         <div className="h-[calc(100vh)] flex flex-col justify-between">
-          <div className={`${
-            toggleCatalogue ? 'hidden' : 'block'
-          } flex flex-col justify-between h-full`}>
+          <div className={`${toggleCatalogue ? 'hidden' : 'block'
+            } flex flex-col justify-between h-full`}>
             <div>
               <div className="flex pt-11 pb-4 px-4 bg-[#069154]">
-                <Link href='/addmerch' className='mr-2'>
+                <Link href='/a/dashboard' className='mr-2'>
                   <Image
                     src='/icons/navigate-previous.png'
                     alt='navigate-previous'
@@ -127,8 +180,8 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               <div className='flex flex-col border rounded-xl px-4 mx-4 py-3 my-4'>
                 <span>Redeeming points to:</span>
                 <span className='mt-1 mb-4 w-full text-center font-semibold bg-black text-white'>
-              yandysehat (135182)
-            </span>
+                  {name} ({id})
+                </span>
                 <span>Pilihan merchandise:</span>
                 <div className='bg-[#F9F9F9] rounded-md mb-1'>
                   {filteredCatalogueData.map((el, idx) =>
@@ -211,22 +264,19 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                 </a>
               </div>
               <div className='p-4'>
-                <Link
-                  href=''>
-                  <button
-                    className='bg-[#1F307C] text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4'>
-                    Redeem
-                  </button>
-                </Link>
+                <button
+                  className='bg-[#1F307C] text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4'
+                  onClick={() => setShowWarningModal(true)}>
+                  Redeem
+                </button>
               </div>
             </div>
           </div>
 
           {/* Katalog Merch Page */}
           <div
-            className={`${
-              toggleCatalogue ? 'block' : 'hidden'
-            } w-full min-h-screen max-h-screen flex flex-col bg-white`}
+            className={`${toggleCatalogue ? 'block' : 'hidden'
+              } w-full min-h-screen max-h-screen flex flex-col bg-white`}
           >
             {/* Header */}
             <div className="pt-[44px] pb-7 flex flex-row bg-[#1F307C] px-4 relative">
@@ -286,26 +336,23 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width={12}
                   />
                   <p
-                    className={`font-bold text-body-3 ${
-                      poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
-                    }`}
+                    className={`font-bold text-body-3 ${poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
+                      }`}
                   >
-                    20000
+                    {poinAcc}
                   </p>
                 </div>
               </div>
 
               {/* Label poin */}
               <div
-                className={`flex justify-center border-2 ${
-                  poinAcc > 20000 ? 'border-arkav-green' : 'border-arkav-red'
-                } 
+                className={`flex justify-center border-2 ${poinAcc > 20000 ? 'border-arkav-green' : 'border-arkav-red'
+                  } 
             bg-arkav-green-light rounded-xl my-4`}
               >
                 <p
-                  className={`font-bold ${
-                    poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
-                  }`}
+                  className={`font-bold ${poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
+                    }`}
                 >
                   {poinAcc > 20000
                     ? 'Poin cukup untuk ditukarkan'
@@ -331,9 +378,8 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width={16}
                   />
                   <p
-                    className={`font-bold text-body-1 ${
-                      poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
-                    }`}
+                    className={`font-bold text-body-1 ${poinAcc > 20000 ? 'text-arkav-green' : 'text-arkav-red'
+                      }`}
                   >
                     {poinAcc}
                   </p>
@@ -342,9 +388,8 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
               {/* Button */}
               <button
-                className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${
-                  poinAcc > 20000 ? 'bg-arkav-blue' : 'bg-arkav-grey-300'
-                }`}
+                className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${poinAcc > 20000 ? 'bg-arkav-blue' : 'bg-arkav-grey-300'
+                  }`}
                 onClick={addMerchHandler}
               >
                 Tambahkan

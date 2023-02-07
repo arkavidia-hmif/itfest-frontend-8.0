@@ -4,7 +4,12 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface MerchStockPageProps {}
+interface MerchStockPageProps {
+  name: string;
+  startup: string;
+  price: number;
+  stock: number;
+}
 
 const MerchStockPage: React.FC<MerchStockPageProps> = () => {
   const dummyMerchandiseData: any[] = [
@@ -26,7 +31,7 @@ const MerchStockPage: React.FC<MerchStockPageProps> = () => {
       <div className="flex flex-col justify-between h-full bg-white">
         <div>
           <div className="flex pt-11 pb-9 px-4 bg-[#1F307C]">
-            <Link href="/addmerch" className="mr-2">
+            <Link href="/a/dashboard" className="mr-2">
               <Image
                 src="/icons/navigate-previous.png"
                 alt="navigate-previous"
@@ -117,7 +122,7 @@ const MerchStockPage: React.FC<MerchStockPageProps> = () => {
           )}
         </div>
         <div className="p-4">
-          <Link href="/addmerch">
+          <Link href="/a/add-merch">
             <button className="bg-[#1F307C] text-white rounded-md w-full font-helvetica font-bold text-xs py-2 px-4">
               Tambah Merchandise
             </button>
