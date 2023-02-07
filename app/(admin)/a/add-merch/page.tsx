@@ -1,30 +1,69 @@
 /* eslint-disable max-len */
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Dropdown from '@/components/Profile/Dropdown';
+import Modal from '@/components/Modal';
+import { addMerch } from '@/services/merchandise';
 
 interface AddMerchPageProps { }
 
 const AddMerchPage: React.FC<AddMerchPageProps> = () => {
-  let state = {
-    itemname: '',
-    startup: '',
-    itemprice: 0,
-    itemstock: 0,
+  const [itemName, setItemName] = useState<string>('');
+  const [startup, setStartup] = useState<string>('');
+  const [price, setPrice] = useState<number>(0);
+  const [stock, setStock] = useState<number>(0);
+  const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
+  const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
+
+  const submitHandler = () => {
+    const fetchAddMerch = async () => {
+      try {
+        await addMerch(itemName, stock, price);
+        setShowSucceedModal(true);
+      }
+      catch (e) {
+        console.error(e);
+        setShowFailedModal(true);
+      }
+    };
+
+    fetchAddMerch();
   };
+
   return (
     <div className='h-[calc(100vh)] flex flex-col justify-between'>
-      <form className='flex flex-col justify-between h-full bg-white'>
+      <div className={`${!showSucceedModal && !showFailedModal && 'hidden'} bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}>
+        <div className={`${!showSucceedModal && 'hidden'} z-40 mx-auto flex justify-center`}>
+          <Modal
+            status='success'
+            icon='green-bag'
+            item='tes'
+            scope='add-merchant'
+            onClickLanjutkan={() => setShowSucceedModal(false)}
+            onClickTutup={() => setShowSucceedModal(false)}
+          />
+        </div>
+        <div className={`${!showFailedModal && 'hidden'} z-40 mx-auto flex justify-center`}>
+          <Modal
+            status='fail'
+            icon='sad-face'
+            scope='add-merchant'
+            onClickKembali={() => setShowFailedModal(false)}
+            onClickTutup={() => setShowFailedModal(false)}
+          />
+        </div>
+      </div>
+      <div className='flex flex-col justify-between h-full bg-white'>
         <div>
           <div className='flex pt-11 ml-5'>
-            <Link href="/a/merch" className="mt-1">
+            <Link href='/a/merch' className='mt-1'>
               <Image
-                src="/img/ArrowBackBlue.svg"
-                alt="navigate-previous"
-                width="8"
-                height="8"
+                src='/img/ArrowBackBlue.svg'
+                alt='navigate-previous'
+                width='8'
+                height='8'
               />
             </Link>
             <div className='mx-6'>
@@ -43,6 +82,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
                 id='itemname'
                 type='text'
                 placeholder='Masukkan nama item'
+                onChange={(e) => setItemName(e.target.value)}
               />
               <label className='font-bold text-xs mb-1'>
                 Startup
@@ -50,6 +90,8 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
               <Dropdown
                 placeholder='Pilih startup'
                 data={['StartupStartip']}
+                selected={startup}
+                dataChoosen={(e: string) => setStartup(e)}
               />
               <label className='font-bold text-xs mb-1'>
                 Harga
@@ -59,6 +101,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
                 id='itemprice'
                 type='text'
                 placeholder='Masukkan harga item'
+                onChange={(e) => setPrice(parseInt(e.target.value))}
               />
               <label className='font-bold text-xs mb-1'>
                 Sisa
@@ -68,25 +111,24 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
                 id='itemstock'
                 type='text'
                 placeholder='Masukkan sisa item'
+                onChange={(e) => setStock(parseInt(e.target.value))}
               />
             </div>
           </div>
-          {/* <button
+        </div>
+        <div className='p-4'>
+          <button
             type='submit'
-            className={`${state.itemname && state.startup && state.itemprice && state.itemstock ? 'bg-[#1F307C]' : 'bg-[#BFBFBF]'} text-white rounded-md w-full font-helvetica font-bold text-xs py-2 px-4`}
+            disabled={(itemName && startup && price && stock) ? false : true}
+            className='w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center 
+                  text-white h-10 tracking-wide disabled:bg-arkav-grey-500 disabled:cursor-default'
+            onClick={submitHandler}
           >
             Submit
-          </button> */}
+          </button>
         </div>
-        <button
-          type="submit"
-          className={`${state.itemname && state.startup && state.itemprice && state.itemstock ? 'bg-[#1F307C]' : 'bg-[#BFBFBF]'}w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center 
-                  text-white h-10 tracking-wide disabled:bg-arkav-grey-500 disabled:cursor-default m-4`}
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+      </div>
+    </div >
   );
 };
 
