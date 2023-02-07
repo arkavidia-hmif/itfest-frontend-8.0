@@ -11,7 +11,7 @@ const Points = () => {
           <p className="font-helvetica text-sm font-bold ml-2">Points</p>
         </div>
         <Link
-          href="/dashboard-startup"
+          href="/a/history"
           className="font-helvetica font-semibold text-xs flex text-[#1f30c7]"
         >
           Lihat Riwayat

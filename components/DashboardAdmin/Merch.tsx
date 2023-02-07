@@ -22,7 +22,12 @@ const Merch = () => {
       <div className="flex items-center">
         <div className="w-3/5">
           <div className="flex items-center">
-            <Image src="/icons/dashboard-admin.svg" width={22} height={32} alt="Administrator Login" />
+            <Image
+              src="/icons/dashboard-admin.svg"
+              width={22}
+              height={32}
+              alt="Administrator Login"
+            />
             <p className="font-helvetica text-xs font-semibold ml-1">
               ADMINISTRATOR
             </p>
@@ -52,7 +57,7 @@ const Merch = () => {
           <p className="font-helvetica text-sm font-bold ml-2">Merchandise</p>
         </div>
         <Link
-          href="/dashboard-startup"
+          href="/a/merch"
           className="font-helvetica font-semibold text-xs flex text-[#1f30c7]"
         >
           Lihat Stock
