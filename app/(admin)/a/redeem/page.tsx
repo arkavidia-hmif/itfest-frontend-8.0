@@ -1,43 +1,79 @@
 /* eslint-disable max-len */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import InfoCard from '@/components/Catalogue/InfoCard';
 import Searchbar from '@/components/Catalogue/Searchbar';
 import CatalogueItem from '@/components/Catalogue/CatalogueItem';
 import Merchandise from '@/components/Redeem/MerchItem';
-import EnterPinField from '@/components/EnterPin';
+// import EnterPinField from '@/components/EnterPin';
 import Modal from '@/components/Modal';
+import { getAllMerch } from '@/services/merchandise';
 
 interface RedeemPointsPageProps { }
 
-const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
-  const dummyCatalogueData = [
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-      enableQuantityInput: true,
-    },
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-      enableQuantityInput: true,
-    },
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-      enableQuantityInput: true,
-    },
-  ];
+interface CatalogueData {
+  name: string;
+  startup: string | "Startup Startip";
+  price: number;
+  stock: number;
+  enableQuantityInput: boolean;
+}
 
+const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
+  // const dummyCatalogueData = [
+  //   {
+  //     name: 'Kaos mentor',
+  //     startup: 'Startup Startip',
+  //     price: 100000,
+  //     stock: 20,
+  //     enableQuantityInput: true,
+  //   },
+  //   {
+  //     name: 'Kaos mentor',
+  //     startup: 'Startup Startip',
+  //     price: 100000,
+  //     stock: 20,
+  //     enableQuantityInput: true,
+  //   },
+  //   {
+  //     name: 'Kaos mentor',
+  //     startup: 'Startup Startip',
+  //     price: 100000,
+  //     stock: 20,
+  //     enableQuantityInput: true,
+  //   },
+  // ];
+
+  useEffect(() => {
+    const fetchCatalogue = async () => {
+      try{
+        const res = await getAllMerch();
+        const responseData = res.data;
+        const mappedData = responseData.map((data: any) => {
+          return {
+            status: "sent",
+            name: data.name,
+            startup: data.startup.name,
+            price: data.price,
+            stock: data.stock,
+            enableQuantityInput: true,
+          };
+        });
+
+        setCatalogueData(mappedData);
+      }
+      catch(e){
+        console.error(e);
+      }
+    };
+
+    fetchCatalogue();
+  });
+
+  const [catalogueData, setCatalogueData] = useState<CatalogueData[]>([]);
   const [toggleCatalogue, setToggleCatalogue] = useState<boolean>(false);
   const addMerchHandler = () => {
     setToggleCatalogue(!toggleCatalogue);
@@ -57,14 +93,14 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   const name = 'yandysehat';
   const id = 135182;
 
-  const [pin, setPin] = useState('');
+  // const [pin, setPin] = useState('');
   const [showWarningModal, setShowWarningModal] = useState<boolean>(false);
   const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
   const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
 
   // Ubah Struktur Catalogue Data
   let startups: string[] = [];
-  dummyCatalogueData.forEach(element => {
+  catalogueData.forEach(element => {
     if (startups.indexOf(element.startup) === -1) {
       startups.push(element.startup);
     }
@@ -72,7 +108,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   const filteredCatalogueData: any[] = [];
   startups.forEach(startup => {
     let items: any[] = [];
-    dummyCatalogueData.forEach(element => {
+    catalogueData.forEach(element => {
       let isDuplicate = false;
       items.forEach(el => {
         if (el.name == element.name && el.price == element.price && el.stock == element.stock && startup == element.startup) {
@@ -310,7 +346,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               </div>
             </div>
             <div className="px-4 flex-grow overflow-y-auto">
-              {dummyCatalogueData.map((data, idx) => (
+              {catalogueData.map((data, idx) => (
                 <CatalogueItem
                   key={idx}
                   name={data.name}
