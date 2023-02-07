@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 // Component imports
 import HeaderSection from '@/components/StartupClue/Header';
 import ClueSection from '@/components/StartupClue/Clue';
@@ -6,10 +7,43 @@ import InputSection from '@/components/StartupClue/UserInput';
 import CompletedPage from '@/components/StartupClue/CompletedPage';
 import Modal from '@/components/Modal';
 
-export default function StartupClue(): JSX.Element {
-  const allClueCompleted = false;
-  const showSuccessModal = false;
-  const showFailedModal = false;
+// Service imports
+import { getClue } from '@/services/clue';
+
+interface ClueData {
+  id: number;
+  text: string;
+}
+
+export default function StartupClue() {
+  const [allClueCompleted, setAllCompleted] = useState<boolean>(false);
+  const [showSuccessModal, setSuccessModal] = useState<boolean>(false);
+  const [showFailedModal, setFailedModal] = useState<boolean>(false);
+
+  const [clueData, setClueData] = useState<ClueData>({
+    id: 0,
+    text: '',
+  });
+
+  const fetchClue = async () => {
+    try {
+      const { message, data } = await getClue();
+      if (message !== 'SUCCESS: GAME IS DONE!') {
+        setClueData({
+          id: data.id,
+          text: data.text,
+        });
+      } else {
+        setAllCompleted(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchClue();
+  }, []);
 
   return (
     <>
@@ -25,7 +59,10 @@ export default function StartupClue(): JSX.Element {
                   point={300}
                   icon="green-diamond"
                   scope="submit-clue"
-                  onClickLanjutkan={() => console.log('Lanjutkan')}
+                  onClickLanjutkan={() => {
+                    fetchClue();
+                    setSuccessModal(false);
+                  }}
                 />
               </div>
             </div>
@@ -37,21 +74,20 @@ export default function StartupClue(): JSX.Element {
                   status="fail"
                   icon="sad-face"
                   scope="submit-clue"
-                  onClickKembali={() => console.log('Kembali')}
+                  onClickKembali={() => setFailedModal(false)}
                 />
               </div>
             </div>
           ) : null}
           <HeaderSection />
-          <ClueSection {...testData} />
-          <InputSection answer="2021" />
+          <ClueSection clue={clueData.text} />
+          <InputSection
+            showSuccessModal={() => setSuccessModal(true)}
+            showFailedModal={() => setFailedModal(true)}
+            getNextClue={() => fetchClue()}
+          />
         </>
       )}
     </>
   );
 }
-
-const testData = {
-  // eslint-disable-next-line max-len
-  clue: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor faucibus elementum. Cras a felis auctor, malesuada enim nec, viverra leo. Nulla mollis, lorem a hendrerit iaculis, justo diam tincidunt tortor, lobortis aliquet arcu justo ut enim. Donec mollis erat odio, nec viverra felis pretium ut. Aenean pulvinar ipsum quam, vitae gravida nibh ornare ac. Quisque gravida massa in sapien vulputate, eget blandit augue faucibus. In mollis feugiat dolor in congue. Donec risus nisl, tempus vel ex eget, hendrerit rutrum ex. Praesent interdum augue quis sodales tempus.',
-};
