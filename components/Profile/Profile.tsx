@@ -19,7 +19,7 @@ interface ProfileData {
 
 const Profile: React.FC<ProfileData> = () => {
   const router = useRouter();
-  const [profileData, setProfileData] = useState<ProfileData>([]);
+  const [profileData, setProfileData] = useState<ProfileData>({} as ProfileData);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<any[]>([]);
   const [hasSubmittedBefore, setHasSubmittedBefore] = useState(false);
 
@@ -112,7 +112,7 @@ const Profile: React.FC<ProfileData> = () => {
       // modals success
       if (hasSubmittedBefore) {
         //modals tidak dapat poin
-        toast.success('Submit succesful');
+        toast.success('Submit successful');
         
         setTimeout(() => {
           router.push('/u/dashboard');
