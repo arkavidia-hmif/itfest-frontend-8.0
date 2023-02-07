@@ -34,7 +34,9 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                     const responseData = res.data;
 
                     if (responseData.usercode !== userCode) {
-                        toast.error('User dengan pin<' + userCode + '> tidak ditemukan. Harap coba lagi.');
+                        toast.error('User dengan pin<' + userCode + '> tidak ditemukan. Harap coba lagi.', {
+                            position: "bottom-center"
+                        });
                     } else {
                         setIsUserCodeFound(true);
                         setUsername(responseData.username);
@@ -50,7 +52,9 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
 
     useEffect(() => {
         if (isUserCodeFound) {
-            toast.success('User ditemukan. Silakan lakukan transaksi poin!');
+            toast.success('User ditemukan. Silakan lakukan transaksi poin!', {
+                position: "bottom-center"
+            });
         }
     }, [isUserCodeFound]);
 
@@ -130,7 +134,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
     const onClickNextGrant = async () => {
         setIsShowWarningModal(false);
         try {
-            grantPoints(userCode, totalPoint);
+            await grantPoints(userCode, totalPoint);
             setIsShowSuccessModal(true);
         } catch (e) {
             console.log(e);

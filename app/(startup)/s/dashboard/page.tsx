@@ -96,7 +96,7 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                 <button
                     className="bg-red text-white bg-[#F43518] rounded-md w-full font-helvetica font-bold 
                 text-xs py-2 px-4"
-                    onClick={signOut}
+                    onClick={() => signOut()}
                 >
                     Log Out
                 </button>
