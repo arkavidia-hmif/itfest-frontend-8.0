@@ -85,7 +85,7 @@ const DashboardStartupPage: React.FC<DashboardStartupPageProps> = () => {
                         <button
                             className="bg-white border border-[#1F307C] text-[#1F307C] 
                 rounded-md w-full font-helvetica font-bold text-xs py-2 px-4"
-                            onClick={() => router.push('/s/enter-pin')}
+                            onClick={() => router.push('/s/grant-points')}
                         >
                             Grant Points
                         </button>
