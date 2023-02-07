@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 //assets imports
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
@@ -44,7 +45,9 @@ const GrantPointHistory: React.FC = () => {
       <div className="bg-white">
         <div className="flex">
           <div className="mt-5 ml-4">
-            <Image src={LeftArrow} alt="Left Arrow" />
+            <Link href="/a/dashboard">
+              <Image src={LeftArrow} alt="Left Arrow" />
+            </Link>
           </div>
           <div className="ml-3 mt-5">
             <h6>REDEMPTION</h6>
