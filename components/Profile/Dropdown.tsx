@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import ArrowDown from '@/public/img/arrow-down.svg';
@@ -9,14 +9,22 @@ type DropdownData = string;
 interface DropdownProps {
   data: DropdownData[],
   placeholder: string,
+  selected?: string,
+  dataChoosen: Function,
 }
 
 export default function Dropdown({
   data,
-  placeholder
+  placeholder,
+  selected,
+  dataChoosen
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const [selectedData, setSelectedData] = useState("");
+
+  useEffect(() => {
+    setSelectedData(selected || '');
+  }, [selected]);
 
   return (
     <div className='relative w-full font-helvetica'>
@@ -44,6 +52,7 @@ export default function Dropdown({
               onClick={() => {
                 if (d !== selectedData) {
                   setSelectedData(d);
+                  dataChoosen(d);
                   setOpen(false);
                 }
               }}>
