@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { register } from '@/services/user';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,23 +13,61 @@ import Stars1 from '@/public/img/login-stars-1.png';
 import Stars2 from '@/public/img/login-stars-2.png';
 import EyeHide from '@/public/img/eye-hide-icon.svg';
 import EyeShow from '@/public/img/eye-show-icon.svg';
+import { toast, ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
-interface RegisterProps {
-  dummyProp?: any;
+interface RegisterData {
+  name: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
 }
 
-const Register: React.FC<RegisterProps> = () => {
-  useEffect(() => {
-    const dummyRegister = async () => {
-      const data = await register();
-      console.log(data);
-    };
+const Register: React.FC = () => {
+  const router = useRouter();
 
-    dummyRegister();
-  }, []);
-
+  const [registerData, setRegisterData] = useState<RegisterData>({
+    name: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [visiblePass, setVisiblePass] = useState(false);
   const [visibleConfirmPass, setVisibleConfirmPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setRegisterData({ ...registerData, [name]: value });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (registerData.password !== registerData.confirmPassword) {
+      toast.error("Password doesn't match!");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await register(
+        registerData.name,
+        registerData.username,
+        registerData.password
+      );
+
+      toast.success('Register success! Please log in to your account.');
+      setTimeout(() => {
+        router.push('/login');
+      }, 1000);
+    } catch (e) {
+      console.error(e);
+      toast.error('Register error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -78,7 +116,7 @@ const Register: React.FC<RegisterProps> = () => {
             </div>
           </div>
           <div className="w-full bg-white">
-            <div className="mx-6">
+            <form onSubmit={handleSubmit} className="mx-6">
               <p className="font-archivo text-[#0B0A0A] text-[24px]">
                 REGISTER
               </p>
@@ -87,24 +125,30 @@ const Register: React.FC<RegisterProps> = () => {
                 <label className="font-bold text-xs mb-1">Nama</label>
                 <input
                   className="border rounded-md w-full p-2 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline"
-                  id="username"
+                  name="name"
                   type="text"
                   placeholder="Masukkan nama"
+                  value={registerData.name}
+                  onChange={handleInputChange}
                 />
                 <label className="font-bold text-xs mb-1">Username</label>
                 <input
                   className="border rounded-md w-full p-2 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline"
-                  id="username"
                   type="text"
+                  name="username"
                   placeholder="Masukkan username"
+                  value={registerData.username}
+                  onChange={handleInputChange}
                 />
                 <div className="relative">
                   <label className="font-bold text-xs mb-1">Password</label>
                   <input
-                    type={visiblePass ? 'text' : 'password'}
                     className="relative border rounded-md w-full p-2 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline"
-                    id="username"
+                    type={visiblePass ? 'text' : 'password'}
+                    name="password"
                     placeholder="Masukkan password"
+                    value={registerData.password}
+                    onChange={handleInputChange}
                   />
                   <span className="absolute right-2 top-1/2 cursor-pointer">
                     {visiblePass ? (
@@ -131,8 +175,10 @@ const Register: React.FC<RegisterProps> = () => {
                   <input
                     type={visibleConfirmPass ? 'text' : 'password'}
                     className="relative border rounded-md w-full p-2 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline"
-                    id="username"
+                    name="confirmPassword"
                     placeholder="Masukkan password"
+                    value={registerData.confirmPassword}
+                    onChange={handleInputChange}
                   />
                   <span className="absolute right-2 top-1/2 cursor-pointer">
                     {visibleConfirmPass ? (
@@ -154,22 +200,25 @@ const Register: React.FC<RegisterProps> = () => {
                 </div>
               </div>
 
-              <Link href="#">
-                <button className="w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-white mt-4 h-10 tracking-wide">
-                  Login
-                </button>
-              </Link>
+              <button
+                className="w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs 
+              text-center text-white mt-4 h-10 tracking-wide disabled:bg-arkav-grey-500 disabled:cursor-default"
+                disabled={isLoading}
+              >
+                Register
+              </button>
 
               <p className="font-helvatica font-normal text-xs text-center py-2 text-[#0B0A0A]">
                 Have an account?{' '}
-                <a href="/login">
+                <Link href="/login">
                   <span className="text-[#1F307C] font-bold">Login</span>
-                </a>
+                </Link>
               </p>
-            </div>
+            </form>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

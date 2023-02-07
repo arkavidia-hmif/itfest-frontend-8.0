@@ -12,11 +12,7 @@ import Stars1 from '@/public/img/login-stars-1.png';
 import Stars2 from '@/public/img/login-stars-2.png';
 import QuestionMark from '@/public/img/question-mark.svg';
 
-interface HomeProps {
-  dummyProp?: any;
-}
-
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC = () => {
   return (
     <>
       <div className="w-full">
@@ -70,7 +66,7 @@ const Home: React.FC<HomeProps> = () => {
                   Lihat Tutorial
                 </button>
               </Link>
-              <Link href="/login">
+              <Link href="/u/dashboard">
                 <button className="w-full rounded-md bg-white pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-[#1F307C] mt-3 h-8 tracking-wide border border-[#1F307C]">
                   Lewati
                 </button>
