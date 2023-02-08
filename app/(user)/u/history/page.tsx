@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 //assets imports
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
@@ -17,6 +18,8 @@ interface ListData {
 }
 
 const HistoryPoint: React.FC = () => {
+  const { getUser } = useAuth();
+  const user = getUser()
   const [listData, setListData] = useState<ListData[]>([]);
 
   useEffect(() => {
@@ -25,13 +28,23 @@ const HistoryPoint: React.FC = () => {
         const res = await getHistory();
         const responseData = res.data;
         const mappedData = responseData.map((data: any) => {
-          return {
-            status: "received",
-            point: data.point,
-            date: moment(data.createdAt).format('LLL'),
-            name: data.from.Name,
-          };
+          if (user.usercode == data.from.Usercode) {
+            return {
+              status: "sent",
+              point: data.point,
+              date: moment(data.createdAt).format('LLL'),
+              name: data.to.Name,
+            };
+          } else if (user.usercode == data.to.Usercode){
+            return {
+              status: "received",
+              point: data.point,
+              date: moment(data.createdAt).format('LLL'),
+              name: data.from.Name,
+            };
+          }
         });
+
 
         setListData(mappedData);
       } catch (e) {
