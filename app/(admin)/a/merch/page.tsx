@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getAllMerch } from '@/services/merchandise';
 
-interface MerchStockPageProps {
+interface MerchandiseData {
   id: number;
   name: string;
   startup: string;
@@ -14,8 +14,8 @@ interface MerchStockPageProps {
   stock: number;
 }
 
-const MerchStockPage: React.FC<MerchStockPageProps> = () => {
-  const [merchandiseData, setMerchandiseData] = useState<MerchStockPageProps[]>([]);
+const MerchStockPage: React.FC = () => {
+  const [merchandiseData, setMerchandiseData] = useState<MerchandiseData[]>([]);
 
   useEffect(() => {
     const fetchMerchandise = async () => {
