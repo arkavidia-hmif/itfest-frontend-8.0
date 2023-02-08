@@ -41,9 +41,7 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
 
   const retrieveUser = async () => {
     let userToken;
-    if (typeof window !== 'undefined') {
-      userToken = localStorage.getItem('token');
-    }
+    userToken = localStorage.getItem('token');
 
     if (userToken) {
       setToken(userToken);
@@ -57,10 +55,10 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
       } catch (error) {
         console.error('Error', error);
         setToken('');
-      } finally {
-        setIsLoading(false);
       }
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
