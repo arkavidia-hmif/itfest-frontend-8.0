@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-2 right-2 w-[18px] h-[18px] "
+              className="absolute top-2 right-2 w-[18px] h-[18px] cursor-pointer"
               onClick={onClickTutup}
             />
             <Image

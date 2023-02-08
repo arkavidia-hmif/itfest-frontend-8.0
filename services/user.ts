@@ -1,8 +1,17 @@
 import services from '.';
 import API from '../config/api';
 
-export const register = async () => {
-  const res = await services.get(API.user.register);
+export const register = async (
+  name: string,
+  username: string,
+  password: string
+) => {
+  const payload = {
+    name,
+    username,
+    password,
+  };
+  const res = await services.post(API.user.register, payload);
 
   return res.data;
 };
