@@ -1,6 +1,8 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import clsx from 'clsx';
 
 // Component imports
 import DashboardLink from '@/components/DashboardVisitor/DashboardLink';
@@ -19,11 +21,64 @@ import MerchImage from '@/public/img/visitor-dashboard-merchandise.png';
 
 // TODO: Delete this later
 import TestMerchImage from '@/public/img/test-merch-image.png';
+import { getCurrentUser, getProfile } from '@/services/user';
+import { getAllMerch } from '@/services/merchandise';
+
+interface MerchData {
+  merchImage: any;
+  merchTitle: string;
+  merchPoints: number;
+  startupName: string;
+  startupImage: any;
+  totalStock: number;
+}
 
 // Page component
-export default function Dashboard(): JSX.Element {
-  const { username, userPIN, userPoints, isProfileComplete, merchandise } =
-    testData;
+const Dashboard: React.FC = () => {
+  const [userData, setUserData] = useState({
+    name: '',
+    usercode: '',
+    points: '',
+    isProfileComplete: false,
+  });
+  const [merch, setMerch] = useState<MerchData[]>([]);
+
+  const fetchUser = async () => {
+    const [userRes, profileRes] = await Promise.all([
+      getCurrentUser(),
+      getProfile(),
+    ]);
+    const user = userRes.data;
+    const profile = profileRes.data;
+
+    setUserData({
+      name: user.name,
+      usercode: user.usercode,
+      points: user.point,
+      isProfileComplete: profile.submitted,
+    });
+  };
+
+  const fetchMerch = async () => {
+    const merchRes = await getAllMerch();
+    const merchData = merchRes.data;
+
+    const mappedMerch = merchData.map((m: any) => ({
+      merchImage: TestMerchImage,
+      merchTitle: m.name,
+      merchPoints: m.point,
+      startupName: 'Startup',
+      startupImage: TestMerchImage,
+      totalStock: m.stock,
+    }));
+
+    setMerch(mappedMerch);
+  };
+
+  useEffect(() => {
+    fetchUser();
+    fetchMerch();
+  }, []);
 
   return (
     <>
@@ -52,7 +107,7 @@ export default function Dashboard(): JSX.Element {
             <div className="flex">
               <Image src={UserIcon} width={12} height={12} alt="" />
               <p className="ml-1.5 mt-1.5 uppercase font-helvetica text-sm items-center">
-                {username}
+                {userData.name}
               </p>
             </div>
             <h6
@@ -65,7 +120,7 @@ export default function Dashboard(): JSX.Element {
               Selamat Datang!
             </h6>
             <div className="bg-black text-white px-2 pb-1 pt-2 w-full mt-1 font-bold font-helvetica text-sm">
-              ID PIN: {userPIN}
+              ID PIN: {userData.usercode}
             </div>
           </div>
 
@@ -94,21 +149,15 @@ export default function Dashboard(): JSX.Element {
                   </p>
                 </div>
               </div>
-              {/* TODO: Add history link */}
-              <DashboardLink linkText="Lihat Riwayat" linkURL="#" />
+              <DashboardLink linkText="Lihat Riwayat" linkURL="/u/history" />
             </div>
             <p className="font-varela text-3xl text-center mt-2">
-              {userPoints}
+              {userData.points}
             </p>
           </div>
 
           {/* Profile card */}
-          <div
-            className={clsx(
-              isProfileComplete ? 'hidden' : 'flex',
-              'bg-white w-full rounded-xl py-3 px-4 border border-[#EEEDF0] mt-2'
-            )}
-          >
+          <div className="flex bg-white w-full rounded-xl py-3 px-4 border border-[#EEEDF0] mt-2">
             <Image
               src={ProfileImage}
               width={86}
@@ -117,18 +166,23 @@ export default function Dashboard(): JSX.Element {
             />
             <div className="w-[197px] ml-5">
               <p className="font-helvetica font-bold text-sm">
-                Profil belum lengkap
+                {userData.isProfileComplete
+                  ? 'Profil sudah lengkap'
+                  : 'Profil belum lengkap'}
               </p>
               <p className="mt-1 font-helvetica text-xs">
-                Lengkapi profilmu dan raih hadiah X points!
+                {userData.isProfileComplete
+                  ? 'Klik di sini untuk mengubah data profil'
+                  : 'Lengkapi profilmu dan raih hadiah X points!'}
               </p>
-              {/* TODO: Add profile link */}
-              <Link href="#">
+              <Link href="/u/profile">
                 <button
                   className="w-full bg-[#1F307C] rounded-md pt-2 pb-1.5 
                 text-white font-helvetica font-bold text-xs text-center mt-2"
                 >
-                  Lengkapi profil
+                  {userData.isProfileComplete
+                    ? 'Ubah Profil'
+                    : 'Lengkapi Profil'}
                 </button>
               </Link>
             </div>
@@ -161,8 +215,7 @@ export default function Dashboard(): JSX.Element {
           />
         </div>
 
-        {/* TODO: Add clue link */}
-        <Link href="#">
+        <Link href="/u/clue">
           <button
             className="capitalize w-full bg-white rounded-md 
           border border-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-[#1F307C] mt-4"
@@ -173,7 +226,7 @@ export default function Dashboard(): JSX.Element {
       </section>
 
       {/* Merchandise section */}
-      <section className="pl-4 pt-4 flex bg-white justify-between overflow-hidden">
+      <section className="pl-4 pt-4 flex bg-white justify-between max-w-full">
         <div className="bg-white mr-2 pb-1 w-36 border border-[#110002] flex flex-col items-center flex-none">
           <div className="bg-[#0B0A0A] pt-1 w-full">
             <p className="uppercase font-helvetica font-bold text-white text-sm text-center">
@@ -191,13 +244,15 @@ export default function Dashboard(): JSX.Element {
           />
         </div>
 
-        <div>
-          <div className="flex justify-end mr-6">
-            {/* TODO: Add merch link */}
-            <DashboardLink linkText="Lihat Selengkapnya" linkURL="#" />
+        <div className="flex flex-col overflow-auto flex-grow">
+          <div className="flex justify-start mr-6">
+            <DashboardLink
+              linkText="Lihat Selengkapnya"
+              linkURL="/u/catalogue"
+            />
           </div>
-          <div className="flex gap-1 mt-1 overflow-scroll w-[56vw]">
-            {merchandise.map((merch, idx) => (
+          <div className="flex gap-1 mt-1 overflow-x-auto">
+            {merch.map((merch, idx) => (
               <MerchItem key={idx} {...merch} />
             ))}
           </div>
@@ -210,44 +265,6 @@ export default function Dashboard(): JSX.Element {
       </div>
     </>
   );
-}
-
-// Dummy data for merchandise section
-const testMerchData = [
-  {
-    merchImage: TestMerchImage,
-    merchTitle: 'Kaos Mentor Sandbox',
-    merchPoints: 100000,
-    startupName: 'Startup Startip',
-    startupImage: TestMerchImage,
-    totalStock: 59,
-    totalSold: 10,
-  },
-  {
-    merchImage: TestMerchImage,
-    merchTitle: 'Kaos Mentor Sandbox',
-    merchPoints: 100000,
-    startupName: 'Startup Startip',
-    startupImage: TestMerchImage,
-    totalStock: 59,
-    totalSold: 10,
-  },
-  {
-    merchImage: TestMerchImage,
-    merchTitle: 'Kaos Mentor Sandbox',
-    merchPoints: 100000,
-    startupName: 'Startup Startip',
-    startupImage: TestMerchImage,
-    totalStock: 59,
-    totalSold: 10,
-  },
-];
-
-// Dummy page data
-const testData = {
-  username: 'Yandy',
-  userPIN: 2020,
-  userPoints: 99999,
-  isProfileComplete: false,
-  merchandise: testMerchData,
 };
+
+export default Dashboard;

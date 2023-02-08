@@ -1,6 +1,7 @@
 'use client';
 
 import { getCurrentUser, login } from '@/services/user';
+import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -28,6 +29,7 @@ interface ContextProps {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState({} as UserData);
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -87,6 +89,8 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   function signOut() {
     setUser({} as UserData);
     setToken('');
+    localStorage.removeItem('token');
+    router.push('/login');
   }
 
   return (

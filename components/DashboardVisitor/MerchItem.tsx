@@ -11,7 +11,6 @@ interface AppProps {
   startupName: string;
   startupImage: StaticImageData;
   totalStock: number;
-  totalSold: number;
 }
 
 /**
@@ -22,7 +21,6 @@ interface AppProps {
  * @param startupName - Startup name
  * @param startupImage - Startup image
  * @param totalStock - Total merch stock
- * @param totalSold - Total merch sold
  */
 export default function MerchItem({
   merchImage,
@@ -31,15 +29,12 @@ export default function MerchItem({
   startupName,
   startupImage,
   totalStock,
-  totalSold,
 }: AppProps): JSX.Element {
   return (
     <div className="rounded-xl overflow-hidden border border-[#EEEDF0] w-[140px] flex-none">
       <Image src={merchImage} width={140} height={129} alt="Merchandise item" />
       <div className="p-2">
-        <p className="font-inter text-xs text-[#9B9B9B]">
-          Terjual {totalSold}/{totalStock}
-        </p>
+        <p className="font-inter text-xs text-[#9B9B9B]">Sisa {totalStock}</p>
         <p className="font-helvetica text-xs mt-2">{merchTitle}</p>
         <div className="flex items-center">
           <Image src={GreenDiamond} width={12} height={17} alt="" />
