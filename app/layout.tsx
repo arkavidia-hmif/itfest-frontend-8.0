@@ -1,5 +1,7 @@
 import React from 'react';
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from '@/context/AuthContext';
 
 export default function RootLayout({
   children,
@@ -15,7 +17,9 @@ export default function RootLayout({
       <head />
       <body>
         <div className="w-full bg-slate-100 flex items-center justify-center">
-          <main className="bg-white min-h-screen">{children}</main>
+          <main className="bg-white min-h-screen">
+            <AuthProvider>{children}</AuthProvider>
+          </main>
         </div>
       </body>
     </html>

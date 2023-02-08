@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 interface CatalogueItemProps {
+  id: number;
   startup: string;
   name: string;
   price: number;
@@ -11,27 +12,49 @@ interface CatalogueItemProps {
   enableQuantityInput?: boolean;
   // eslint-disable-next-line no-unused-vars
   onChangeQuantity?: (quantity: number) => void;
+  dataCallback?: ({ id, startup, name, price, stock, quantity }: {
+    id: number;
+    startup: string;
+    name: string;
+    price: number;
+    stock: number;
+    quantity: number;
+  }) => void;
 }
 
 const CatalogueItem: React.FC<CatalogueItemProps> = ({
+  id,
   startup,
   name,
   price = 0,
   stock = 0,
   enableQuantityInput,
   onChangeQuantity,
+  dataCallback
 }) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleIncrement = () => {
     if (quantity < stock) {
       setQuantity(quantity + 1);
+      if (dataCallback) {
+        dataCallback({
+          id, startup, name, price, stock,
+          quantity: quantity + 1,
+        });
+      }
     }
   };
 
   const handleDecrement = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
+      if (dataCallback) {
+        dataCallback({
+          id, startup, name, price, stock,
+          quantity: quantity - 1,
+        });
+      }
     }
   };
 
@@ -80,7 +103,7 @@ const CatalogueItem: React.FC<CatalogueItemProps> = ({
           />
           <p className="font-bold text-lg">{price}</p>
         </div>
-        <p className="text-[#9B9B9B] mt-auto">Sisa: {stock}</p>
+        <p className="text-[#9B9B9B] mt-auto">Sisa: {stock - quantity}</p>
       </div>
       {/* Right */}
       <div className="w-1/2 flex flex-col items-end gap-3">

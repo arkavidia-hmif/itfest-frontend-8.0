@@ -2,10 +2,8 @@
 /* eslint-disable max-len */
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { login } from '@/services/user';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 // Assets imports
 import ITFestImage from '@/public/img/login-itfest.png';
@@ -13,22 +11,52 @@ import Stars1 from '@/public/img/login-stars-1.png';
 import Stars2 from '@/public/img/login-stars-2.png';
 import EyeHide from '@/public/img/eye-hide-icon.svg';
 import EyeShow from '@/public/img/eye-show-icon.svg';
+import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 
 interface LoginProps {
   dummyProp?: any;
 }
 
+interface LoginData {
+  username: string;
+  password: string;
+}
+
 const Login: React.FC<LoginProps> = () => {
-  useEffect(() => {
-    const dummyLogin = async () => {
-      const data = await login();
-      console.log(data);
-    };
-
-    dummyLogin();
-  }, []);
-
+  const router = useRouter();
+  const { signIn } = useAuth();
+  const [loginData, setLoginData] = useState<LoginData>({
+    username: '',
+    password: '',
+  });
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setLoginData({ ...loginData, [name]: value });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setIsLoading(true);
+    try {
+      await signIn(loginData.username, loginData.password);
+
+      setTimeout(() => {
+        router.push('/u/home');
+      }, 1500);
+    } catch (e) {
+      console.error(e);
+      toast.error('Login error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -77,7 +105,7 @@ const Login: React.FC<LoginProps> = () => {
             </div>
           </div>
           <div className="w-full bg-white">
-            <div className="mx-6">
+            <form onSubmit={handleSubmit} className="mx-6">
               <p className="font-archivo text-[#0B0A0A] text-[24px]">LOGIN</p>
 
               <div className="flex flex-col w-full font-helvetica bg-[#F9F9F9] rounded-md p-4">
@@ -86,6 +114,9 @@ const Login: React.FC<LoginProps> = () => {
                   className="border rounded-md w-full p-2 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline"
                   id="username"
                   type="text"
+                  name="username"
+                  value={loginData.username}
+                  onChange={handleInputChange}
                   placeholder="Masukkan username"
                 />
                 <div className="relative">
@@ -94,6 +125,9 @@ const Login: React.FC<LoginProps> = () => {
                     type={visible ? 'text' : 'password'}
                     className="relative border rounded-md w-full p-2 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline"
                     id="username"
+                    name="password"
+                    value={loginData.password}
+                    onChange={handleInputChange}
                     placeholder="Masukkan password"
                   />
                   <span className="absolute right-2 top-1/2 cursor-pointer">
@@ -116,22 +150,26 @@ const Login: React.FC<LoginProps> = () => {
                 </div>
               </div>
 
-              <Link href="#">
-                <button className="w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-white mt-4 h-10 tracking-wide">
-                  Login
-                </button>
-              </Link>
+              <button
+                type="submit"
+                className="w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center 
+                text-white mt-4 h-10 tracking-wide disabled:bg-arkav-grey-500 disabled:cursor-default"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Loading...' : 'Login'}
+              </button>
 
               <p className="font-helvetica font-normal text-xs text-center py-2 text-[#0B0A0A]">
                 Don't have an account?{' '}
-                <a href="/register">
+                <Link href="/register">
                   <span className="text-[#1F307C] font-bold">Register</span>
-                </a>
+                </Link>
               </p>
-            </div>
+            </form>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

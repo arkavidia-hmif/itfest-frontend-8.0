@@ -1,19 +1,61 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useAuth } from '@/context/AuthContext';
 
 //assets imports
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
 import ListHistoryPoint from '@/components/ListHistoryPoint';
+import { getHistory } from '@/services/point';
+import moment from 'moment';
 
-interface HistoryPointPageProps {}
+interface ListData {
+  status?: string;
+  point?: number;
+  date?: string;
+  name?: string;
+}
 
-const HistoryPoint: React.FC<HistoryPointPageProps> = () => {
-  const data = {
-    status: 'received',
-    point: 100,
-    date: 'tanggal',
-    name: 'fikron',
-  };
+const HistoryPoint: React.FC = () => {
+  const { getUser } = useAuth();
+  const user = getUser()
+  const [listData, setListData] = useState<ListData[]>([]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await getHistory();
+        const responseData = res.data;
+        const mappedData = responseData.map((data: any) => {
+          if (user.usercode == data.from.Usercode) {
+            return {
+              status: "sent",
+              point: data.point,
+              date: moment(data.createdAt).format('LLL'),
+              name: data.to.Name,
+            };
+          } else if (user.usercode == data.to.Usercode){
+            return {
+              status: "received",
+              point: data.point,
+              date: moment(data.createdAt).format('LLL'),
+              name: data.from.Name,
+            };
+          }
+        });
+
+
+        setListData(mappedData);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchAll();
+  }, []);
+
+
   return (
     <>
       <div className="bg-white">
@@ -27,12 +69,16 @@ const HistoryPoint: React.FC<HistoryPointPageProps> = () => {
           </div>{' '}
         </div>
         <div className="mt-5"></div>
-        <ListHistoryPoint
-          status={data.status}
-          name={data.name}
-          point={data.point}
-          date={data.date}
-        />
+        {listData.map((data) => (
+          <div className="divide-y divide-slate-700">
+            <ListHistoryPoint
+              status={data.status}
+              name={data.name}
+              point={data.point}
+              date={data.date}
+            />
+          </div>
+        ))}
       </div>
     </>
   );

@@ -16,6 +16,7 @@ interface ModalProps {
   point?: number;
   name?: string;
   icon?: 'green-diamond' | 'sad-face' | 'yellow-warning' | 'green-bag';
+  item?: string;
   scope?:
     | 'submit-profile'
     | 'submit-clue'
@@ -35,6 +36,7 @@ const Modal: React.FC<ModalProps> = ({
   icon,
   scope,
   id,
+  item,
   onClickLanjutkan,
   onClickTutup,
   onClickKembali,
@@ -51,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({
             <Image
               src={RedCross}
               alt="Red Cross"
-              className="absolute top-2 right-2 w-[18px] h-[18px] "
+              className="absolute top-2 right-2 w-[18px] h-[18px] cursor-pointer"
               onClick={onClickTutup}
             />
             <Image
@@ -245,9 +247,9 @@ const Modal: React.FC<ModalProps> = ({
               className="flex flex-col items-center font-helvetica text-[#0B1A5C] border-b-[1px] border-[#DBDDE0
 ] pb-3"
             >
-              <div className="text-[24px]">{point} Poin Berhasil Diklaim!</div>
+              <div className="text-[24px]">Item Berhasil Ditambahkan</div>
               <div className="text-[12px]">
-                Selamat! poin berhasil diklaim dari {name}{' '}
+                Selamat! {item} berhasil ditambahkan!
               </div>
             </div>
             <ButtonText

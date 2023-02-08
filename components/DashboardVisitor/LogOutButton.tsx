@@ -1,11 +1,14 @@
 'use client';
 
+import { useAuth } from '@/context/AuthContext';
+
 /**
  * Log out button component
  */
 export default function LogOutButton(): JSX.Element {
+  const { signOut } = useAuth();
   // Event handler
-  const handleLogOut = () => console.log('Log Out');
+  const handleLogOut = () => signOut();
 
   return (
     <button

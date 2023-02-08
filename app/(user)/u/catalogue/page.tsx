@@ -1,37 +1,45 @@
+'use client';
+
 import CatalogueItem from '@/components/Catalogue/CatalogueItem';
 import Header from '@/components/Catalogue/Header';
 import InfoCard from '@/components/Catalogue/InfoCard';
 import Searchbar from '@/components/Catalogue/Searchbar';
 import UserPointsHighlight from '@/components/Catalogue/UserPointsHighlight';
-import React from 'react';
+import { getAllMerch } from '@/services/merchandise';
+import React, { useEffect, useState } from 'react';
+
+interface CatalogueData {
+  id: number;
+  name: string;
+  stock: number;
+  point: number;
+}
 
 const KatalogPage: React.FC = () => {
-  const dummyCalagoueData = [
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-    },
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-    },
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-    },
-    {
-      name: 'Kaos mentor',
-      startup: 'Startup Startip',
-      price: 100000,
-      stock: 20,
-    },
-  ];
+  const [catalogueData, setCatalogueData] = useState<CatalogueData[]>([]);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await getAllMerch();
+        const responseData = res.data;
+        const mappedData = responseData.map((data: any) => {
+          return {
+            id: data.ID,
+            name: data.name,
+            stock: data.stock,
+            point: data.point,
+          };
+        });
+
+        setCatalogueData(mappedData);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchAll();
+  }, []);
 
   return (
     <div>
@@ -44,12 +52,13 @@ const KatalogPage: React.FC = () => {
           <Searchbar placeholder="Masukkan merchandise" />
           <UserPointsHighlight />
         </div>
-        {dummyCalagoueData.map((data, idx) => (
+        {catalogueData.map((data) => (
           <CatalogueItem
-            key={idx}
+            key={data.id}
+            id={data.id}
             name={data.name}
-            price={data.price}
-            startup={data.startup}
+            price={data.point}
+            startup="Startup"
             stock={data.stock}
           />
         ))}
