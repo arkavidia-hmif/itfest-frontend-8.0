@@ -11,7 +11,7 @@ const Points = () => {
           <p className="font-helvetica text-sm font-bold ml-2">Points</p>
         </div>
         <Link
-          href="/dashboard-startup"
+          href="/a/history"
           className="font-helvetica font-semibold text-xs flex text-[#1f30c7]"
         >
           Lihat Riwayat
@@ -43,12 +43,14 @@ const Points = () => {
         </div>
 
         <div className="p-4">
-          <button
-            className="bg-white border border-[#1F307C] text-[#1F307C] 
-                rounded-md w-full font-helvetica font-bold text-xs py-2 px-4"
-          >
-            Redeem Points
-          </button>
+          <Link href="/a/redeem">
+            <button
+              className="bg-white border border-[#1F307C] text-[#1F307C] 
+                  rounded-md w-full font-helvetica font-bold text-xs py-2 px-4"
+            >
+              Redeem Points
+            </button>
+          </Link>
         </div>
       </div>
     </div>
