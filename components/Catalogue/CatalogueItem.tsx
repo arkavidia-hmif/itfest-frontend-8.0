@@ -12,6 +12,7 @@ interface CatalogueItemProps {
   enableQuantityInput?: boolean;
   // eslint-disable-next-line no-unused-vars
   onChangeQuantity?: (quantity: number) => void;
+  // eslint-disable-next-line no-unused-vars
   dataCallback?: ({ id, startup, name, price, stock, quantity }: {
     id: number;
     startup: string;
