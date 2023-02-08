@@ -21,7 +21,7 @@ const EnterPinField: React.FC<EnterPinFieldProps> = ({ onClick }) => {
     // if (values.includes('')) {
     //   setError(true);
     // }
-    onClick(valuesJoin);
+    onClick(values.join(''));
   };
   const handleChange = (e: any) => {
     const { maxLength, value, name } = e.target;

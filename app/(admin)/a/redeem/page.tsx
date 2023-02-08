@@ -10,12 +10,13 @@ import CatalogueItem from '@/components/Catalogue/CatalogueItem';
 import Merchandise from '@/components/Redeem/MerchItem';
 import EnterPinField from '@/components/EnterPin';
 import Modal from '@/components/Modal';
-import { getAllMerch } from '@/services/merchandise';
-import { getCurrentUser } from '@/services/user';
+import { getAllMerch, checkout } from '@/services/merchandise';
+import { findUser } from '@/services/user';
 
 interface RedeemPointsPageProps { }
 
 interface CatalogueData {
+  id: number;
   name: string;
   startup: string | 'Startup Startip';
   price: number;
@@ -30,6 +31,9 @@ interface UserProfile {
 }
 
 interface Toggle {
+  userFound: boolean;
+  pin: boolean;
+  redeem: boolean;
   catalogue: boolean;
   warningModal: boolean;
   succeedModal: boolean;
@@ -41,53 +45,118 @@ interface RedeemData {
   name: string;
   startup: string | 'Startup Startip';
   price: number;
-  quantity: number;
   stock: number;
+  quantity: number;
 }
 
 const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   const [catalogueData, setCatalogueData] = useState<CatalogueData[]>([]);
   const [filteredCatalogueData, setFilteredCatalogueData] = useState<any[]>([]);
   const [redeemData, setRedeemData] = useState<RedeemData[]>([]);
-  const [totalRedeemPoint, setTotalRedeemPoint] = useState<number>(0);
+  const [dumpRedeemData, setDumpRedeemData] = useState<RedeemData[]>([]);
   const [toggle, setToggle] = useState<Toggle>({
+    userFound: true,
+    pin: true,
+    redeem: false,
     catalogue: false,
     warningModal: false,
     succeedModal: false,
     failedModal: false,
   });
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    name: 'yandysehat',
-    userCode: 135182,
-    point: 0,
+    name: '',
+    userCode: 0,
+    point: 5000,
   });
   const [pin, setPin] = useState('');
-
   const [totalPoint, setTotalPoint] = useState<number>(0);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
-  const [cartData, setCartData] = useState<CatalogueData[]>([]);
 
-  // useEffect only render once on mount
-  useEffect(() => {
-    // fetch user profile
-    const fetchUser = async () => {
+  const redeemHandler = () => {
+    const fetchCheckout = async (id: number, quantity: number) => {
       try {
-        const res = await getCurrentUser();
-        const responseData = res.data;
-
-        setUserProfile(prevState => ({
-          ...prevState,
-          name: responseData.name,
-          userCode: responseData.usercode,
-          point: responseData.point,
-        }));
-      }
-      catch (e) {
+        await checkout(userProfile.userCode.toString(), { merch_id: id, quantity });
+      } catch (e) {
         console.error(e);
       }
     };
-    fetchUser();
-  }, []);
+    redeemData.map(el => {
+      fetchCheckout(el.id, el.quantity);
+    });
+    // Masih bingung cara naruh kasus gagal fetch checkout
+    setToggle({
+      ...toggle,
+      warningModal: false,
+      succeedModal: redeemData.length > 0,
+      failedModal: redeemData.length === 0,
+    });
+  };
+
+  const merchChangeHandler = ({ id, startup, name, price, stock, quantity }: RedeemData) => {
+    let dumpPoint = 0;
+    let dumpQuantity = 0;
+    let isDuplicate = false;
+    dumpRedeemData.forEach(el => {
+      if (el.id === id) {
+        isDuplicate = true;
+      }
+    });
+    if (isDuplicate) {
+      setDumpRedeemData([...dumpRedeemData.map(el => {
+        if (el.id === id) {
+          el.quantity = quantity;
+        }
+        return el;
+      })]);
+    } else {
+      setDumpRedeemData([...dumpRedeemData, { id, startup, name, price, stock, quantity }]);
+      dumpPoint += quantity * price;
+      dumpQuantity += quantity;
+    }
+    dumpRedeemData.map(el => {
+      dumpPoint += el.quantity * el.price;
+      dumpQuantity += el.quantity;
+    });
+    setTotalPoint(dumpPoint);
+    setTotalQuantity(dumpQuantity);
+  };
+
+  useEffect(() => {
+    // fetch user
+    const fetchUser = async (e: string) => {
+      try {
+        const res = await findUser(e);
+        const responseData = res.data;
+        const { name, username, usercode, role, point }: {
+          name: string;
+          username: string;
+          usercode: string;
+          role: string;
+          point: number;
+        } = responseData;
+
+        if (name !== '' && username !== '' && usercode !== '' && role !== '') {
+          setUserProfile({
+            name: name,
+            userCode: parseInt(usercode),
+            point: point,
+          });
+
+          setToggle(prevState => ({
+            ...prevState,
+            pin: false,
+            redeem: true,
+            userFound: true,
+          }));
+        } else {
+          alert('No user found');
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchUser(pin);
+  }, [pin]);
 
   useEffect(() => {
     // fetch catalogue
@@ -98,6 +167,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         const mappedData = responseData.map((data: any) => {
           return {
             status: 'sent',
+            id: data.ID,
             name: data.name,
             startup: data.startup || 'Startup Startip',
             price: data.point,
@@ -116,31 +186,21 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
     // Ubah struktur catalogueData jadi filteredCatalogueData (perstartup)
     let startups: string[] = [];
-    catalogueData.forEach(element => {
+    redeemData.forEach(element => {
       if (startups.indexOf(element.startup) === -1) {
         startups.push(element.startup);
       }
     });
     startups.forEach(startup => {
       let items: any[] = [];
-      catalogueData.forEach(element => {
-        let isDuplicate = false;
-        items.forEach(el => {
-          if (el.name == element.name && el.price == element.price && el.stock == element.stock && startup == element.startup) {
-            isDuplicate = true;
-          }
-        });
-        if (isDuplicate) {
-          items[items.findIndex(i => i.name == element.name && i.price == element.price && i.stock == element.stock && startup == element.startup)].count += 1;
-        } else {
-          if (startup == element.startup) {
-            items.push({
-              name: element.name,
-              price: element.price,
-              stock: element.stock,
-              count: 1,
-            });
-          }
+      redeemData.forEach(element => {
+        if (startup == element.startup) {
+          items.push({
+            name: element.name,
+            price: element.price,
+            stock: element.stock,
+            quantity: element.quantity,
+          });
         }
         setFilteredCatalogueData([
           {
@@ -150,84 +210,73 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         ]);
       });
     });
-  }, [catalogueData]);
+  }, [redeemData]);
 
   return (
     <div>
-      <div>{/* <EnterPinField onClick={setPin} /> */}</div>
+      <div className={`${!toggle.pin && 'hidden'}`}>
+        <EnterPinField
+          onClick={setPin}
+        />
+      </div>
       <div
-        className={`${
-          !toggle.warningModal &&
+        className={`${!toggle.warningModal &&
           !toggle.succeedModal &&
           !toggle.failedModal &&
           'hidden'
-        } bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}
+          } bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}
       >
         <div
-          className={`${
-            !toggle.warningModal && 'hidden'
-          } z-40 mx-auto flex justify-center`}
+          className={`${!toggle.warningModal && 'hidden'
+            } z-40 mx-auto flex justify-center`}
         >
+          {/* warningModal */}
           <Modal
             name={userProfile.name}
             id={userProfile.userCode}
-            point={300}
+            point={totalPoint}
             status="warning"
             icon="yellow-warning"
             scope="redeem-points"
-            onClickLanjutkan={() => {
-              setToggle({
-                catalogue: toggle.catalogue,
-                warningModal: false,
-                succeedModal: true,
-                failedModal: toggle.failedModal,
-              });
-            }}
-            onClickTutup={() =>
-              setToggle((prevState) => ({
-                ...prevState,
-                warningModal: false,
-              }))
-            }
-            onClickKembali={() =>
-              setToggle((prevState) => ({
-                ...prevState,
-                warningModal: false,
-              }))
-            }
+            onClickLanjutkan={redeemHandler}
+            onClickTutup={() => setToggle({
+              ...toggle,
+              warningModal: false,
+            })}
+            onClickKembali={() => setToggle({
+              ...toggle,
+              warningModal: false,
+            })}
           />
         </div>
         <div
-          className={`${
-            !toggle.succeedModal && 'hidden'
-          } z-40 mx-auto flex justify-center`}
+          className={`${!toggle.succeedModal && 'hidden'
+            } z-40 mx-auto flex justify-center`}
         >
+          {/* succeedModal */}
           <Modal
             name={userProfile.name}
             id={userProfile.userCode}
-            point={300}
+            point={totalPoint}
             status="success"
-            icon="green-bag"
-            scope="add-merchant"
-            onClickLanjutkan={() =>
-              setToggle((prevState) => ({
-                ...prevState,
-                succeedModal: false,
-              }))
-            }
-            onClickTutup={() =>
-              setToggle((prevState) => ({
-                ...prevState,
-                succeedModal: false,
-              }))
-            }
+            icon="green-diamond"
+            scope="redeem-points"
+            onClickLanjutkan={() => setToggle({
+              ...toggle,
+              succeedModal: false,
+            })}
+            onClickTutup={() => setToggle({
+              ...toggle,
+              succeedModal: false,
+            })}
           />
         </div>
         <div
-          className={`${
-            !toggle.failedModal && 'hidden'
-          } z-40 mx-auto flex justify-center`}
+          className={`${!toggle.failedModal && 'hidden'
+            } z-40 mx-auto flex justify-center`}
         >
+
+          {/* failedModal */}
           <Modal
             name={userProfile.name}
             id={userProfile.userCode}
@@ -235,27 +284,22 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
             status="fail"
             icon="sad-face"
             scope="redeem-points"
-            onClickTutup={() =>
-              setToggle((prevState) => ({
-                ...prevState,
-                failedModal: false,
-              }))
-            }
-            onClickKembali={() =>
-              setToggle((prevState) => ({
-                ...prevState,
-                failedModal: false,
-              }))
-            }
+            onClickTutup={() => setToggle({
+              ...toggle,
+              failedModal: false,
+            })}
+            onClickKembali={() => setToggle({
+              ...toggle,
+              failedModal: false,
+            })}
           />
         </div>
       </div>
-      <div>
+      <div className={`${!toggle.redeem && 'hidden'}`}>
         <div className="h-[calc(100vh)] flex flex-col justify-between">
           <div
-            className={`${
-              toggle.catalogue ? 'hidden' : 'block'
-            } flex flex-col justify-between h-full`}
+            className={`${toggle.catalogue ? 'hidden' : 'block'
+              } flex flex-col justify-between h-full`}
           >
             <div>
               <div className="flex pt-11 pb-4 px-4 bg-[#069154]">
@@ -303,12 +347,10 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                 </div>
                 <button
                   type="button"
-                  onClick={() => {
-                    setToggle((prevState) => ({
-                      ...prevState,
-                      catalogue: !toggle.catalogue,
-                    }));
-                  }}
+                  onClick={() => setToggle({
+                    ...toggle,
+                    catalogue: !toggle.catalogue,
+                  })}
                   className="font-bold my-1 border-2 rounded-lg w-full text-center py-[4px] text-[#3b4a8c] border-[#3b4a8c] "
                 >
                   Tambah Merchandise
@@ -330,7 +372,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                   width="28"
                   height="24"
                 />
-                <span className="text-3xl font-bold">{totalRedeemPoint}</span>
+                <span className="text-3xl font-bold">{totalPoint}</span>
               </div>
               <div className="flex justify-between bg-[#ffd271] mx-5 rounded-2xl text-sm">
                 <div className="flex flex-col my-2 ml-5">
@@ -359,14 +401,14 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                       height="24"
                     />
                     <span className="text-xl font-bold">
-                      {userProfile.point - totalRedeemPoint}
+                      {userProfile.point - totalPoint}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-            <div>
-              <div className="flex text-sm items-center py-2 bg-[#F9F9F9] mx-6 px-3 border-[#3FB160] border rounded-xl">
+            <div className='sticky bottom-0'>
+              <div className={`${!toggle.userFound && 'hidden'} flex text-sm items-center py-2 mb-4 mx-6 bg-[#F9F9F9] px-3 border-[#3FB160] border rounded-xl`}>
                 <Image
                   src="/img/Checklist.svg"
                   alt="Checklist"
@@ -376,7 +418,12 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                 <span className="ml-3 mr-4">
                   User ditemukan. Silakan lakukan transaksi poin!
                 </span>
-                <a href="">
+                <button
+                  onClick={() => setToggle({
+                    ...toggle,
+                    userFound: false,
+                  })}
+                >
                   <Image
                     className="m-1"
                     src="/img/Close.svg"
@@ -384,17 +431,16 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width="16"
                     height="16"
                   />
-                </a>
+                </button>
               </div>
-              <div className="p-4">
+              <div className="p-4 bg-white">
                 <button
-                  className="bg-[#1F307C] text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4"
-                  onClick={() =>
-                    setToggle((prevState) => ({
-                      ...prevState,
-                      warningModal: true,
-                    }))
-                  }
+                  disabled={redeemData.length === 0}
+                  className={`${redeemData.length === 0 ? 'bg-[#BFBFBF]' : 'bg-[#1F307C]'} text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4`}
+                  onClick={() => setToggle({
+                    ...toggle,
+                    warningModal: true,
+                  })}
                 >
                   Redeem
                 </button>
@@ -404,9 +450,8 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
           {/* Katalog Merch Page */}
           <div
-            className={`${
-              toggle.catalogue ? 'block' : 'hidden'
-            } w-full min-h-screen max-h-screen flex flex-col bg-white`}
+            className={`${toggle.catalogue ? 'block' : 'hidden'
+              } w-full min-h-screen max-h-screen flex flex-col bg-white`}
           >
             {/* Header */}
             <div className="pt-[44px] pb-7 flex flex-row bg-[#1F307C] px-4 relative">
@@ -417,12 +462,10 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                   width={24}
                   height={24}
                   alt="Left Arrow"
-                  onClick={() =>
-                    setToggle((prevState) => ({
-                      ...prevState,
-                      catalogue: !toggle.catalogue,
-                    }))
-                  }
+                  onClick={() => setToggle({
+                    ...toggle,
+                    catalogue: !toggle.catalogue,
+                  })}
                 />
                 <h6>MERCHANDISE</h6>
               </div>
@@ -445,21 +488,23 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               </div>
             </div>
             <div className="px-4 flex-grow overflow-y-auto">
-              {catalogueData.map((data, idx) => (
+              {catalogueData.map((data) => (
                 <CatalogueItem
-                  key={idx}
+                  key={data.id}
+                  id={data.id}
                   name={data.name}
                   price={data.price}
                   startup={data.startup}
                   stock={data.stock}
                   enableQuantityInput={data.enableQuantityInput}
-                  onChangeQuantity={(q) => setTotalQuantity(q)}
+                  // onChangeQuantity={(q) => setTotalQuantity(q)}
+                  dataCallback={merchChangeHandler}
                 />
               ))}
             </div>
 
             {/* Footer */}
-            <div className="bg-white shadow-sm bottom-0 p-4 flex flex-col w-full mt-auto">
+            <div className={`${totalQuantity === 0 && 'hidden'} bg-white shadow-sm bottom-0 p-4 flex flex-col w-full mt-auto`}>
               {/* Jumlah Poin */}
               <div className="flex flex-row justify-between items-center">
                 <p className="flex font-helvetica text-body-3">Jumlah Poinmu</p>
@@ -472,11 +517,10 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width={12}
                   />
                   <p
-                    className={`font-bold text-body-3 ${
-                      userProfile.point > totalPoint
-                        ? 'text-arkav-green'
-                        : 'text-arkav-red'
-                    }`}
+                    className={`font-bold text-body-3 ${userProfile.point > totalPoint
+                      ? 'text-arkav-green'
+                      : 'text-arkav-red'
+                      }`}
                   >
                     {userProfile.point}
                   </p>
@@ -485,21 +529,19 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
               {/* Label poin */}
               <div
-                className={`flex justify-center border-2 ${
-                  userProfile.point > totalPoint
-                    ? 'border-arkav-green'
-                    : 'border-arkav-red'
-                } 
+                className={`flex justify-center border-2 ${userProfile.point > totalPoint
+                  ? 'border-arkav-green'
+                  : 'border-arkav-red'
+                  } 
             bg-arkav-green-light rounded-xl my-4`}
               >
                 <p
-                  className={`font-bold ${
-                    userProfile.point > totalPoint
-                      ? 'text-arkav-green'
-                      : 'text-arkav-red'
-                  }`}
+                  className={`font-bold ${userProfile.point > totalPoint
+                    ? 'text-arkav-green'
+                    : 'text-arkav-red'
+                    }`}
                 >
-                  {userProfile.point > 20000
+                  {userProfile.point > totalPoint
                     ? 'Poin cukup untuk ditukarkan'
                     : 'Poin tidak mencukupi!'}
                 </p>
@@ -523,30 +565,30 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width={16}
                   />
                   <p
-                    className={`font-bold text-body-1 ${
-                      userProfile.point > totalPoint
-                        ? 'text-arkav-green'
-                        : 'text-arkav-red'
-                    }`}
+                    className={`font-bold text-body-1 ${userProfile.point > totalPoint
+                      ? 'text-arkav-green'
+                      : 'text-arkav-red'
+                      }`}
                   >
-                    {userProfile.point}
+                    {totalPoint}
                   </p>
                 </div>
               </div>
 
               {/* Button */}
               <button
-                className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${
-                  userProfile.point > 20000
-                    ? 'bg-arkav-blue'
-                    : 'bg-arkav-grey-300'
-                }`}
-                onClick={() =>
-                  setToggle((prevState) => ({
-                    ...prevState,
+                disabled={totalQuantity === 0}
+                className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${userProfile.point > totalPoint
+                  ? 'bg-arkav-blue'
+                  : 'bg-arkav-grey-300'
+                  }`}
+                onClick={() => {
+                  setToggle({
+                    ...toggle,
                     catalogue: !toggle.catalogue,
-                  }))
-                }
+                  });
+                  setRedeemData(dumpRedeemData);
+                }}
               >
                 Tambahkan
               </button>
@@ -554,13 +596,8 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
 export default RedeemPointsPage;
-
-
-// Masalahnya
-// 1. Gabisa baca quantitynya berapa sama ngambil point dari masing2 catalogue item
-// 2. Belum tau caranya passing data dari merch ke redeem
