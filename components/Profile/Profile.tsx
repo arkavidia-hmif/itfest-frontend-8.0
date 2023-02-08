@@ -17,7 +17,7 @@ interface ProfileData {
   interests: string[];
 }
 
-const Profile: React.FC<ProfileData> = () => {
+const Profile: React.FC = () => {
   const router = useRouter();
   const [profileData, setProfileData] = useState<ProfileData>({} as ProfileData);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState<any[]>([]);
