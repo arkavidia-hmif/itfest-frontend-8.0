@@ -8,6 +8,7 @@ import LeftArrow from '@/public/icons/left-arrow-icon.svg';
 import ListHistoryPoint from '@/components/ListHistoryPoint';
 import { getHistory } from '@/services/point';
 import moment from 'moment/moment';
+import { useAuth } from '@/context/AuthContext';
 
 interface ListData {
   status?: string;
@@ -16,6 +17,8 @@ interface ListData {
   name?: string;
 }
 const GrantPointHistory: React.FC = () => {
+  const { getUser } = useAuth();
+  const user = getUser()
   const [listData, setListData] = useState<ListData[]>([]);
 
   useEffect(() => {
@@ -24,12 +27,21 @@ const GrantPointHistory: React.FC = () => {
         const res = await getHistory();
         const responseData = res.data;
         const mappedData = responseData.map((data: any) => {
-          return {
-            status: "sent",
-            point: data.point,
-            date: moment(data.createdAt).format('LLL'),
-            name: data.to.Name,
-          };
+          if (user.usercode == data.from.Usercode) {
+            return {
+              status: "sent",
+              point: data.point,
+              date: moment(data.createdAt).format('LLL'),
+              name: data.to.Name,
+            };
+          } else if (user.usercode == data.to.Usercode){
+            return {
+              status: "received",
+              point: data.point,
+              date: moment(data.createdAt).format('LLL'),
+              name: data.from.Name,
+            };
+          }
         });
 
         setListData(mappedData);
