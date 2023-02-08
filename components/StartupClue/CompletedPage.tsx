@@ -34,7 +34,7 @@ export default function CompletedPage(): JSX.Element {
         Selamat! Kamu berhasil menjawab semua clue.
         <br /> Silakan kembali untuk menukarkan poin dengan merchandise!
       </p>
-      <Link href="/visitor-dashboard">
+      <Link href="/u/dashboard">
         <button
           className="mt-4 mb-6 w-72 bg-white border border-arkav-blue rounded-md py-2
         font-helvetica font-bold text-xs text-center text-arkav-blue"
