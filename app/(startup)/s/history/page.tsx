@@ -31,14 +31,14 @@ const GrantPointHistory: React.FC = () => {
             return {
               status: "sent",
               point: data.point,
-              date: moment(data.createdAt).format('LLL'),
+              date: moment(data.CreatedAt).format('LLL'),
               name: data.to.Name,
             };
           } else if (user.usercode == data.to.Usercode){
             return {
               status: "received",
               point: data.point,
-              date: moment(data.createdAt).format('LLL'),
+              date: moment(data.CreatedAt).format('LLL'),
               name: data.from.Name,
             };
           }
