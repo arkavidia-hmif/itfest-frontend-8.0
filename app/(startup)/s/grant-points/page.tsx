@@ -37,6 +37,8 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                         toast.error('User dengan pin<' + userCode + '> tidak ditemukan. Harap coba lagi.', {
                             position: "bottom-center"
                         });
+                        const inputBoxes = document.getElementsByClassName('pin-box');
+                        Array.from(inputBoxes).forEach((box: any) => box.value = '')
                     } else {
                         setIsUserCodeFound(true);
                         setUsername(responseData.username);
@@ -167,8 +169,8 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                                             maxLength={1}
                                             key={index}
                                             type="number"
-                                            className="p-3 border border-gray-300 rounded-md w-[48px] h-[80px] mx-[4px] 
-                              placeholder-slate-400 text-[36px] font-[900] font-archivo"
+                                            className="pin-box p-3 border border-gray-300 rounded-md w-[48px]
+                                            h-[80px] mx-[4px] placeholder-slate-400 text-[36px] font-[900] font-archivo"
                                             name={`field-${index}`}
                                             onChange={handleChangePin}
                                         />

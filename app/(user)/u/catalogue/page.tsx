@@ -55,6 +55,7 @@ const KatalogPage: React.FC = () => {
         {catalogueData.map((data) => (
           <CatalogueItem
             key={data.id}
+            id={data.id}
             name={data.name}
             price={data.point}
             startup="Startup"

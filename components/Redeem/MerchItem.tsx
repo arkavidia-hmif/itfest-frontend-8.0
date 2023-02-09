@@ -8,7 +8,7 @@ interface MerchItemProps {
     name: string,
     price: number,
     stock: number,
-    count: number,
+    quantity: number,
   }[];
 }
 
@@ -28,9 +28,9 @@ const MerchItem: React.FC<MerchItemProps> = ({
           <div className='w-full leading-[1.1rem]'>
             <div className='flex flex-row justify-between'>
               <span>{el.name}</span>
-              <span className='text-[#BFBFBF]'>x{el.count}</span>
+              <span className='text-[#BFBFBF]'>x{el.quantity}</span>
             </div>
-            <span className='text-[#BFBFBF]'>Sisa: {el.stock}</span>
+            <span className='text-[#BFBFBF]'>Sisa: {el.stock - el.quantity}</span>
             <div className='flex flex-row justify-between'>
               <span className='text-[#BFBFBF]'>Harga satuan:</span>
               <div className='flex flex-row'>
@@ -42,7 +42,7 @@ const MerchItem: React.FC<MerchItemProps> = ({
               <span className='text-[#BFBFBF]'>Total:</span>
               <div className='flex flex-row'>
                 <Image className='mr-1' src='/img/green-diamond.svg' alt='navigate-previous' width='12' height='12' />
-                <span className='font-bold'>{el.price * el.count}</span>
+                <span className='font-bold'>{el.price * el.quantity}</span>
               </div>
             </div>
           </div>

@@ -52,7 +52,7 @@ const Merch = () => {
           <p className="font-helvetica text-sm font-bold ml-2">Merchandise</p>
         </div>
         <Link
-          href="/dashboard-startup"
+          href="/a/merch"
           className="font-helvetica font-semibold text-xs flex text-[#1f30c7]"
         >
           Lihat Stock
