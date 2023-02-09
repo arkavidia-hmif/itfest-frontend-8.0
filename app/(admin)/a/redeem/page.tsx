@@ -76,20 +76,31 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
     const fetchCheckout = async (id: number, quantity: number) => {
       try {
         await checkout(userProfile.userCode.toString(), { merch_id: id, quantity });
+        setToggle({
+          ...toggle,
+          warningModal: false,
+          succeedModal: true
+        });
       } catch (e) {
         console.error(e);
+        // guee nambahin ini piq
+        setToggle({
+          ...toggle,
+          warningModal: false,
+          failedModal: true,
+        });
       }
     };
     redeemData.map(el => {
       fetchCheckout(el.id, el.quantity);
     });
     // Masih bingung cara naruh kasus gagal fetch checkout
-    setToggle({
-      ...toggle,
-      warningModal: false,
-      succeedModal: redeemData.length > 0,
-      failedModal: redeemData.length === 0,
-    });
+    // setToggle({
+    //   ...toggle,
+    //   warningModal: false,
+    //   succeedModal: redeemData.length > 0,
+    //   failedModal: redeemData.length === 0,
+    // });
   };
 
   const merchChangeHandler = ({ id, startup, name, price, stock, quantity }: RedeemData) => {
