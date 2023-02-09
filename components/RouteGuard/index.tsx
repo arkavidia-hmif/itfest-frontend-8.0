@@ -23,7 +23,7 @@ const RouteGuard: React.FC<Props> = ({ children, allowedRoles }) => {
   }
 
   if (!isAuthenticated()) {
-    router.push('/register');
+    router.push('/login');
     return null;
   }
 

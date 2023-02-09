@@ -1,6 +1,7 @@
 'use client';
 
 import { getCurrentUser, login } from '@/services/user';
+import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -28,6 +29,7 @@ interface ContextProps {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState({} as UserData);
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -39,9 +41,7 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
 
   const retrieveUser = async () => {
     let userToken;
-    if (typeof window !== 'undefined') {
-      userToken = localStorage.getItem('token');
-    }
+    userToken = localStorage.getItem('token');
 
     if (userToken) {
       setToken(userToken);
@@ -55,10 +55,10 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
       } catch (error) {
         console.error('Error', error);
         setToken('');
-      } finally {
-        setIsLoading(false);
       }
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -87,6 +87,8 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   function signOut() {
     setUser({} as UserData);
     setToken('');
+    localStorage.removeItem('token');
+    router.push('/login');
   }
 
   return (

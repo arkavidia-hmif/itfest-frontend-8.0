@@ -14,6 +14,7 @@ import EyeShow from '@/public/img/eye-show-icon.svg';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 
 interface LoginProps {
   dummyProp?: any;
@@ -160,9 +161,9 @@ const Login: React.FC<LoginProps> = () => {
 
               <p className="font-helvetica font-normal text-xs text-center py-2 text-[#0B0A0A]">
                 Don't have an account?{' '}
-                <a href="/register">
+                <Link href="/register">
                   <span className="text-[#1F307C] font-bold">Register</span>
-                </a>
+                </Link>
               </p>
             </form>
           </div>

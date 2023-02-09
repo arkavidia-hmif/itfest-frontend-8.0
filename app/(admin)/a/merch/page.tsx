@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getAllMerch } from '@/services/merchandise';
 
-interface MerchStockPageProps {
+interface MerchandiseData {
   id: number;
   name: string;
   startup: string;
