@@ -73,14 +73,21 @@ const Modal: React.FC<ModalProps> = ({
             )}
             {scope === 'submit-clue' && (
               <div className="text-[24px] text-center">
-                {point} Poin Berhasil Diklaim!
+                {point} Poin Didapatkan!
               </div>
             )}
             {scope === 'grant-points' && (
               <div className="text-[24px] text-center">
-                {point} Poin Berhasil Diberikan!
+                {point} Poin Berhasil Dikirim!
               </div>
             )}
+            {scope === 'redeem-points' && (
+              <div className="text-[24px] text-center">
+                {point} Poin Berhasil Dikirim!
+              </div>
+            )}
+
+
 
             {scope === 'submit-profile' && (
               <div className="text-[12px] text-center">
@@ -96,6 +103,11 @@ const Modal: React.FC<ModalProps> = ({
             {scope === 'grant-points' && (
               <div className="text-[12px] text-center">
                 Selamat! poin berhasil dikirim ke {name} {id}
+              </div>
+            )}
+            {scope === 'redeem-points' && (
+              <div className="text-[12px] text-center">
+                Selamat! poin berhasil diklaim {name} {id}
               </div>
             )}
           </div>
