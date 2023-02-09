@@ -28,7 +28,7 @@ const ButtonText: React.FC<ButtonTextProps> = ({ bgColor, onClick }) => {
         >
           {bgColor === 'secondary' && (
             <div className="font-helvetica font-bold text-[16px] text-[#1F307C]">
-              Kembali
+              Batal
             </div>
           )}
           {bgColor === 'primary' && (
