@@ -40,20 +40,19 @@ export const addMerch = async (name: string, stock: number, point: number) => {
   return res.data;
 };
 
+interface Merch {
+  merch_id: number;
+  quantity: number;
+}
+
 export const checkout = async (
   receiverUsercode: string,
-  payload: {
-    merch_id: number;
-    quantity: number;
-  }
+  payload: Merch[],
 ) => {
   const token = localStorage.getItem('token') || '';
   const payloadData = {
     to: receiverUsercode,
-    payload: {
-      merch_id: payload.merch_id,
-      quantity: payload.quantity,
-    },
+    payload,
   };
 
   const res = await services.post(API.merchandise.checkout, payloadData, {

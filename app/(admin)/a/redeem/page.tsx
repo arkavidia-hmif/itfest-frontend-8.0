@@ -50,10 +50,13 @@ interface RedeemData {
 }
 
 const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
+  const [pin, setPin] = useState('');
+  const [totalPoint, setTotalPoint] = useState<number>(0);
+  const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [catalogueData, setCatalogueData] = useState<CatalogueData[]>([]);
-  const [filteredCatalogueData, setFilteredCatalogueData] = useState<any[]>([]);
-  const [redeemData, setRedeemData] = useState<RedeemData[]>([]);
   const [dumpRedeemData, setDumpRedeemData] = useState<RedeemData[]>([]);
+  const [redeemData, setRedeemData] = useState<RedeemData[]>([]);
+  const [filteredRedeemData, setFilteredRedeemData] = useState<any[]>([]);
   const [toggle, setToggle] = useState<Toggle>({
     userFound: true,
     pin: true,
@@ -68,22 +71,26 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
     userCode: 0,
     point: 5000,
   });
-  const [pin, setPin] = useState('');
-  const [totalPoint, setTotalPoint] = useState<number>(0);
-  const [totalQuantity, setTotalQuantity] = useState<number>(0);
 
   const redeemHandler = () => {
-    const fetchCheckout = async (id: number, quantity: number) => {
+    const fetchCheckout = async () => {
       try {
-        await checkout(userProfile.userCode.toString(), { merch_id: id, quantity });
+        await checkout(userProfile.userCode.toString(), redeemData.map(el => {
+          return {
+            merch_id: el.id,
+            quantity: el.quantity
+          };
+        }));
         setToggle({
           ...toggle,
           warningModal: false,
           succeedModal: true
         });
+        setDumpRedeemData([]);
+        setRedeemData([]);
+        setFilteredRedeemData([]);
       } catch (e) {
         console.error(e);
-        // guee nambahin ini piq
         setToggle({
           ...toggle,
           warningModal: false,
@@ -91,16 +98,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         });
       }
     };
-    redeemData.map(el => {
-      fetchCheckout(el.id, el.quantity);
-    });
-    // Masih bingung cara naruh kasus gagal fetch checkout
-    // setToggle({
-    //   ...toggle,
-    //   warningModal: false,
-    //   succeedModal: redeemData.length > 0,
-    //   failedModal: redeemData.length === 0,
-    // });
+    fetchCheckout();
   };
 
   const merchChangeHandler = ({ id, startup, name, price, stock, quantity }: RedeemData) => {
@@ -113,7 +111,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
       }
     });
     if (isDuplicate) {
-      setDumpRedeemData([...dumpRedeemData.map(el => {
+      setDumpRedeemData([...dumpRedeemData.filter(el => {
         if (el.id === id) {
           el.quantity = quantity;
         }
@@ -166,7 +164,9 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         console.error(e);
       }
     };
-    fetchUser(pin);
+    if (pin !== '') {
+      fetchUser(pin);
+    }
   }, [pin]);
 
   useEffect(() => {
@@ -195,7 +195,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
     };
     fetchCatalogue();
 
-    // Ubah struktur catalogueData jadi filteredCatalogueData (perstartup)
+    // Ubah struktur redeemData jadi filteredRedeemData (perstartup)
     let startups: string[] = [];
     redeemData.forEach(element => {
       if (startups.indexOf(element.startup) === -1) {
@@ -205,7 +205,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
     startups.forEach(startup => {
       let items: any[] = [];
       redeemData.forEach(element => {
-        if (startup == element.startup) {
+        if (startup == element.startup && element.quantity > 0) {
           items.push({
             name: element.name,
             price: element.price,
@@ -213,7 +213,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
             quantity: element.quantity,
           });
         }
-        setFilteredCatalogueData([
+        setFilteredRedeemData([
           {
             startup: startup,
             items: items,
@@ -348,7 +348,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                 </span>
                 <span>Pilihan merchandise:</span>
                 <div className="bg-[#F9F9F9] rounded-md mb-1">
-                  {filteredCatalogueData.map((el, idx) => (
+                  {filteredRedeemData.map((el, idx) => (
                     <Merchandise
                       key={idx}
                       startup={el.startup}
@@ -499,7 +499,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               </div>
             </div>
             <div className="px-4 flex-grow overflow-y-auto">
-              {catalogueData.map((data) => (
+              {catalogueData.map((data) => (data.stock > 0 &&
                 <CatalogueItem
                   key={data.id}
                   id={data.id}
@@ -528,7 +528,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width={12}
                   />
                   <p
-                    className={`font-bold text-body-3 ${userProfile.point > totalPoint
+                    className={`font-bold text-body-3 ${userProfile.point >= totalPoint
                       ? 'text-arkav-green'
                       : 'text-arkav-red'
                       }`}
@@ -540,19 +540,19 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
 
               {/* Label poin */}
               <div
-                className={`flex justify-center border-2 ${userProfile.point > totalPoint
+                className={`flex justify-center border-2 ${userProfile.point >= totalPoint
                   ? 'border-arkav-green'
                   : 'border-arkav-red'
                   } 
             bg-arkav-green-light rounded-xl my-4`}
               >
                 <p
-                  className={`font-bold ${userProfile.point > totalPoint
+                  className={`font-bold ${userProfile.point >= totalPoint
                     ? 'text-arkav-green'
                     : 'text-arkav-red'
                     }`}
                 >
-                  {userProfile.point > totalPoint
+                  {userProfile.point >= totalPoint
                     ? 'Poin cukup untuk ditukarkan'
                     : 'Poin tidak mencukupi!'}
                 </p>
@@ -576,7 +576,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                     width={16}
                   />
                   <p
-                    className={`font-bold text-body-1 ${userProfile.point > totalPoint
+                    className={`font-bold text-body-1 ${userProfile.point >= totalPoint
                       ? 'text-arkav-green'
                       : 'text-arkav-red'
                       }`}
@@ -589,7 +589,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               {/* Button */}
               <button
                 disabled={totalQuantity === 0}
-                className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${userProfile.point > totalPoint
+                className={`text-white rounded-md w-full font-helvetica font-bold text-xs py-3 px-4 ${userProfile.point >= totalPoint
                   ? 'bg-arkav-blue'
                   : 'bg-arkav-grey-300'
                   }`}
