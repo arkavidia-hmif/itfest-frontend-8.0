@@ -29,7 +29,6 @@ const HistoryPoint: React.FC = () => {
         const res = await getHistory();
         const responseData = res.data;
         const mappedData = responseData.map((data: any) => {
-          console.log("date: ", data.createdAt);
           if (user.usercode == data.from.Usercode) {
             return {
               status: "sent",
