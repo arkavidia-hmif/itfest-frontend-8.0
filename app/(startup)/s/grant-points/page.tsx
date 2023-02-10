@@ -131,7 +131,6 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
         setIsCustomChecked(e.target.checked);
         if (e.target.checked) {
             const customInput = document.querySelector('input[type=number]');
-            console.log(customInput)
             if (customInput !== null) {
                 (customInput as HTMLElement).focus();
             }
@@ -158,7 +157,6 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
             await grantPoints(userCode, totalPoint);
             setIsShowSuccessModal(true);
         } catch (e) {
-            console.log(e);
             setIsShowFailModal(true);
         } finally {
             setIsLoading(false);
