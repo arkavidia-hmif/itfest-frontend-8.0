@@ -14,8 +14,8 @@ interface MerchandiseData {
   stock: number;
 }
 
-const MerchStockPage: React.FC<MerchStockPageProps> = () => {
-  const [merchandiseData, setMerchandiseData] = useState<MerchStockPageProps[]>([]);
+const MerchStockPage: React.FC = () => {
+  const [merchandiseData, setMerchandiseData] = useState<MerchandiseData[]>([]);
   const [merchValue, setMerchValue] = useState<string>('');
 
   const findMerchHandler = (e: any) => {
