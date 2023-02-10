@@ -16,20 +16,29 @@ interface MerchandiseData {
 
 const MerchStockPage: React.FC = () => {
   const [merchandiseData, setMerchandiseData] = useState<MerchandiseData[]>([]);
+  const [merchValue, setMerchValue] = useState<string>('');
+
+  const findMerchHandler = (e: any) => {
+    setMerchValue(e.target.value);
+  };
 
   useEffect(() => {
     const fetchMerchandise = async () => {
       try {
         const res = await getAllMerch();
-        const responseData = res.data;
+        const responseData = res.data.filter((data: any) => {
+          return data.name.toLowerCase().includes(merchValue.toLowerCase());
+        });
         const mappedData = responseData.map((data: any) => {
-          return {
-            id: data.ID,
-            name: data.name,
-            startup: data.startup || 'Startup Startip',
-            price: data.point,
-            stock: data.stock,
-          };
+          if (data.name.toLowerCase().includes(merchValue.toLowerCase())) {
+            return {
+              id: data.ID,
+              name: data.name,
+              startup: data.startup || 'Startup Startip',
+              price: data.point,
+              stock: data.stock,
+            };
+          }
         });
         setMerchandiseData(mappedData);
       }
@@ -39,7 +48,7 @@ const MerchStockPage: React.FC = () => {
     };
 
     fetchMerchandise();
-  });
+  }, [merchValue]);
 
   return (
     <div className='h-[calc(100vh)] flex flex-col justify-between'>
@@ -71,6 +80,7 @@ const MerchStockPage: React.FC = () => {
               className='relative border rounded-md w-full p-2 pl-8 mb-2 text-xs placeholder-gray-300 focus:outline-none focus:shadow-outline'
               id='merchandise'
               placeholder='Masukkan merchandise'
+              onChange={findMerchHandler}
             />
             <span className='absolute left-2 top-[9px] cursor-pointer'>
               <Image
@@ -83,7 +93,7 @@ const MerchStockPage: React.FC = () => {
           </div>
           {merchandiseData.length > 0 ? (
             <div className='flex flex-col mx-4 max-h-[65vh]'>
-              <div className='overflow-x-auto'>
+              <div className='overflow-y-auto'>
                 <div className='w-full inline-block'>
                   <div className='overflow-hidden'>
                     <table className='min-w-full text-justify'>
