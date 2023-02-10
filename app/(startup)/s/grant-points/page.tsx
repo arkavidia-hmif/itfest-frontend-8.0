@@ -19,7 +19,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
     const [isUserCodeFound, setIsUserCodeFound] = useState(false);
     const [isCustomChecked, setIsCustomChecked] = useState(false);
     const [point, setPoint] = useState(0);
-    const [customPoint, setCustomPoint] = useState(0);
+    const [customPoint, setCustomPoint] = useState('0');
     const [totalPoint, setTotalPoint] = useState(0);
 
     const [isShowWarningModal, setIsShowWarningModal] = useState(false);
@@ -68,7 +68,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
 
     useEffect(() => {
         if (isCustomChecked) {
-            setTotalPoint(point + customPoint);
+            setTotalPoint(point + (+customPoint));
         } else {
             setTotalPoint(point);
         }
@@ -129,10 +129,22 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
 
     const onChangeCustom = (e: any) => {
         setIsCustomChecked(e.target.checked);
+        if (e.target.checked) {
+            const customInput = document.querySelector('input[type=number]');
+            console.log(customInput)
+            if (customInput !== null) {
+                (customInput as HTMLElement).focus();
+            }
+        }
     };
 
-    const onChangeCustomPoint = (e: any) => {
-        setCustomPoint(Number(e.target.value));
+    const onChangeCustomPoint = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (isNaN(+e.target.value)) return;
+        if (e.target.value === '') {
+            setCustomPoint('0');
+            return;
+        }
+        setCustomPoint(parseInt(e.target.value).toString());
     };
 
     const onClickGrant = () => {
@@ -162,7 +174,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
         setIsUserCodeFound(false);
         setIsCustomChecked(false);
         setPoint(0);
-        setCustomPoint(0);
+        setCustomPoint('0');
         setTotalPoint(0);
         setIsShowWarningModal(false);
         setIsShowSuccessModal(false);
@@ -333,7 +345,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                                     <div>
                                         <label htmlFor={"Custom"}>{"Custom:"}</label>
                                         {isCustomChecked && <input type="number" className="w-8 border-b-2 px-1" min="0"
-                                            onChange={onChangeCustomPoint} value={customPoint} />}
+                                            id='customInput' onChange={onChangeCustomPoint} value={customPoint} />}
                                     </div>
                                 </div>
                             </div>
