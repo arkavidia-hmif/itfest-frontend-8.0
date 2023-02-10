@@ -1,7 +1,6 @@
-/* eslint-disable */
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
 
@@ -11,21 +10,14 @@ interface EnterPinFieldProps {
 
 const EnterPinField: React.FC<EnterPinFieldProps> = ({ onClick }) => {
   const [values, setValues] = React.useState(['', '', '', '', '', '']);
-  const [valuesJoin, setValuesJoin] = React.useState('');
-  const [error, setError] = React.useState(false);
 
   const onSubmit = () => {
-    setValuesJoin(values.join(''));
-    console.log("values join "+valuesJoin);
-    console.log("values" +values);
-    // if (values.includes('')) {
-    //   setError(true);
-    // }
     onClick(values.join(''));
   };
   const handleChange = (e: any) => {
     const { maxLength, value, name } = e.target;
-    const [fieldName, fieldIndex] = name.split('-');
+    // eslint-disable-next-line no-unused-vars
+    const [_, fieldIndex] = name.split('-');
 
     if (value.length >= maxLength) {
       if (parseInt(fieldIndex, 10) < 6) {
@@ -67,7 +59,8 @@ const EnterPinField: React.FC<EnterPinFieldProps> = ({ onClick }) => {
                       maxLength={1}
                       key={index}
                       type="number"
-                      className="p-3 border border-gray-300 rounded-md w-[48px] h-[80px] mx-[4px] placeholder-slate-400 text-[36px] font-[900] font-archivo"
+                      className="p-3 border border-gray-300 rounded-md w-[48px] h-[80px] mx-[4px] 
+                      placeholder-slate-400 text-[36px] font-[900] font-archivo"
                       name={`field-${index}`}
                       onChange={handleChange}
                     />
@@ -75,7 +68,8 @@ const EnterPinField: React.FC<EnterPinFieldProps> = ({ onClick }) => {
                 </div>
 
                 <button
-                  className="fixed bottom-[16px] font-helvetica font-bold text-[12px] rounded-xl bg-[#1F307C] text-[#FFFFFF] w-[328px] h-[40px]"
+                  className="fixed bottom-[16px] font-helvetica font-bold text-[12px] rounded-xl bg-[#1F307C] 
+                  text-[#FFFFFF] w-[328px] h-[40px]"
                   onClick={onSubmit}
                 >
                   Submit
