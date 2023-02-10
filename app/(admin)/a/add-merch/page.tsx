@@ -121,7 +121,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
             type='submit'
             disabled={(itemName && startup && price && stock) ? false : true}
             className='w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center 
-                  text-white h-10 tracking-wide disabled:bg-arkav-grey-500 disabled:cursor-default'
+                  text-white h-10 tracking-wide disabled:bg-[#BFBFBF]'
             onClick={submitHandler}
           >
             Submit

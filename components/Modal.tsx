@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 import GreenDiamond from '@/public/icons/green-diamond-icon.svg';
@@ -27,6 +27,8 @@ interface ModalProps {
   onClickLanjutkan?: () => void;
   onClickKembali?: () => void;
   onClickTutup?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onChecked?: (newChecked: boolean) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -40,7 +42,15 @@ const Modal: React.FC<ModalProps> = ({
   onClickLanjutkan,
   onClickTutup,
   onClickKembali,
+  onChecked
 }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+    if (onChecked !== undefined) onChecked(event.target.checked);
+  };
+
   return (
     <>
       {status === 'success' && icon === 'green-diamond' && (
@@ -73,14 +83,21 @@ const Modal: React.FC<ModalProps> = ({
             )}
             {scope === 'submit-clue' && (
               <div className="text-[24px] text-center">
-                {point} Poin Berhasil Diklaim!
+                {point} Poin Didapatkan!
               </div>
             )}
             {scope === 'grant-points' && (
               <div className="text-[24px] text-center">
-                {point} Poin Berhasil Diberikan!
+                {point} Poin Berhasil Dikirim!
               </div>
             )}
+            {scope === 'redeem-points' && (
+              <div className="text-[24px] text-center">
+                {point} Poin Berhasil Dikirim!
+              </div>
+            )}
+
+
 
             {scope === 'submit-profile' && (
               <div className="text-[12px] text-center">
@@ -96,6 +113,11 @@ const Modal: React.FC<ModalProps> = ({
             {scope === 'grant-points' && (
               <div className="text-[12px] text-center">
                 Selamat! poin berhasil dikirim ke {name} {id}
+              </div>
+            )}
+            {scope === 'redeem-points' && (
+              <div className="text-[12px] text-center">
+                Selamat! poin berhasil diklaim {name} {id}
               </div>
             )}
           </div>
@@ -205,7 +227,7 @@ const Modal: React.FC<ModalProps> = ({
             )}
           </div>
           <div className="flex gap-2">
-            <input type="checkbox" className="default:ring-2" />
+            <input type="checkbox" checked={isChecked} onChange={handleCheck} className="default:ring-2" />
             <div className="font-helvetica font-[400] text-[12px] text-[#F43518]">
               Jangan tampilkan pesan ini lagi
             </div>

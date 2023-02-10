@@ -151,7 +151,7 @@ const Dashboard: React.FC = () => {
               </div>
               <DashboardLink linkText="Lihat Riwayat" linkURL="/u/history" />
             </div>
-            <p className="font-varela text-3xl text-center mt-2">
+            <p className="font-varela font-bold text-3xl text-center mt-2">
               {userData.points}
             </p>
           </div>
