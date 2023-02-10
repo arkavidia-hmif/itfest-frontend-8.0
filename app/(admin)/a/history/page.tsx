@@ -9,7 +9,6 @@ import ListHistoryPoint from '@/components/ListHistoryPoint';
 import { getHistory } from '@/services/point';
 import moment from 'moment/moment';
 import { useAuth } from '@/context/AuthContext';
-import Link from 'next/link';
 
 interface ListData {
   status?: string;
