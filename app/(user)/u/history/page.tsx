@@ -47,7 +47,7 @@ const HistoryPoint: React.FC = () => {
         });
 
 
-        setListData(mappedData);
+        setListData([...mappedData].reverse());
       } catch (e) {
         console.error(e);
       }
@@ -70,8 +70,8 @@ const HistoryPoint: React.FC = () => {
           </div>{' '}
         </div>
         <div className="mt-5"></div>
-        {listData.map((data) => (
-          <div className="divide-y divide-slate-700">
+        {listData.map((data, idx) => (
+          <div key={idx} className="divide-y divide-slate-700">
             <ListHistoryPoint
               status={data.status}
               name={data.name}

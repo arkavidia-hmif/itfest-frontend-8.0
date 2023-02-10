@@ -44,6 +44,16 @@ const Register: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (
+      registerData.name === '' ||
+      registerData.username === '' ||
+      registerData.password === '' ||
+      registerData.confirmPassword === ''
+    ) {
+      toast.error('Please fill all the field before registering.');
+      return;
+    }
+
     if (registerData.password !== registerData.confirmPassword) {
       toast.error("Password doesn't match!");
       return;
@@ -61,9 +71,13 @@ const Register: React.FC = () => {
       setTimeout(() => {
         router.push('/login');
       }, 1000);
-    } catch (e) {
-      console.error(e);
-      toast.error('Register error');
+    } catch (e: any) {
+      ('ERROR: USERNAME EXISTED');
+      if (e.response.data.message === 'ERROR: USERNAME EXISTED') {
+        toast.error('Username already exists! Please enter a new username.');
+      } else {
+        toast.error('Login error. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

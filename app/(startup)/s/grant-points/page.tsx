@@ -26,10 +26,14 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
     const [isShowSuccessModal, setIsShowSuccessModal] = useState(false);
     const [isShowFailModal, setIsShowFailModal] = useState(false);
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [disableConfirmation, setDisableConfirmation] = useState(false); 
+
     useEffect(() => {
         if (isCheckUserCode) {
             const fetchUser = async () => {
                 try {
+                    setIsLoading(true);
                     const res = await findUser(userCode);
                     const responseData = res.data;
 
@@ -38,13 +42,15 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                             position: "bottom-center"
                         });
                         const inputBoxes = document.getElementsByClassName('pin-box');
-                        Array.from(inputBoxes).forEach((box: any) => box.value = '')
+                        Array.from(inputBoxes).forEach((box: any) => box.value = '');
                     } else {
                         setIsUserCodeFound(true);
                         setUsername(responseData.username);
                     }
                 } catch (e) {
                     console.error(e);
+                } finally {
+                    setIsLoading(false);
                 }
             };
 
@@ -99,25 +105,25 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
 
     const onChangeEasy = (e: any) => {
         if (e.target.checked) {
-            setPoint(point + 100);
+            setPoint(point + 25);
         } else {
-            setPoint(point - 100);
+            setPoint(point - 25);
         }
     };
 
     const onChangeMedium = (e: any) => {
         if (e.target.checked) {
-            setPoint(point + 200);
+            setPoint(point + 50);
         } else {
-            setPoint(point - 200);
+            setPoint(point - 50);
         }
     };
 
     const onChangeHard = (e: any) => {
         if (e.target.checked) {
-            setPoint(point + 400);
+            setPoint(point + 75);
         } else {
-            setPoint(point - 400);
+            setPoint(point - 75);
         }
     };
 
@@ -136,13 +142,32 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
     const onClickNextGrant = async () => {
         setIsShowWarningModal(false);
         try {
+            setIsLoading(true);
             await grantPoints(userCode, totalPoint);
             setIsShowSuccessModal(true);
         } catch (e) {
             console.log(e);
             setIsShowFailModal(true);
+        } finally {
+            setIsLoading(false);
         }
     };
+
+    const handleDone = () => {
+        setIsShowSuccessModal(false);
+        setPinValues(['', '', '', '', '', '']);
+        setUserCode("");
+        setIsCheckUserCode(false);
+        setUsername('');
+        setIsUserCodeFound(false);
+        setIsCustomChecked(false);
+        setPoint(0);
+        setCustomPoint(0);
+        setTotalPoint(0);
+        setIsShowWarningModal(false);
+        setIsShowSuccessModal(false);
+        setIsShowFailModal(false);
+    }
 
     if (!isUserCodeFound) {
         return (
@@ -179,10 +204,12 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
 
                                 <button
                                     className="fixed bottom-[16px] font-helvetica font-bold text-[12px] rounded-xl 
-                                    bg-[#1F307C] text-[#FFFFFF] w-[328px] h-[40px]"
+                                    bg-[#1F307C] text-[#FFFFFF] w-[328px] h-[40px] disabled:cursor-auto
+                                    disabled:bg-arkav-grey-400"
                                     onClick={onSubmitPin}
+                                    disabled={isLoading}
                                 >
-                                    Submit
+                                    {isLoading ? "Loading..." : "Submit"}
                                 </button>
                                 {/*</form>*/}
                             </div>
@@ -207,6 +234,7 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                                 icon="yellow-warning"
                                 scope="grant-points"
                                 onClickLanjutkan={onClickNextGrant}
+                                onChecked={(check) => setDisableConfirmation(check)}
                                 onClickKembali={() => setIsShowWarningModal(false)}
                                 onClickTutup={() => setIsShowWarningModal(false)}
                             />
@@ -223,8 +251,8 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
                                 point={totalPoint}
                                 icon="green-diamond"
                                 scope="grant-points"
-                                onClickLanjutkan={() => setIsShowSuccessModal(false)}
-                                onClickTutup={() => setIsShowSuccessModal(false)}
+                                onClickLanjutkan={() => handleDone()}
+                                onClickTutup={() => handleDone()}
                             />
                         </div>
                     </div>
@@ -328,9 +356,13 @@ const GrantPointsPage: React.FC<GrantPointsPageProps> = () => {
 
                         </div>
                         <div className="p-4">
-                            <button className="bg-[#1F307C] text-white
-                        rounded-md w-full font-helvetica font-bold text-xs py-2 px-4" onClick={onClickGrant}>
-                                Grant
+                            <button 
+                                className="bg-[#1F307C] text-white rounded-md w-full font-helvetica font-bold
+                                text-xs py-2 px-4 disabled:cursor-auto disabled:bg-arkav-grey-400"
+                                onClick={disableConfirmation ? onClickNextGrant : onClickGrant}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Loading...' : "Grant"}
                             </button>
                         </div>
                     </div>

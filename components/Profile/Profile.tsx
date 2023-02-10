@@ -433,7 +433,8 @@ const Profile: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <button 
                   type="submit"
-                  className="w-full rounded-md bg-[#1F307C] font-helvetica font-bold text-xs text-center text-white h-10 tracking-wide"
+                  className="w-full rounded-md bg-[#1F307C] font-helvetica font-bold text-xs text-center text-white
+                  h-10 tracking-wide disabled:cursor-auto disabled:bg-arkav-grey-400"
                   disabled={isLoading}>
                   {isLoading ? 'Loading...' : 'Submit'}
                 </button>

@@ -9,9 +9,26 @@ interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, getUser } = useAuth();
+  const user = getUser();
 
-  if (isAuthenticated()) router.push('/u/dashboard');
+  if (isAuthenticated()) {
+    switch (user.role) {
+      case 'user':
+        router.push('/u/dashboard');
+        break;
+      case 'admin':
+        router.push('/a/dashboard');
+        break;
+      case 'startup':
+        router.push('/s/dashboard');
+        break;
+
+      default:
+        router.push('/login');
+        break;
+    }
+  }
 
   return (
     <>

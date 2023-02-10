@@ -1,7 +1,27 @@
+'use client';
+
+import { getCurrentUser } from '@/services/user';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const UserPointsHighlight: React.FC = () => {
+  const [points, setPoints] = useState(0);
+
+  const fetchPoints = async () => {
+    try {
+      const res = await getCurrentUser();
+      const data = res.data;
+
+      setPoints(data.point);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchPoints();
+  }, []);
+
   return (
     <div
       className="relative flex justify-center
@@ -14,7 +34,7 @@ const UserPointsHighlight: React.FC = () => {
         height={24}
         width={16}
       />
-      <p className="font-bold text-[#069154]">20000</p>
+      <p className="font-bold text-[#069154]">{points}</p>
     </div>
   );
 };

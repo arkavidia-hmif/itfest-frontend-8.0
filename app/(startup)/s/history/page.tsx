@@ -18,7 +18,7 @@ interface ListData {
 }
 const GrantPointHistory: React.FC = () => {
   const { getUser } = useAuth();
-  const user = getUser()
+  const user = getUser();
   const [listData, setListData] = useState<ListData[]>([]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const GrantPointHistory: React.FC = () => {
           }
         });
 
-        setListData(mappedData);
+        setListData([...mappedData].reverse());
       } catch (e) {
         console.error(e);
       }
@@ -66,7 +66,7 @@ const GrantPointHistory: React.FC = () => {
         </div>
         <div className="mt-5"></div>
         {listData.map((data, id) => (
-          < div className="divide-y divide-slate-700" key={id}>
+          <div className="divide-y divide-slate-700" key={id}>
             <ListHistoryPoint
               status={data.status}
               name={data.name}

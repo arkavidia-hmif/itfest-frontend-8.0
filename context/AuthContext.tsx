@@ -82,6 +82,22 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
     });
 
     toast.success('Success!');
+
+    switch (userData.role) {
+      case 'user':
+        router.push('/u/dashboard');
+        break;
+      case 'admin':
+        router.push('/a/dashboard');
+        break;
+      case 'startup':
+        router.push('/s/dashboard');
+        break;
+
+      default:
+        router.push('/login');
+        break;
+    }
   }
 
   function signOut() {

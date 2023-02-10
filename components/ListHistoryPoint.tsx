@@ -44,7 +44,7 @@ const ListHistoryPoint: React.FC<ListHistoryPointProps> = ({
               <div className="font-helvetica font-[400] text-[12px] text-[#9B9B9B]">
                 {date}
               </div>
-              <div className="flex gap-1">
+              <div className="flex gap-1 justify-end">
                 <div className="translate-y-1">
                   {status === 'received' && (
                     <Image src={GreenDiamond} alt="Green Diamond" />

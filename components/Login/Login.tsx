@@ -11,7 +11,6 @@ import Stars1 from '@/public/img/login-stars-1.png';
 import Stars2 from '@/public/img/login-stars-2.png';
 import EyeHide from '@/public/img/eye-hide-icon.svg';
 import EyeShow from '@/public/img/eye-show-icon.svg';
-import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
@@ -26,7 +25,6 @@ interface LoginData {
 }
 
 const Login: React.FC<LoginProps> = () => {
-  const router = useRouter();
   const { signIn } = useAuth();
   const [loginData, setLoginData] = useState<LoginData>({
     username: '',
@@ -46,13 +44,13 @@ const Login: React.FC<LoginProps> = () => {
     setIsLoading(true);
     try {
       await signIn(loginData.username, loginData.password);
-
-      setTimeout(() => {
-        router.push('/u/home');
-      }, 1500);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      toast.error('Login error');
+      if (e.response.data.message === 'ERROR: INVALID USERNAME OR PASSWORD') {
+        toast.error('Invalid username or password!');
+      } else {
+        toast.error('Login error. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
