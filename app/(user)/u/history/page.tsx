@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 
 //assets imports
 import LeftArrow from '@/public/icons/left-arrow-icon.svg';
@@ -32,14 +33,14 @@ const HistoryPoint: React.FC = () => {
             return {
               status: "sent",
               point: data.point,
-              date: moment(data.createdAt).format('LLL'),
+              date: moment(data.CreatedAt).format('LLL'),
               name: data.to.Name,
             };
           } else if (user.usercode == data.to.Usercode){
             return {
               status: "received",
               point: data.point,
-              date: moment(data.createdAt).format('LLL'),
+              date: moment(data.CreatedAt).format('LLL'),
               name: data.from.Name,
             };
           }
@@ -60,9 +61,9 @@ const HistoryPoint: React.FC = () => {
     <>
       <div className="bg-white">
         <div className="flex">
-          <div className="mt-5 ml-4">
+          <Link href="/u/dashboard" className="mt-5 ml-4">
             <Image src={LeftArrow} alt="Left Arrow" />
-          </div>
+          </Link>
           <div className="ml-3 mt-5">
             <h6>POINT</h6>
             <h6>HISTORY</h6>

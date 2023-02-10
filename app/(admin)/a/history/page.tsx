@@ -31,14 +31,14 @@ const GrantPointHistory: React.FC = () => {
             return {
               status: "sent",
               point: data.point,
-              date: moment(data.createdAt).format('LLL'),
+              date: moment(data.CreatedAt).format('LLL'),
               name: data.to.Name,
             };
           } else if (user.usercode == data.to.Usercode){
             return {
               status: "received",
               point: data.point,
-              date: moment(data.createdAt).format('LLL'),
+              date: moment(data.CreatedAt).format('LLL'),
               name: data.from.Name,
             };
           }
@@ -56,11 +56,9 @@ const GrantPointHistory: React.FC = () => {
     <>
       <div className="bg-white">
         <div className="flex">
-          <div className="mt-5 ml-4">
-            <Link href="/a/dashboard">
-              <Image src={LeftArrow} alt="Left Arrow" />
-            </Link>
-          </div>
+          <Link href="/a/dashboard" className="mt-5 ml-4">
+            <Image src={LeftArrow} alt="Left Arrow" />
+          </Link>
           <div className="ml-3 mt-5">
             <h6>REDEMPTION</h6>
             <h6>HISTORY</h6>
