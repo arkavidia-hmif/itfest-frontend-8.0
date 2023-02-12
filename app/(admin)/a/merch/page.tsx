@@ -25,19 +25,21 @@ const MerchStockPage: React.FC = () => {
   const handleDeleteMerchant = async (id: number) => {
     try {
       const res = await deleteMerch(id);
-      const responseData = res.data.filter((data: any) => {
-        return data.ID !== id;
-      });
-      const mappedData = responseData.map((data: any) => {
-        return {
-          id: data.ID,
-          name: data.name,
-          startup: data.startup || 'Startup Startip',
-          price: data.point,
-          stock: data.stock,
-        };
-      });
-      setMerchandiseData(mappedData);
+      if(res){
+        const responseData = merchandiseData.filter((data: any) => {
+          return data.ID !== id;
+        });
+        const mappedData = responseData.map((data: any) => {
+          return {
+            id: data.ID,
+            name: data.name,
+            startup: data.startup || 'Startup Startip',
+            price: data.point,
+            stock: data.stock,
+          };
+        }); 
+        setMerchandiseData(mappedData);       
+      }
     }
     catch (e) {
       console.error(e);
