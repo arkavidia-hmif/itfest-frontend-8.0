@@ -2,11 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 
 interface MerchItemProps {
-  no: number,
+  no: number;
   name: string;
   startup: string;
   price: number;
   stock: number;
+  // eslint-disable-next-line no-unused-vars
+  dataCallback?: (id: number) => void;
 }
 
 const MerchItem: React.FC<MerchItemProps> = ({
@@ -15,7 +17,13 @@ const MerchItem: React.FC<MerchItemProps> = ({
   startup,
   price = 0,
   stock = 0,
+  dataCallback,
 }) => {
+  const handleDelete = (id: number) => {
+    if (dataCallback) {
+      dataCallback(id);
+    }
+  };
   return (
     <tr className={no % 2 == 0 ? 'bg-[#F9F9F9]' : 'bg-white'}>
       <td scope='col' className='w-[24px] pl-3 pt-1'>{no}</td>
@@ -27,7 +35,13 @@ const MerchItem: React.FC<MerchItemProps> = ({
       </td>
       <td scope='col' className='w-[40px] pt-1'>{stock}</td>
       <td className='w-[32px] pt-2 pb-3 pr-1'>
-        <Image className='cursor-pointer' src='/img/delete.svg' alt='Delete' width='32' height='32' />
+        <Image 
+        className='cursor-pointer' 
+        src='/img/delete.svg' 
+        alt='Delete' 
+        width='32' 
+        height='32' 
+        onClick={() => handleDelete(no)}/>
       </td>
     </tr>
   );

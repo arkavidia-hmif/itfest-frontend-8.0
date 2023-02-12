@@ -4,7 +4,7 @@ import MerchItem from '@/components/MerchStock/MerchItem';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllMerch } from '@/services/merchandise';
+import { deleteMerch, getAllMerch } from '@/services/merchandise';
 
 interface MerchandiseData {
   id: number;
@@ -20,6 +20,28 @@ const MerchStockPage: React.FC = () => {
 
   const findMerchHandler = (e: any) => {
     setMerchValue(e.target.value);
+  };
+
+  const handleDeleteMerchant = async (id: number) => {
+    try {
+      const res = await deleteMerch(id);
+      const responseData = res.data.filter((data: any) => {
+        return data.ID !== id;
+      });
+      const mappedData = responseData.map((data: any) => {
+        return {
+          id: data.ID,
+          name: data.name,
+          startup: data.startup || 'Startup Startip',
+          price: data.point,
+          stock: data.stock,
+        };
+      });
+      setMerchandiseData(mappedData);
+    }
+    catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
@@ -126,6 +148,7 @@ const MerchStockPage: React.FC = () => {
                             startup={data.startup}
                             price={data.price}
                             stock={data.stock}
+                            dataCallback={handleDeleteMerchant}
                           />
                         ))}
                       </tbody>

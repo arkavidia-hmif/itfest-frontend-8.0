@@ -63,3 +63,19 @@ export const checkout = async (
 
   return res.data;
 };
+
+export const deleteMerch = async (id:number) => {
+  const token = localStorage.getItem('token') || '';
+  const payload = {
+    id:id
+  };
+
+  // The url : {baseUrl}/deleteMerchandise
+  const res = await services.post(`${API.merchandise.deleteMerch}`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};

@@ -20,6 +20,7 @@ const API = {
     getOne: '/getMerchandise',
     add: '/addMerchandise',
     checkout: '/checkout',
+    deleteMerch: '/deleteMerchandise',
   },
 };
 
