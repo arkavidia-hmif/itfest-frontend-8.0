@@ -22,7 +22,8 @@ interface ModalProps {
     | 'submit-clue'
     | 'grant-points'
     | 'redeem-points'
-    | 'add-merchant';
+    | 'add-merchant'
+    | 'delete-merchant';
   id?: number;
   onClickLanjutkan?: () => void;
   onClickKembali?: () => void;
@@ -96,8 +97,6 @@ const Modal: React.FC<ModalProps> = ({
                 {point} Poin Berhasil Dikirim!
               </div>
             )}
-
-
 
             {scope === 'submit-profile' && (
               <div className="text-[12px] text-center">
@@ -227,7 +226,12 @@ const Modal: React.FC<ModalProps> = ({
             )}
           </div>
           <div className="flex gap-2">
-            <input type="checkbox" checked={isChecked} onChange={handleCheck} className="default:ring-2" />
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={handleCheck}
+              className="default:ring-2"
+            />
             <div className="font-helvetica font-[400] text-[12px] text-[#F43518]">
               Jangan tampilkan pesan ini lagi
             </div>
@@ -272,6 +276,42 @@ const Modal: React.FC<ModalProps> = ({
               <div className="text-[24px]">Item Berhasil Ditambahkan</div>
               <div className="text-[12px]">
                 Selamat! {item} berhasil ditambahkan!
+              </div>
+            </div>
+            <ButtonText
+              bgColor="primary"
+              onClick={onClickLanjutkan}
+            ></ButtonText>
+          </div>
+        )}
+      {status === 'success' &&
+        icon === 'green-bag' &&
+        scope === 'delete-merchant' && (
+          <div
+            className={
+              'bg-white relative w-[70%] h-[349px] rounded rounded-b-xl flex flex-col gap-[20px]  items-center justify-center pb-4'
+            }
+          >
+            <div>
+              <Image
+                src={RedCross}
+                alt="Red Cross"
+                className="absolute top-2 right-2 w-[18px] h-[18px] "
+                onClick={onClickTutup}
+              />
+              <Image
+                src={GreenBag}
+                alt="Green Diamond"
+                className="w-[65px] h-[94px]"
+              />
+            </div>
+            <div
+              className="flex flex-col items-center font-helvetica text-[#0B1A5C] border-b-[1px] border-[#DBDDE0
+] pb-3"
+            >
+              <div className="text-[24px]">Item Berhasil Dihapus</div>
+              <div className="text-[12px]">
+                Selamat! {item} berhasil dihapus!
               </div>
             </div>
             <ButtonText

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Dropdown from '@/components/Profile/Dropdown';
 import Modal from '@/components/Modal';
 import { addMerch } from '@/services/merchandise';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface AddMerchPageProps { }
 
@@ -17,10 +19,12 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
   const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
   const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
 
+  const { getUser } = useAuth();
+  const user = getUser();
   const submitHandler = () => {
     const fetchAddMerch = async () => {
       try {
-        await addMerch(itemName, stock, price);
+        await addMerch(user.usercode, itemName, stock, price);
         setShowSucceedModal(true);
       }
       catch (e) {
@@ -32,6 +36,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
     fetchAddMerch();
   };
 
+  const router = useRouter();
   return (
     <div className='h-[calc(100vh)] flex flex-col justify-between'>
       <div className={`${!showSucceedModal && !showFailedModal && 'hidden'} bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}>
@@ -41,7 +46,10 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
             icon='green-bag'
             item='tes'
             scope='add-merchant'
-            onClickLanjutkan={() => setShowSucceedModal(false)}
+            onClickLanjutkan={() => {
+              setShowSucceedModal(false);
+              router.push('/a/merch');
+            }}
             onClickTutup={() => setShowSucceedModal(false)}
           />
         </div>

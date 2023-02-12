@@ -9,6 +9,7 @@ export const getAllMerch = async () => {
     },
   });
 
+  console.log(res.data);
   return res.data;
 };
 
@@ -23,9 +24,10 @@ export const getMerchById = async (id: number) => {
   return res.data;
 };
 
-export const addMerch = async (name: string, stock: number, point: number) => {
+export const addMerch = async (userCode:string ,name: string, stock: number, point: number) => {
   const token = localStorage.getItem('token') || '';
   const payload = {
+    userCode,
     name,
     stock,
     point,
@@ -77,5 +79,5 @@ export const deleteMerch = async (id:number) => {
     },
   });
 
-  return res.data;
+  return res.status;
 };

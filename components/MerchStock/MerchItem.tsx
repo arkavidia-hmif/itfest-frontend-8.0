@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 interface MerchItemProps {
+  id:number,
   no: number;
   name: string;
   startup: string;
@@ -12,6 +13,7 @@ interface MerchItemProps {
 }
 
 const MerchItem: React.FC<MerchItemProps> = ({
+  id,
   no,
   name,
   startup,
@@ -41,7 +43,7 @@ const MerchItem: React.FC<MerchItemProps> = ({
         alt='Delete' 
         width='32' 
         height='32' 
-        onClick={() => handleDelete(no)}/>
+        onClick={() => handleDelete(id)}/>
       </td>
     </tr>
   );
