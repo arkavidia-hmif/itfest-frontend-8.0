@@ -9,7 +9,6 @@ export const getAllMerch = async () => {
     },
   });
 
-  console.log(res.data);
   return res.data;
 };
 
@@ -24,7 +23,7 @@ export const getMerchById = async (id: number) => {
   return res.data;
 };
 
-export const addMerch = async (userCode:string ,name: string, stock: number, point: number) => {
+export const addMerch = async (userCode: string, name: string, stock: number, point: number) => {
   const token = localStorage.getItem('token') || '';
   const payload = {
     userCode,
@@ -66,14 +65,13 @@ export const checkout = async (
   return res.data;
 };
 
-export const deleteMerch = async (id:number) => {
+export const deleteMerch = async (id: number) => {
   const token = localStorage.getItem('token') || '';
   const payload = {
-    id:id
+    id
   };
 
-  // The url : {baseUrl}/deleteMerchandise
-  const res = await services.post(`${API.merchandise.deleteMerch}`, payload, {
+  const res = await services.post(API.merchandise.deleteMerch, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

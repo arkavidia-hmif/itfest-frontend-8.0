@@ -4,7 +4,7 @@ import MerchItem from '@/components/MerchStock/MerchItem';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { deleteMerch, getAllMerch } from '@/services/merchandise';
+import { deleteMerch, getAllMerch, getMerchById } from '@/services/merchandise';
 import Modal from '@/components/Modal';
 
 interface MerchandiseData {
@@ -17,6 +17,7 @@ interface MerchandiseData {
 
 const MerchStockPage: React.FC = () => {
   const [merchandiseData, setMerchandiseData] = useState<MerchandiseData[]>([]);
+  const [itemName, setItemName] = useState<string>('');
   const [merchValue, setMerchValue] = useState<string>('');
   const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
   const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
@@ -25,17 +26,13 @@ const MerchStockPage: React.FC = () => {
   };
 
   const handleDeleteMerchant = async (id: number) => {
-    try {
-      const res = await deleteMerch(id);
-      if (res === 201) {
-        setShowSucceedModal(true);
-        const filteredData = merchandiseData.filter((data) => data.id !== id);
-        setMerchandiseData(filteredData);
-      }
-    }
-    catch (e) {
-      setShowFailedModal(true);
-      console.error(e);
+    const res1 = await getMerchById(id);
+    const res2 = await deleteMerch(id);
+    if (res2 === 201) {
+      setShowSucceedModal(true);
+      setItemName(res1.data.name);
+      const filteredData = merchandiseData.filter((data) => data.id !== id);
+      setMerchandiseData(filteredData);
     }
   };
 
@@ -43,21 +40,23 @@ const MerchStockPage: React.FC = () => {
     const fetchMerchandise = async () => {
       try {
         const res = await getAllMerch();
-        const responseData = res.data.filter((data: any) => {
-          return data.name.toLowerCase().includes(merchValue.toLowerCase());
-        });
-        const mappedData = responseData.map((data: any) => {
-          if (data.name.toLowerCase().includes(merchValue.toLowerCase())) {
-            return {
-              id: data.ID,
-              name: data.name,
-              startup: data.startup || 'Startup Startip',
-              price: data.point,
-              stock: data.stock,
-            };
-          }
-        });
-        setMerchandiseData(mappedData);
+        if (res.data) {
+          const responseData = res.data.filter((data: any) => {
+            return data.name.toLowerCase().includes(merchValue.toLowerCase());
+          });
+          const mappedData = responseData.map((data: any) => {
+            if (data.name.toLowerCase().includes(merchValue.toLowerCase())) {
+              return {
+                id: data.ID,
+                name: data.name,
+                startup: data.startup || 'Startup Startip',
+                price: data.point,
+                stock: data.stock,
+              };
+            }
+          });
+          setMerchandiseData(mappedData);
+        }
       }
       catch (e) {
         console.error(e);
@@ -71,19 +70,17 @@ const MerchStockPage: React.FC = () => {
     <div className="h-[calc(100vh)] flex flex-col justify-between">
       {/* Modals */}
       <div
-        className={`${
-          !showSucceedModal && !showFailedModal && 'hidden'
-        } bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}
+        className={`${!showSucceedModal && !showFailedModal && 'hidden'
+          } bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}
       >
         <div
-          className={`${
-            !showSucceedModal && 'hidden'
-          } z-40 mx-auto flex justify-center`}
+          className={`${!showSucceedModal && 'hidden'
+            } z-40 mx-auto flex justify-center`}
         >
           <Modal
             status="success"
             icon="green-bag"
-            item="tes"
+            item={itemName}
             scope="delete-merchant"
             onClickLanjutkan={() => {
               setShowSucceedModal(false);
@@ -92,9 +89,8 @@ const MerchStockPage: React.FC = () => {
           />
         </div>
         <div
-          className={`${
-            !showFailedModal && 'hidden'
-          } z-40 mx-auto flex justify-center`}
+          className={`${!showFailedModal && 'hidden'
+            } z-40 mx-auto flex justify-center`}
         >
           <Modal
             status="fail"
