@@ -15,7 +15,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
   if (isAuthenticated()) {
     switch (user.role) {
       case 'user':
-        router.push('/u/dashboard');
+        router.push('/u/home');
         break;
       case 'admin':
         router.push('/a/dashboard');
