@@ -1,11 +1,12 @@
 /* eslint-disable max-len */
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Dropdown from '@/components/Profile/Dropdown';
 import Modal from '@/components/Modal';
 import { addMerch } from '@/services/merchandise';
+import { getAllStartup } from '@/services/startup';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -14,6 +15,7 @@ interface AddMerchPageProps { }
 const AddMerchPage: React.FC<AddMerchPageProps> = () => {
   const [itemName, setItemName] = useState<string>('');
   const [startup, setStartup] = useState<string>('');
+  const [startupList, setStartupList] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
   const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
@@ -36,6 +38,14 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
     fetchAddMerch();
   };
 
+  useEffect(() => {
+    const fetchStartup = async () => {
+      const res = await getAllStartup();
+      setStartupList(res.data.map((el: any) => el.name));
+    };
+    fetchStartup();
+  }, []);
+
   const router = useRouter();
   return (
     <div className='h-[calc(100vh)] flex flex-col justify-between'>
@@ -44,7 +54,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
           <Modal
             status='success'
             icon='green-bag'
-            item='tes'
+            item={itemName}
             scope='add-merchant'
             onClickLanjutkan={() => {
               setShowSucceedModal(false);
@@ -97,7 +107,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
               </label>
               <Dropdown
                 placeholder='Pilih startup'
-                data={['StartupStartip']}
+                data={startupList}
                 selected={startup}
                 dataChoosen={(e: string) => setStartup(e)}
               />

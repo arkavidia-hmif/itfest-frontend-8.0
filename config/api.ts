@@ -22,6 +22,9 @@ const API = {
     checkout: '/checkout',
     deleteMerch: '/deleteMerchandise',
   },
+  startup: {
+    getAll: '/startups',
+  }
 };
 
 export default API;
