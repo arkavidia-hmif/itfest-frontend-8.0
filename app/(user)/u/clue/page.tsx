@@ -60,7 +60,7 @@ export default function StartupClue() {
               <div className="z-40 w-full flex justify-center">
                 <Modal
                   status="success"
-                  point={300}
+                  point={25}
                   icon="green-diamond"
                   scope="submit-clue"
                   onClickLanjutkan={() => {

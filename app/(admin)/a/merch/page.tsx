@@ -49,7 +49,7 @@ const MerchStockPage: React.FC = () => {
               return {
                 id: data.ID,
                 name: data.name,
-                startup: data.startup || 'Startup Startip',
+                startup: data.user.Name,
                 price: data.point,
                 stock: data.stock,
               };

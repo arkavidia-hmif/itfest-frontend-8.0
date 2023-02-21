@@ -18,7 +18,7 @@ interface RedeemPointsPageProps { }
 interface CatalogueData {
   id: number;
   name: string;
-  startup: string | 'Startup Startip';
+  startup: string;
   price: number;
   stock: number;
   enableQuantityInput: boolean;
@@ -43,7 +43,7 @@ interface Toggle {
 interface RedeemData {
   id: number;
   name: string;
-  startup: string | 'Startup Startip';
+  startup: string;
   price: number;
   stock: number;
   quantity: number;
@@ -181,7 +181,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               status: 'sent',
               id: data.ID,
               name: data.name,
-              startup: data.startup || 'Startup Startip',
+              startup: data.user.Name,
               price: data.point,
               stock: data.stock,
               enableQuantityInput: true,
@@ -543,10 +543,10 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
               {/* Label poin */}
               <div
                 className={`flex justify-center border-2 ${userProfile.point >= totalPoint
-                  ? 'border-arkav-green'
-                  : 'border-arkav-red'
+                  ? 'border-arkav-green bg-arkav-green-light'
+                  : 'border-arkav-red bg-arkav-pink-light'
                   } 
-            bg-arkav-green-light rounded-xl my-4`}
+              rounded-xl my-4`}
               >
                 <p
                   className={`font-bold ${userProfile.point >= totalPoint

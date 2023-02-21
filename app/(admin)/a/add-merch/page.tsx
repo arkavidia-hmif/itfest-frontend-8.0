@@ -7,27 +7,31 @@ import Dropdown from '@/components/Profile/Dropdown';
 import Modal from '@/components/Modal';
 import { addMerch } from '@/services/merchandise';
 import { getAllStartup } from '@/services/startup';
-import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
-interface AddMerchPageProps { }
+interface StartupData { 
+  name: string;
+  usercode: string;
+}
 
-const AddMerchPage: React.FC<AddMerchPageProps> = () => {
+const AddMerchPage: React.FC = () => {
   const [itemName, setItemName] = useState<string>('');
   const [startup, setStartup] = useState<string>('');
   const [startupList, setStartupList] = useState<string[]>([]);
+  const [startupData, setStartupData] = useState<StartupData[]>([]);
   const [price, setPrice] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
   const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
   const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
 
-  const { getUser } = useAuth();
-  const user = getUser();
   const submitHandler = () => {
     const fetchAddMerch = async () => {
       try {
-        await addMerch(user.usercode, itemName, stock, price);
-        setShowSucceedModal(true);
+        const selectedStartup = startupData.find(data => data.name === startup);
+        if (selectedStartup) {
+          await addMerch(selectedStartup.usercode, itemName, stock, price);
+          setShowSucceedModal(true);
+        }
       }
       catch (e) {
         console.error(e);
@@ -42,6 +46,10 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
     const fetchStartup = async () => {
       const res = await getAllStartup();
       setStartupList(res.data.map((el: any) => el.name));
+      setStartupData(res.data.map((data: any) => ({
+        name: data.name,
+        usercode: data.usercode
+      })));
     };
     fetchStartup();
   }, []);
