@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
       merchImage: TestMerchImage,
       merchTitle: m.name,
       merchPoints: m.point,
-      startupName: 'Startup',
+      startupName: m.user.Name,
       startupImage: TestMerchImage,
       totalStock: m.stock,
     }));

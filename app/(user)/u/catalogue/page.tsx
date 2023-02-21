@@ -13,6 +13,7 @@ interface CatalogueData {
   name: string;
   stock: number;
   point: number;
+  startup: string;
 }
 
 const KatalogPage: React.FC = () => {
@@ -29,6 +30,7 @@ const KatalogPage: React.FC = () => {
             name: data.name,
             stock: data.stock,
             point: data.point,
+            startup: data.user.Name
           };
         });
 
@@ -58,7 +60,7 @@ const KatalogPage: React.FC = () => {
             id={data.id}
             name={data.name}
             price={data.point}
-            startup="Startup"
+            startup={data.startup}
             stock={data.stock}
           />
         ))}
