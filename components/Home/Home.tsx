@@ -61,7 +61,7 @@ const Home: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <Link href="#">
+              <Link href="/u/tutorial">
                 <button className="w-full rounded-md bg-[#1F307C] pt-2 pb-1.5 font-helvetica font-bold text-xs text-center text-white mt-4 h-8 tracking-wide">
                   Lihat Tutorial
                 </button>

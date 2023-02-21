@@ -1,26 +1,32 @@
 /* eslint-disable max-len */
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Dropdown from '@/components/Profile/Dropdown';
 import Modal from '@/components/Modal';
 import { addMerch } from '@/services/merchandise';
+import { getAllStartup } from '@/services/startup';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface AddMerchPageProps { }
 
 const AddMerchPage: React.FC<AddMerchPageProps> = () => {
   const [itemName, setItemName] = useState<string>('');
   const [startup, setStartup] = useState<string>('');
+  const [startupList, setStartupList] = useState<string[]>([]);
   const [price, setPrice] = useState<number>(0);
   const [stock, setStock] = useState<number>(0);
   const [showSucceedModal, setShowSucceedModal] = useState<boolean>(false);
   const [showFailedModal, setShowFailedModal] = useState<boolean>(false);
 
+  const { getUser } = useAuth();
+  const user = getUser();
   const submitHandler = () => {
     const fetchAddMerch = async () => {
       try {
-        await addMerch(itemName, stock, price);
+        await addMerch(user.usercode, itemName, stock, price);
         setShowSucceedModal(true);
       }
       catch (e) {
@@ -32,6 +38,15 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
     fetchAddMerch();
   };
 
+  useEffect(() => {
+    const fetchStartup = async () => {
+      const res = await getAllStartup();
+      setStartupList(res.data.map((el: any) => el.name));
+    };
+    fetchStartup();
+  }, []);
+
+  const router = useRouter();
   return (
     <div className='h-[calc(100vh)] flex flex-col justify-between'>
       <div className={`${!showSucceedModal && !showFailedModal && 'hidden'} bg-arkav-grey-700/50 z-30 h-screen w-full flex items-center fixed top-0 left-0`}>
@@ -39,9 +54,12 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
           <Modal
             status='success'
             icon='green-bag'
-            item='tes'
+            item={itemName}
             scope='add-merchant'
-            onClickLanjutkan={() => setShowSucceedModal(false)}
+            onClickLanjutkan={() => {
+              setShowSucceedModal(false);
+              router.push('/a/merch');
+            }}
             onClickTutup={() => setShowSucceedModal(false)}
           />
         </div>
@@ -89,7 +107,7 @@ const AddMerchPage: React.FC<AddMerchPageProps> = () => {
               </label>
               <Dropdown
                 placeholder='Pilih startup'
-                data={['StartupStartip']}
+                data={startupList}
                 selected={startup}
                 dataChoosen={(e: string) => setStartup(e)}
               />

@@ -87,8 +87,7 @@ const Dashboard: React.FC = () => {
         {/* Logo and tutorial button */}
         <div className="flex justify-between pl-8 pr-4">
           <Image src={ArkavLogo} width={22} height={32} alt="Arkavidia Logo" />
-          {/* TODO: Add tutorial link */}
-          <Link href="#">
+          <Link href="/u/tutorial">
             <button
               className="flex 
             justify-between items-center bg-white w-20 h-8 rounded-md border border-[#1F307C] p-2.5"
@@ -173,7 +172,7 @@ const Dashboard: React.FC = () => {
               <p className="mt-1 font-helvetica text-xs">
                 {userData.isProfileComplete
                   ? 'Klik di sini untuk mengubah data profil'
-                  : 'Lengkapi profilmu dan raih hadiah X points!'}
+                  : 'Lengkapi profilmu dan raih hadiah 300 points!'}
               </p>
               <Link href="/u/profile">
                 <button

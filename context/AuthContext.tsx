@@ -85,7 +85,7 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
 
     switch (userData.role) {
       case 'user':
-        router.push('/u/dashboard');
+        router.push('/u/home');
         break;
       case 'admin':
         router.push('/a/dashboard');

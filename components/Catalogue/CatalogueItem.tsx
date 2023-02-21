@@ -124,7 +124,7 @@ const CatalogueItem: React.FC<CatalogueItemProps> = ({
               -
             </button>
             <input
-              className="no-arrow bg-gray-200 text-gray-700 px-4 py-2 w-10 focus:outline-none"
+              className="no-arrow bg-gray-200 text-gray-700 px-2 py-2 w-10 text-center focus:outline-none"
               type="number"
               value={quantity}
               onChange={handleChange}

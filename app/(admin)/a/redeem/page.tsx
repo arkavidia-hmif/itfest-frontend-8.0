@@ -175,19 +175,21 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
       try {
         const res = await getAllMerch();
         const responseData = res.data;
-        const mappedData = responseData.map((data: any) => {
-          return {
-            status: 'sent',
-            id: data.ID,
-            name: data.name,
-            startup: data.startup || 'Startup Startip',
-            price: data.point,
-            stock: data.stock,
-            enableQuantityInput: true,
-          };
-        });
+        if (responseData) {
+          const mappedData = responseData.map((data: any) => {
+            return {
+              status: 'sent',
+              id: data.ID,
+              name: data.name,
+              startup: data.startup || 'Startup Startip',
+              price: data.point,
+              stock: data.stock,
+              enableQuantityInput: true,
+            };
+          });
 
-        setCatalogueData(mappedData);
+          setCatalogueData(mappedData);
+        }
       }
       catch (e) {
         console.error(e);
