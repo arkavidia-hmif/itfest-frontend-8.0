@@ -87,7 +87,7 @@ const CatalogueItem: React.FC<CatalogueItemProps> = ({
       <div className="w-1/2 flex flex-col">
         <div className="flex items-center gap-1 h-5">
           <Image
-            src="/img/dummy-startup-logo.png"
+            src={`/img/startup/${startup}.png`}
             alt="Logo"
             height={20}
             width={20}
@@ -109,7 +109,7 @@ const CatalogueItem: React.FC<CatalogueItemProps> = ({
       {/* Right */}
       <div className="w-1/2 flex flex-col items-end gap-3">
         <Image
-          src="/img/test-merch-image.png"
+          src={`/img/merch/${id}.JPG`}
           alt="Merch"
           height={76}
           width={76}
