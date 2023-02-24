@@ -54,6 +54,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   const [totalPoint, setTotalPoint] = useState<number>(0);
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [catalogueData, setCatalogueData] = useState<CatalogueData[]>([]);
+  const [filteredData, setFilteredData] = useState<CatalogueData[]>([]);
   const [dumpRedeemData, setDumpRedeemData] = useState<RedeemData[]>([]);
   const [redeemData, setRedeemData] = useState<RedeemData[]>([]);
   const [filteredRedeemData, setFilteredRedeemData] = useState<any[]>([]);
@@ -224,6 +225,10 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
       });
     });
   }, [redeemData]);
+
+  const handleSearch = (data: any) => {
+    setFilteredData(data);
+  };
 
   return (
     <div>
@@ -497,11 +502,11 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
                 Lihat perhitungan poin untuk penukaran merchandise pilihanmu!
               </InfoCard>
               <div className="flex items-center gap-5 mt-2">
-                <Searchbar placeholder="Masukkan merchandise" />
+                <Searchbar placeholder="Masukkan merchandise" data={catalogueData} onFilter={handleSearch} />
               </div>
             </div>
             <div className="px-4 flex-grow overflow-y-auto">
-              {catalogueData.map((data) => (data.stock > 0 &&
+              {filteredData.map((data) => (data.stock > 0 &&
                 <CatalogueItem
                   key={data.id}
                   id={data.id}

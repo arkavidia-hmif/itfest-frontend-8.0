@@ -42,6 +42,12 @@ export default function StartupClue() {
     }
   };
 
+  const getRandomClue = (text: string) => {
+    const separatedClues = text.split(';');
+    const randomIdx = Math.floor(Math.random() * separatedClues.length);
+    return separatedClues[randomIdx];
+  }
+
   useEffect(() => {
     fetchClue();
   }, []);
@@ -64,7 +70,6 @@ export default function StartupClue() {
                   icon="green-diamond"
                   scope="submit-clue"
                   onClickLanjutkan={() => {
-                    fetchClue();
                     setSuccessModal(false);
                   }}
                 />
@@ -88,7 +93,7 @@ export default function StartupClue() {
           ) : null}
           <div className="flex flex-col justify-start min-h-screen">
             <HeaderSection />
-            <ClueSection clue={clueData.text} />
+            <ClueSection clue={getRandomClue(clueData.text)} />
             <InputSection
               showSuccessModal={() => setSuccessModal(true)}
               showFailedModal={() => setFailedModal(true)}

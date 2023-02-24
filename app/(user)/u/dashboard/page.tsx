@@ -19,18 +19,15 @@ import ProfileImage from '@/public/img/visitor-dashboard-profile.png';
 import StartupClueImage from '@/public/img/visitor-dashboard-startup-clue.png';
 import MerchImage from '@/public/img/visitor-dashboard-merchandise.png';
 
-// TODO: Delete this later
-import TestMerchImage from '@/public/img/test-merch-image.png';
 import { getCurrentUser, getProfile } from '@/services/user';
 import { getAllMerch } from '@/services/merchandise';
 
 interface MerchData {
-  merchImage: any;
   merchTitle: string;
   merchPoints: number;
   startupName: string;
-  startupImage: any;
   totalStock: number;
+  id: number;
 }
 
 // Page component
@@ -64,15 +61,24 @@ const Dashboard: React.FC = () => {
     const merchData = merchRes.data;
 
     const mappedMerch = merchData.map((m: any) => ({
-      merchImage: TestMerchImage,
       merchTitle: m.name,
       merchPoints: m.point,
       startupName: m.user.Name,
-      startupImage: TestMerchImage,
       totalStock: m.stock,
+      id: m.ID
     }));
 
-    setMerch(mappedMerch);
+    const randomMerch: MerchData[] = [];
+
+    while (randomMerch.length < 5) {
+      const randomIndex = Math.floor(Math.random() * mappedMerch.length);
+    
+      if (!randomMerch.includes(mappedMerch[randomIndex])) {
+        randomMerch.push(mappedMerch[randomIndex]);
+      }
+    }
+
+    setMerch(randomMerch);
   };
 
   useEffect(() => {

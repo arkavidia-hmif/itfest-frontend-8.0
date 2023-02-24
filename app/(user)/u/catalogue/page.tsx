@@ -18,6 +18,7 @@ interface CatalogueData {
 
 const KatalogPage: React.FC = () => {
   const [catalogueData, setCatalogueData] = useState<CatalogueData[]>([]);
+  const [filteredData, setFilteredData] = useState<CatalogueData[]>([]);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -35,6 +36,7 @@ const KatalogPage: React.FC = () => {
         });
 
         setCatalogueData(mappedData);
+        setFilteredData(mappedData);
       } catch (e) {
         console.error(e);
       }
@@ -42,6 +44,10 @@ const KatalogPage: React.FC = () => {
 
     fetchAll();
   }, []);
+
+  const handleSearch = (data: any) => {
+    setFilteredData(data);
+  };
 
   return (
     <div>
@@ -51,10 +57,10 @@ const KatalogPage: React.FC = () => {
           Silakan langsung tukarkan poin dengan merchandise di booth Startup!
         </InfoCard>
         <div className="flex items-center gap-5 mt-2">
-          <Searchbar placeholder="Masukkan merchandise" />
+          <Searchbar placeholder="Masukkan merchandise" data={catalogueData} onFilter={handleSearch} />
           <UserPointsHighlight />
         </div>
-        {catalogueData.map((data) => (
+        {filteredData.map((data) => (
           <CatalogueItem
             key={data.id}
             id={data.id}
