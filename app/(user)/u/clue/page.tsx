@@ -46,7 +46,7 @@ export default function StartupClue() {
     const separatedClues = text.split(';');
     const randomIdx = Math.floor(Math.random() * separatedClues.length);
     return separatedClues[randomIdx];
-  }
+  };
 
   useEffect(() => {
     fetchClue();
@@ -71,6 +71,7 @@ export default function StartupClue() {
                   scope="submit-clue"
                   onClickLanjutkan={() => {
                     setSuccessModal(false);
+                    window.location.reload();
                   }}
                 />
               </div>
