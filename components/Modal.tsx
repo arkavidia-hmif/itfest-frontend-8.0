@@ -24,7 +24,7 @@ interface ModalProps {
     | 'redeem-points'
     | 'add-merchant'
     | 'delete-merchant';
-  id?: number;
+  id?: number | string;
   onClickLanjutkan?: () => void;
   onClickKembali?: () => void;
   onClickTutup?: () => void;
