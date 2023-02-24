@@ -71,11 +71,14 @@ const Dashboard: React.FC = () => {
     const randomMerch: MerchData[] = [];
 
     while (randomMerch.length < 5) {
+      if (mappedMerch.length < 1) break;
       const randomIndex = Math.floor(Math.random() * mappedMerch.length);
     
       if (!randomMerch.includes(mappedMerch[randomIndex])) {
         randomMerch.push(mappedMerch[randomIndex]);
       }
+
+      if (mappedMerch.length === randomMerch.length) break;
     }
 
     setMerch(randomMerch);
@@ -257,7 +260,7 @@ const Dashboard: React.FC = () => {
             />
           </div>
           <div className="flex gap-1 mt-1 overflow-x-auto">
-            {merch.map((merch, idx) => (
+            {merch && merch.map((merch, idx) => (
               <MerchItem key={idx} {...merch} />
             ))}
           </div>
