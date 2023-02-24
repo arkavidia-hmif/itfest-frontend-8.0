@@ -26,7 +26,7 @@ interface CatalogueData {
 
 interface UserProfile {
   name: string;
-  userCode: number;
+  userCode: string;
   point: number;
 }
 
@@ -69,7 +69,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
   });
   const [userProfile, setUserProfile] = useState<UserProfile>({
     name: '',
-    userCode: 0,
+    userCode: '',
     point: 5000,
   });
 
@@ -148,7 +148,7 @@ const RedeemPointsPage: React.FC<RedeemPointsPageProps> = () => {
         if (name !== '' && username !== '' && usercode !== '' && role !== '') {
           setUserProfile({
             name: name,
-            userCode: parseInt(usercode),
+            userCode: usercode,
             point: point,
           });
 
