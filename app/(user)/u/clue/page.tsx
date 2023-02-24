@@ -70,7 +70,6 @@ export default function StartupClue() {
                   icon="green-diamond"
                   scope="submit-clue"
                   onClickLanjutkan={() => {
-                    fetchClue();
                     setSuccessModal(false);
                   }}
                 />
